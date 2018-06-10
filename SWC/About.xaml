@@ -1,0 +1,18 @@
+﻿<Window x:Name="windowAbout" x:Class="SWC.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SWC"
+        mc:Ignorable="d"
+        Title="About" Height="300" Width="300" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Version 0.0.0.1"/>
+            <Label Content="Kai Friebe"/>
+            <Label Content="Webseite:"/>
+            <Label Content="E-Mail: racoon__dr__ak@hotmail.com"/>
+            
+        </StackPanel>
+    </Grid>
+</Window>
