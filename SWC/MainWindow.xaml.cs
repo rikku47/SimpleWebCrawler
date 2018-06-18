@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using AngleSharp;
 using AngleSharp.Dom;
-using AngleSharp.Parser.Html;
+using AngleSharp.Html;
+using Microsoft.Win32;
 using Newtonsoft.Json;
-using OpenQA.Selenium;
-using OpenQA.Selenium.IE;
 
 namespace SWC
 {
@@ -23,81 +25,26 @@ namespace SWC
         }
 
         Config config = null;
+        ObservableCollection<Group> groups;
+        ObservableCollection<string> customSelectors;
 
         private void btnCrawl_Click(object sender, RoutedEventArgs e)
         {
-            
+            //var progress = new Progress<ProgressCrawl>(ReportProgress);
 
-
-            btnCrawl.IsEnabled = false;
-
-            pgbProgress.Value = 0;
-
-            var url = txtUrlOrFile.Text;
-
-            var selectors = txtSelectors.Text;
-
-            var outputPath = txtOutput.Text;
-
-            config.lastUrlOrFile = url;
-
-            config.outputPath = outputPath;
-
-            pgbProgress.Maximum = 1;
-
-            var progress = new Progress<ProgressCrawl>(ReportProgress);
-
-            string text = "";
-
-            try
+            foreach (var group in groups)
             {
-                text = File.ReadAllText(url);
-            }
-            catch (Exception)
-            {
-
-                //MessageBox.Show(ex.Message);
-            }
-
-            Crawl(url, selectors, outputPath, progress, text);
-        }
-
-        private static async Task Crawl(string url, string selectors, string outputPath, IProgress<ProgressCrawl> progress, string text)
-        {
-            var config = Configuration.Default.WithDefaultLoader();
-
-            IDocument document = null;
-
-            if (text.Length > 0)
-            {
-                var parser = new HtmlParser();
-
-                document = parser.Parse(text);
-            }
-            else
-            {
-                document = await BrowsingContext.New(config).OpenAsync(url);
-            }
-
-            var cells = document.QuerySelectorAll(selectors);
-
-            var output = cells.Select(m => m.TextContent);
-
-            using (var sw = new StreamWriter(outputPath))
-            {
-                foreach (var line in output)
+                foreach (var link in group.Links)
                 {
-                    sw.WriteLine(line);
+                    //implement bool to crawl
+
+                    link.CrawlAsync();
                 }
             }
-
-            progress.Report(new ProgressCrawl { currentProgress = 1, totalProgress = 1 });
         }
 
         private void ReportProgress(ProgressCrawl progress)
         {
-            pgbProgress.Value = progress.currentProgress;
-
             btnCrawl.IsEnabled = true;
         }
 
@@ -143,6 +90,60 @@ namespace SWC
             }
         }
 
+        private void ReadCustomSelectors()
+        {
+            string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = Path.GetDirectoryName(pathIncludeAssembly);
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(path + "\\customSelectors.json"))
+                {
+                    String line = sr.ReadToEnd();
+                    customSelectors = JsonConvert.DeserializeObject<ObservableCollection<string>>(line);
+                    libCustomSelectors.ItemsSource = customSelectors;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void WriteCustomSelectors()
+        {
+            string customSelectorsJSON = JsonConvert.SerializeObject(customSelectors);
+
+            using (var sw = new StreamWriter("customSelectors.json"))
+            {
+                sw.WriteLine(customSelectorsJSON);
+            }
+        }
+
+        private void ReadGroups()
+        {
+            string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = Path.GetDirectoryName(pathIncludeAssembly);
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(path + "\\groups.json"))
+                {
+                    String line = sr.ReadToEnd();
+                    config = JsonConvert.DeserializeObject<Config>(line);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void WriteGroups()
+        {
+
+        }
+
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -157,29 +158,138 @@ namespace SWC
                 CreateConfig();
             }
 
-            txtUrlOrFile.Text = config.lastUrlOrFile;
-            txtSelectors.Text = config.lastSelectors;
-            txtOutput.Text = config.outputPath;
+            libDefaultSelectors.ItemsSource = typeof(TagNames).GetFields().Select(field => field.Name).ToList();
+
+            tcGroups.ItemsSource = groups;
+
+
+            ReadCustomSelectors();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void mainWindow_Closed(object sender, EventArgs e)
         {
-            Close();
+            WriteConfig();
+            WriteCustomSelectors();
         }
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ResultWindow resultWindow = new ResultWindow
+            {
+                Link = (Link)((Button)sender).DataContext
+            };
+
+            resultWindow.Show();
+        }
+
+        private void btnOpenFiles_Click(object sender, RoutedEventArgs e)
+        {
+            Stream[] myStream = null;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "html files (*.htm, *html) | *.htm; *html";
+            //openFileDialog.FilterIndex = 1;
+
+            if(openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    if ((myStream = openFileDialog.OpenFiles()) != null)
+                    {
+                        //using (myStream)
+                        {
+                            foreach (var stream in myStream)
+                            {
+                                var temp = stream;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Datei(en) konnte(n) nicht eingelesen werden: " + ex.Message);
+                }
+            }
+        }
+
+        private void MiInfo_Click(object sender, RoutedEventArgs e)
         {
             About about = new About();
             about.Show();
         }
 
-        private void mainWindow_Closed(object sender, EventArgs e)
+        private void MiFiles_Click(object sender, RoutedEventArgs e)
         {
-            config.lastUrlOrFile = txtUrlOrFile.Text;
-            config.lastSelectors = txtSelectors.Text;
-            config.outputPath = txtOutput.Text;
 
-            WriteConfig();
+        }
+
+        private void MiExport_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MiImport_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MiClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MiOption_Click(object sender, RoutedEventArgs e)
+        {
+            OptionWindow optionWindow = new OptionWindow();
+
+            optionWindow.Show();
+        }
+
+        private void btnReadLinks_Click(object sender, RoutedEventArgs e)
+        {
+            string groupName = txtGroupName.Text;
+
+            string[] links = txtLinks.Text.Split(';');
+
+            if(links.Length > 0 && ((bool)chkSelectAllDefaultSelectors.IsChecked || libDefaultSelectors.SelectedItems.Count > 0 || libCustomSelectors.SelectedItems.Count > 0))
+            {
+                Group group = new Group(groupName);
+
+                foreach (var linkAdress in links)
+                {
+                    Link link = new Link(linkAdress, (bool)chkSelectAllDefaultSelectors.IsChecked, libDefaultSelectors.SelectedItems, libCustomSelectors.SelectedItems);
+
+                    group.Links.Add(link);
+                }
+
+                if (groups == null)
+                {
+                    groups = new ObservableCollection<Group>();
+                }
+
+                groups.Add(group);
+
+                tcGroups.ItemsSource = groups;
+            }
+        }
+
+        private void btnReadSelectors_Click(object sender, RoutedEventArgs e)
+        {
+            string[] selectors = txtSelectors.Text.Split(';');
+
+            if (customSelectors == null)
+            {
+                customSelectors = new ObservableCollection<string>();
+            }
+
+            foreach (var selector in selectors)
+            {
+                customSelectors.Add(selector);
+            }
+
+            libCustomSelectors.ItemsSource = customSelectors;
         }
     }
 }

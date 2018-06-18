@@ -5,28 +5,129 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SWC"
         mc:Ignorable="d"
-        Title="SimpleWebCrawler" Height="700" Width="800" MinWidth="800" MinHeight="700" Loaded="mainWindow_Loaded" WindowStartupLocation="CenterScreen" Closed="mainWindow_Closed">
-    <Grid>
+        Title="SimpleWebCrawler" Loaded="mainWindow_Loaded" WindowStartupLocation="CenterScreen" Closed="mainWindow_Closed" d:DataContext="{d:DesignData /SampleData/GroupSampleData.xaml}" WindowState="Maximized" d:DesignHeight="1136">
+    <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="Datei">
-                <MenuItem Header="Beenden" Click="MenuItem_Click"/>
+                <MenuItem Header="Datei" Name="miFiles" Click="MiFiles_Click"/>
+                <MenuItem Header="Export" Name="miExport" Click="MiExport_Click"/>
+                <MenuItem Header="Import" Name="miImport" Click="MiImport_Click"/>
+                <MenuItem Header="Beenden" Name="miClose" Click="MiClose_Click"/>
             </MenuItem>
-            <MenuItem Header="Info" Click="MenuItem_Click_1"/>
+            <MenuItem Header="Optionen" Name="miOption" Click="MiOption_Click"/>
+            <MenuItem Header="Info" Name="miInfo" Click="MiInfo_Click"/>
         </Menu>
-        <StackPanel Grid.Row="1" CanVerticallyScroll="True">
-            <Label Content="Url oder Datei" Margin="10,20,10,10"/>
-            <TextBox x:Name="txtUrlOrFile" Margin="10" Padding="10"/>
-            <Label Content="Füge einen/mehere CSS Selektoren, wie z. B. h1, h2, p oder einen benutzerdefinierte, wie #home, .blue etc. aus." Margin="10,20,10,10"/>
-            <TextBox x:Name="txtSelectors" Margin="10" Padding="10" Height="200"/>
-            <Label Content="Pfad, wo das Resultat gespeichert werden soll" Margin="10,20,10,10"/>
-            <TextBox x:Name="txtOutput" Margin="10" Padding="10"/>
+        <TabControl Grid.Row="1"  MinHeight="800" SelectedIndex="2">
+            <TabItem Header="Links">
+                <TabItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Export"/>
+                        <MenuItem Header="Import"/>
+                    </ContextMenu>
+                </TabItem.ContextMenu>
+                <TabControl Name="tcGroups" SelectedIndex="0">
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <ContentPresenter Content="{Binding Name}"/>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <DataGrid ItemsSource="{Binding Links}" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Link" Binding="{Binding Adress}" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Encoding" Binding="{Binding Encoding}" IsReadOnly="True"/>
+                                    <DataGridCheckBoxColumn Header="Crawl" Binding="{Binding IsCrawl}"/>
+                                    <DataGridCheckBoxColumn Header="CrawlDefault" Binding="{Binding IsCrawlDefault}"/>
+                                    <DataGridCheckBoxColumn Header="CrawlDefaultText" Binding="{Binding IsCrawlDefaultText}"/>
+                                    <DataGridCheckBoxColumn Header="CrawlDefaultInnerHTML" Binding="{Binding IsCrawlDefaultInnerHTML}"/>
+                                    <DataGridCheckBoxColumn Header="CrawlDefaultOuterHTML" Binding="{Binding IsCrawlDefaultOuterHTML}"/>
+                                    <DataGridCheckBoxColumn Header="CrawlCustom" Binding="{Binding IsCrawlCustom}"/>
+                                    <DataGridCheckBoxColumn Header="CrawlCustomText" Binding="{Binding IsCrawlCustomText}"/>
+                                    <DataGridCheckBoxColumn Header="CrawlCustomInnerHTML" Binding="{Binding IsCrawlCustomInnerHTML}"/>
+                                    <DataGridCheckBoxColumn Header="CrawlCustomOuterHTML" Binding="{Binding IsCrawlCustomOuterHTML}"/>
+                                    <DataGridTemplateColumn Header="Resultate">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Anzeigen" Click="Button_Click"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Status">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ProgressBar />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Datum" Binding="{Binding CreationDate}" IsReadOnly="True"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
+            </TabItem>
+            <TabItem Header="Dateien">
+                <Grid>
+                    <Button Name="btnOpenFiles" Content="Dateien öffnen / einlesen" Click="btnOpenFiles_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Links einlesen">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="10">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Gruppenname"/>
+                            <TextBox MinWidth="200" Name="txtGroupName" Text="group1"/>
+                        </StackPanel>
+                        <TextBox Height="400" Margin="10" Name="txtLinks" Text="http://mtv-grone.de/abteilungen/aikido"/>
+                        <StackPanel Margin="10" Orientation="Horizontal">
+                            <Label Content="Ankreuzen für alle Selectoren"/>
+                            <CheckBox Name="chkSelectAllDefaultSelectors" VerticalAlignment="Center" IsChecked="False"/>
+                        </StackPanel>
+                        <ListBox Name="libDefaultSelectors" Margin="10" SelectionMode="Multiple" MaxHeight="120" SelectedIndex="87"/>
+                        <StackPanel Margin="10" Orientation="Horizontal">
+                            <Label Content="Ankreuzen für alle Selectoren"/>
+                            <CheckBox Name="chkSelectAllCustomSelectors" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ListBox Name="libCustomSelectors" Margin="10" SelectionMode="Multiple" MaxHeight="120"/>
+                        <Button Name="btnReadLinks" Content="Einlesen" Margin="10" Padding="10" Click="btnReadLinks_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Selektoren einlesen">
+                <Grid>
+                    <StackPanel Margin="10">
+                        <TextBox Height="400" Name="txtSelectors" Text=".article;#hello"/>
+                        <Button Name="btnReadSelectors" Content="Einlesen" Click="btnReadSelectors_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Linksammler">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="2" CanVerticallyScroll="True">
+            <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Text"/>
+                <CheckBox Name="chkText" IsChecked="True" VerticalAlignment="Center"/>
+                <Label Content="innerHTML"/>
+                <CheckBox Name="chkInnerHTML" IsChecked="True" VerticalAlignment="Center"/>
+                <Label Content="outerHTML"/>
+                <CheckBox Name="chkOuterHTML" IsChecked="True" VerticalAlignment="Center"/>
+            </StackPanel>
             <Button Name="btnCrawl" Content="Crawl" Margin="10" Padding="10" Click="btnCrawl_Click"/>
-            <ProgressBar Name="pgbProgress" Margin="10" Height="30"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWC", "SWC\SWC.csproj", "{7AA00553-3FD2-4076-8E03-AB3DE59C17C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestSWC", "UnitTestSWC\UnitTestSWC.csproj", "{3EE72E2B-BD51-4C2B-B4C8-5B9ABD1DE562}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7AA00553-3FD2-4076-8E03-AB3DE59C17C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AA00553-3FD2-4076-8E03-AB3DE59C17C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AA00553-3FD2-4076-8E03-AB3DE59C17C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EE72E2B-BD51-4C2B-B4C8-5B9ABD1DE562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE72E2B-BD51-4C2B-B4C8-5B9ABD1DE562}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE72E2B-BD51-4C2B-B4C8-5B9ABD1DE562}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EE72E2B-BD51-4C2B-B4C8-5B9ABD1DE562}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

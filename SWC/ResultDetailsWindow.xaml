@@ -1,0 +1,26 @@
+﻿<Window x:Name="Resultate_Details" x:Class="SWC.ResultDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SWC"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" WindowState="Maximized" Title="Resultate im Detail">
+    <Grid>
+        <DataGrid ItemsSource="{Binding Items}" IsReadOnly="True" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding CreationDate}" Header="Erzeugt am"/>
+                <DataGridTextColumn Binding="{Binding Details.Text}" Header="Vorschau Text"/>
+                <DataGridTextColumn Binding="{Binding Details.InnerHTML}" Header="Vorschau innerHTML"/>
+                <DataGridTextColumn Binding="{Binding Details.OuterHTML}" Header="Vorschau outerHTML"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="btnShow" Content="Anzeigen" Click="btnShow_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
