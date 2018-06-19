@@ -10,6 +10,22 @@ Now a few words to the application. This is a typical web scrapper. At the momen
 
 Still in not stable state. But it is possible to download just static html and search for the text, inner- and outerHTML and watch it. Their is no export function at the moment. You can take a default selector, like h1, h2, p, body or write/copy a custom selector for searching...
 
+## Goals
+
+### Application SimpleWebCrawler
+
+Get the application stable
+Export function for the group(s) / links with their selectors and results
+Search function for the group(s) / links with their selectors and results
+Interface for applications like a headless browser / browser to scrap javascript output
+Interface for applications like dropbox, sql database...
+...
+
+### GitHub
+
+A wiki with stuff like howto, manuels etc.
+...
+
 ## Greetings
 
 Thanks!
