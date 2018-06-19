@@ -110,9 +110,9 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Margin="10">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="10">
                             <Label Content="Gruppenname"/>
-                            <TextBox MinWidth="200" Name="txtGroupName"/>
+                            <TextBox MinWidth="200" Name="txtGroupName" Width="400"/>
                         </StackPanel>
                         <TextBox Height="400" Margin="10" Name="txtLinks"/>
                         <StackPanel Margin="10" Orientation="Horizontal">

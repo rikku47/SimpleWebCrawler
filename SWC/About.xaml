@@ -11,8 +11,18 @@
             <Label Content="Version 0.0.0.1"/>
             <Label Content="Kai Friebe"/>
             <Label Content="Webseite:"/>
-            <Label Content="E-Mail: racoon__dr__ak@hotmail.com"/>
+            <TextBlock>
+                <Hyperlink Name="hlKaiFriebePageSWC" NavigateUri="http://kai-friebe.site/simplewebcrawler/" RequestNavigate="HlKaiFriebePageSWC_RequestNavigate">
+                    http://kai-friebe.site/simplewebcrawler/
+                </Hyperlink>
+            </TextBlock>
             
+            <Label Content="E-Mail:"/>
+            <TextBlock>
+                <Hyperlink Name="hlEmail" NavigateUri="mailto:racoon_dr_ak@hotmail.com" RequestNavigate="hlEmail_RequestNavigate">
+                    racoon_dr_ak@hotmail.com
+                </Hyperlink>
+            </TextBlock>
         </StackPanel>
     </Grid>
 </Window>
