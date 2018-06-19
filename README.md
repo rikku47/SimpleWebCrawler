@@ -28,7 +28,8 @@ Still in not stable state. But it is possible to download just static html and s
 
 ### GitHub
 
-A wiki with stuff like howto, manuels etc.
+* A wiki with stuff like howto, manuels etc.
+
 ...
 
 ## Greetings
