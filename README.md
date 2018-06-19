@@ -14,11 +14,16 @@ Still in not stable state. But it is possible to download just static html and s
 
 ### Application SimpleWebCrawler
 
-Get the application stable
-Export function for the group(s) / links with their selectors and results
-Search function for the group(s) / links with their selectors and results
-Interface for applications like a headless browser / browser to scrap javascript output
-Interface for applications like dropbox, sql database...
+* Get the application stable
+
+* Export function for the group(s) / links with their selectors and results
+
+* Search function for the group(s) / links with their selectors and results
+
+* Interface for applications like a headless browser / browser to scrap javascript output
+
+* Interface for applications like dropbox, sql database...
+
 ...
 
 ### GitHub
