@@ -70,7 +70,7 @@ namespace SWC
             }
         }
 
-        private void LoadConfig()
+        private void ReadConfig()
         {
 
             string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -130,7 +130,7 @@ namespace SWC
                 using (StreamReader sr = new StreamReader(path + "\\groups.json"))
                 {
                     String line = sr.ReadToEnd();
-                    config = JsonConvert.DeserializeObject<Config>(line);
+                    groups = JsonConvert.DeserializeObject<ObservableCollection<Group>>(line);
                 }
             }
             catch (Exception e)
@@ -141,7 +141,12 @@ namespace SWC
 
         private void WriteGroups()
         {
+            string groupsJSON = JsonConvert.SerializeObject(groups);
 
+            using (var sw = new StreamWriter("groups.json"))
+            {
+                sw.WriteLine(groupsJSON);
+            }
         }
 
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -151,25 +156,33 @@ namespace SWC
 
             if (File.Exists(path + "\\config.json"))
             {
-                LoadConfig();
+                ReadConfig();
             }
             else
             {
                 CreateConfig();
             }
 
+            if (File.Exists(path + "\\customSelectors.json"))
+            {
+                ReadCustomSelectors();
+            }
+
+            if (File.Exists(path + "\\groups.json"))
+            {
+                ReadGroups();
+            }
+
             libDefaultSelectors.ItemsSource = typeof(TagNames).GetFields().Select(field => field.Name).ToList();
 
             tcGroups.ItemsSource = groups;
-
-
-            ReadCustomSelectors();
         }
 
         private void mainWindow_Closed(object sender, EventArgs e)
         {
             WriteConfig();
             WriteCustomSelectors();
+            WriteGroups();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -227,12 +240,20 @@ namespace SWC
 
         private void MiExport_Click(object sender, RoutedEventArgs e)
         {
+            ExportWindow exportWindow = new ExportWindow();
 
+            exportWindow.ShowDialog();
         }
 
         private void MiImport_Click(object sender, RoutedEventArgs e)
         {
+            ImportWindow importWindow = new ImportWindow()
+            {
+                CustomSelectors = customSelectors,
+                Group = (Group)((MenuItem)sender).DataContext
+            };
 
+            importWindow.ShowDialog();
         }
 
         private void MiClose_Click(object sender, RoutedEventArgs e)
@@ -253,13 +274,24 @@ namespace SWC
 
             string[] links = txtLinks.Text.Split(';');
 
-            if(links.Length > 0 && ((bool)chkSelectAllDefaultSelectors.IsChecked || libDefaultSelectors.SelectedItems.Count > 0 || libCustomSelectors.SelectedItems.Count > 0))
+            IList customSelectors;
+
+            if ((bool)chkSelectAllCustomSelectors.IsChecked)
+            {
+                customSelectors = (IList)libCustomSelectors.ItemsSource;
+            }
+            else
+            {
+                customSelectors = libCustomSelectors.SelectedItems;
+            }
+
+            if (links.Length > 0 && ((bool)chkSelectAllDefaultSelectors.IsChecked || libDefaultSelectors.SelectedItems.Count > 0 || customSelectors.Count > 0))
             {
                 Group group = new Group(groupName);
 
                 foreach (var linkAdress in links)
                 {
-                    Link link = new Link(linkAdress, (bool)chkSelectAllDefaultSelectors.IsChecked, libDefaultSelectors.SelectedItems, libCustomSelectors.SelectedItems);
+                    Link link = new Link(linkAdress, (bool)chkSelectAllDefaultSelectors.IsChecked, libDefaultSelectors.SelectedItems, customSelectors);
 
                     group.Links.Add(link);
                 }
@@ -290,6 +322,47 @@ namespace SWC
             }
 
             libCustomSelectors.ItemsSource = customSelectors;
+        }
+
+        private void miDelete_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Möchten Sie diesen Datensatz wirklich löschen?");
+        }
+
+        private void tcGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+        }
+
+        private void DataGrid_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+        }
+
+        private void MiEdit_Click(object sender, RoutedEventArgs e)
+        {
+            EditWindow editWindow = new EditWindow()
+            {
+                Group = (Group)((MenuItem)sender).DataContext
+            };
+
+            editWindow.ShowDialog();
+        }
+
+        private void ContentPresenter_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            EditSelectorsWindow editSelectorsWindow = new EditSelectorsWindow()
+            {
+                Link = (Link)((Button)sender).DataContext,
+                CustomSelectors = customSelectors
+            };
+
+            editSelectorsWindow.ShowDialog();
         }
     }
 }

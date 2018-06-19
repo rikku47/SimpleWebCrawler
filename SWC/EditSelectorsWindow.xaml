@@ -1,0 +1,45 @@
+﻿<Window x:Class="SWC.EditSelectorsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SWC"
+        mc:Ignorable="d"
+        Title="Selektoren editieren" WindowStartupLocation="CenterScreen" WindowState="Maximized" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem Header="Standard Selektoren">
+                <DataGrid ItemsSource="{Binding Selectors.DefaultSelectors}" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Selektor" Binding="{Binding CSSSelector}"/>
+                        <DataGridTextColumn Header="Erzeugt" Binding="{Binding CreationDate}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Benutzerdefinierte Selektoren">
+                <DataGrid ItemsSource="{Binding Selectors.CustomSelectors}" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Selektor" Binding="{Binding CSSSelector}"/>
+                        <DataGridTextColumn Header="Erzeugt" Binding="{Binding CreationDate}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1">
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <Label Content="Ankreuzen für alle Selectoren"/>
+                <CheckBox Name="chkSelectAllDefaultSelectors" VerticalAlignment="Center" IsChecked="False"/>
+            </StackPanel>
+            <ListBox Name="libDefaultSelectors" Margin="10" SelectionMode="Multiple" MaxHeight="120" SelectedIndex="87"/>
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <Label Content="Ankreuzen für alle Selectoren"/>
+                <CheckBox Name="chkSelectAllCustomSelectors" VerticalAlignment="Center"/>
+            </StackPanel>
+            <ListBox Name="libCustomSelectors" Margin="10" SelectionMode="Multiple" MaxHeight="120"/>
+        </StackPanel>
+    </Grid>
+</Window>

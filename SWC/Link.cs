@@ -13,6 +13,7 @@ namespace SWC
         private string _adress;
         private string _encoding;
         private bool _allDefaultSelectors;
+        private bool _allCustomSelectors;
         private bool _isTrim;
         private bool _crawl;
         private bool _crawlDefault;
@@ -73,9 +74,9 @@ namespace SWC
         {
             _selectors.CustomSelectors = new ObservableCollection<Selector.CustomSelector>();
 
-            foreach (string defaultSelector in customSelectors)
+            foreach (string customSelector in customSelectors)
             {
-                _selectors.CustomSelectors.Add(new Selector.CustomSelector(defaultSelector));
+                _selectors.CustomSelectors.Add(new Selector.CustomSelector(customSelector));
             }
         }
 
@@ -92,6 +93,7 @@ namespace SWC
         public bool IsCrawlCustomInnerHTML { get => _crawlCustomInnerHTML; set => _crawlCustomInnerHTML = value; }
         public bool IsCrawlCustomOuterHTML { get => _crawlCustomOuterHTML; set => _crawlCustomOuterHTML = value; }
         //public bool AllDefaultSelectors { get => _allDefaultSelectors; set => _allDefaultSelectors = value; }
+        //public bool AllCustomSelectors { get => _allCustomSelectors; set => _allCustomSelectors = value; }
         public Selector Selectors { get => _selectors; set => _selectors = value; }
         public DateTime CreationDate { get => _creationDate; set => _creationDate = value; }
 

@@ -24,6 +24,11 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <TabItem Header="Dateien">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

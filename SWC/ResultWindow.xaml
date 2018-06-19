@@ -54,7 +54,18 @@
                     </TabControl.ItemTemplate>
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-
+                            <DataGrid ItemsSource="{Binding Results}" AutoGenerateColumns="False" IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding CreationDate}" Header="Erzeugt Am"/>
+                                    <DataGridTemplateColumn Header="Anzeigen">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Anzeigen" Name="btnShow" Click="btnShow_Click"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </DataTemplate>
                     </TabControl.ContentTemplate>
                 </TabControl>

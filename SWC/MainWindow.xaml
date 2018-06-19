@@ -24,53 +24,78 @@
         </Menu>
         <TabControl Grid.Row="1"  MinHeight="800" SelectedIndex="2">
             <TabItem Header="Links">
-                <TabItem.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Export"/>
-                        <MenuItem Header="Import"/>
-                    </ContextMenu>
-                </TabItem.ContextMenu>
-                <TabControl Name="tcGroups" SelectedIndex="0">
-                    <TabControl.ItemTemplate>
-                        <DataTemplate>
-                            <ContentPresenter Content="{Binding Name}"/>
-                        </DataTemplate>
-                    </TabControl.ItemTemplate>
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <DataGrid ItemsSource="{Binding Links}" AutoGenerateColumns="False">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Link" Binding="{Binding Adress}" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="Encoding" Binding="{Binding Encoding}" IsReadOnly="True"/>
-                                    <DataGridCheckBoxColumn Header="Crawl" Binding="{Binding IsCrawl}"/>
-                                    <DataGridCheckBoxColumn Header="CrawlDefault" Binding="{Binding IsCrawlDefault}"/>
-                                    <DataGridCheckBoxColumn Header="CrawlDefaultText" Binding="{Binding IsCrawlDefaultText}"/>
-                                    <DataGridCheckBoxColumn Header="CrawlDefaultInnerHTML" Binding="{Binding IsCrawlDefaultInnerHTML}"/>
-                                    <DataGridCheckBoxColumn Header="CrawlDefaultOuterHTML" Binding="{Binding IsCrawlDefaultOuterHTML}"/>
-                                    <DataGridCheckBoxColumn Header="CrawlCustom" Binding="{Binding IsCrawlCustom}"/>
-                                    <DataGridCheckBoxColumn Header="CrawlCustomText" Binding="{Binding IsCrawlCustomText}"/>
-                                    <DataGridCheckBoxColumn Header="CrawlCustomInnerHTML" Binding="{Binding IsCrawlCustomInnerHTML}"/>
-                                    <DataGridCheckBoxColumn Header="CrawlCustomOuterHTML" Binding="{Binding IsCrawlCustomOuterHTML}"/>
-                                    <DataGridTemplateColumn Header="Resultate">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Button Content="Anzeigen" Click="Button_Click"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="Status">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ProgressBar />
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn Header="Datum" Binding="{Binding CreationDate}" IsReadOnly="True"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Suche:"/>
+                            <TextBox Width="500"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Optionen:"/>
+                            <Label Content="Baustelle..."/>
+                        </StackPanel>
+                    </StackPanel>
+                    <TabControl Name="tcGroups" Grid.Row="1" SelectedIndex="0" KeyUp="tcGroups_KeyUp">
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding Name}" MouseLeftButtonDown="ContentPresenter_MouseLeftButtonDown"/>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <DataGrid ItemsSource="{Binding Links}" AutoGenerateColumns="False" KeyUp="DataGrid_KeyUp">
+                                    <DataGrid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Löschen" Name="miDelete" Click="miDelete_Click"/>
+                                            <MenuItem Header="Editieren" Name="miEdit" Click="MiEdit_Click"/>
+                                            <MenuItem Header="Export" Name="miExport" Click="MiExport_Click"/>
+                                            <MenuItem Header="Import" Name="miImport" Click="MiImport_Click"/>
+                                        </ContextMenu>
+                                    </DataGrid.ContextMenu>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Link" Binding="{Binding Adress}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Encoding" Binding="{Binding Encoding}" IsReadOnly="True"/>
+                                        <DataGridCheckBoxColumn Header="Crawl" Binding="{Binding IsCrawl}"/>
+                                        <DataGridCheckBoxColumn Header="CrawlDefault" Binding="{Binding IsCrawlDefault}"/>
+                                        <DataGridCheckBoxColumn Header="CrawlDefaultText" Binding="{Binding IsCrawlDefaultText}"/>
+                                        <DataGridCheckBoxColumn Header="CrawlDefaultInnerHTML" Binding="{Binding IsCrawlDefaultInnerHTML}"/>
+                                        <DataGridCheckBoxColumn Header="CrawlDefaultOuterHTML" Binding="{Binding IsCrawlDefaultOuterHTML}"/>
+                                        <DataGridCheckBoxColumn Header="CrawlCustom" Binding="{Binding IsCrawlCustom}"/>
+                                        <DataGridCheckBoxColumn Header="CrawlCustomText" Binding="{Binding IsCrawlCustomText}"/>
+                                        <DataGridCheckBoxColumn Header="CrawlCustomInnerHTML" Binding="{Binding IsCrawlCustomInnerHTML}"/>
+                                        <DataGridCheckBoxColumn Header="CrawlCustomOuterHTML" Binding="{Binding IsCrawlCustomOuterHTML}"/>
+                                        <DataGridTemplateColumn Header="Selektors">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="Anzeigen / Editieren" Click="Button_Click_1"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Resultate">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="Anzeigen" Click="Button_Click"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Status">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ProgressBar />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="Datum" Binding="{Binding CreationDate}" IsReadOnly="True"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                </Grid>
             </TabItem>
             <TabItem Header="Dateien">
                 <Grid>
@@ -87,9 +112,9 @@
                     <StackPanel Margin="10">
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Gruppenname"/>
-                            <TextBox MinWidth="200" Name="txtGroupName" Text="group1"/>
+                            <TextBox MinWidth="200" Name="txtGroupName"/>
                         </StackPanel>
-                        <TextBox Height="400" Margin="10" Name="txtLinks" Text="http://mtv-grone.de/abteilungen/aikido"/>
+                        <TextBox Height="400" Margin="10" Name="txtLinks"/>
                         <StackPanel Margin="10" Orientation="Horizontal">
                             <Label Content="Ankreuzen für alle Selectoren"/>
                             <CheckBox Name="chkSelectAllDefaultSelectors" VerticalAlignment="Center" IsChecked="False"/>
@@ -107,14 +132,14 @@
             <TabItem Header="Selektoren einlesen">
                 <Grid>
                     <StackPanel Margin="10">
-                        <TextBox Height="400" Name="txtSelectors" Text=".article;#hello"/>
-                        <Button Name="btnReadSelectors" Content="Einlesen" Click="btnReadSelectors_Click"/>
+                        <TextBox Height="400" Name="txtSelectors"/>
+                        <Button Name="btnReadSelectors" Content="Einlesen" Click="btnReadSelectors_Click" Padding="10"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="Linksammler">
                 <Grid>
-                    
+                    <TextBlock Text="Baustelle..."/>
                 </Grid>
             </TabItem>
         </TabControl>
@@ -128,6 +153,7 @@
                 <CheckBox Name="chkOuterHTML" IsChecked="True" VerticalAlignment="Center"/>
             </StackPanel>
             <Button Name="btnCrawl" Content="Crawl" Margin="10" Padding="10" Click="btnCrawl_Click"/>
+            <ProgressBar Name="pgbTotal" Height="40" Margin="10"/>
         </StackPanel>
     </Grid>
 </Window>
