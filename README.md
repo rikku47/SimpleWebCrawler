@@ -22,6 +22,8 @@ Still in not stable state. But it is possible to download just static html and s
 
 * Interface for applications like a headless browser / browser to scrap javascript output
 
+* Multilanguage (at the start german and english)
+
 * Interface for applications like dropbox, sql database...
 
 ...
