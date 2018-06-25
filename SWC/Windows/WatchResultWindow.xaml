@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SWC"
         mc:Ignorable="d"
-        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" WindowState="Maximized" Title="Resultate im Detail">
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" WindowState="Maximized" Title="Resultate">
     <Grid>
         <DataGrid ItemsSource="{Binding Items}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -13,7 +13,7 @@
                 <DataGridTextColumn Binding="{Binding Details.Text}" Header="Vorschau Text"/>
                 <DataGridTextColumn Binding="{Binding Details.InnerHTML}" Header="Vorschau innerHTML"/>
                 <DataGridTextColumn Binding="{Binding Details.OuterHTML}" Header="Vorschau outerHTML"/>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Details">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Name="btnShow" Content="Anzeigen" Click="btnShow_Click"/>

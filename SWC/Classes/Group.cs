@@ -7,16 +7,14 @@ namespace SWC
     class Group : INotifyPropertyChanged
     {
         private string _name = "";
-        private readonly ObservableCollection<Link> _links;
-        private readonly DateTime _creationDate;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Group(string name)
         {
             Name = name;
-            _links = new ObservableCollection<Link>();
-            _creationDate = DateTime.Now;
+            Links = new ObservableCollection<Link>();
+            CreationDate = DateTime.Now;
         }
 
         public string Name
@@ -28,8 +26,8 @@ namespace SWC
                 Changed(nameof(Name));
             }
         }
-        public ObservableCollection<Link> Links { get => _links; }
-        public DateTime CreationDate { get => _creationDate; }
+        public ObservableCollection<Link> Links { get; }
+        public DateTime CreationDate { get; }
 
         private void Changed(string propertyName)
         {

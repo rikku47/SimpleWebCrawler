@@ -4,17 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SWC"
-        mc:Ignorable="d" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" WindowState="Maximized" Title="Resultate anschauen">
+        mc:Ignorable="d" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" WindowState="Maximized" Title="Resultate im Detail">
     <Grid>
         <TabControl>
             <TabItem Header="Text">
-                <TextBlock Text="{Binding Details.Text}"/>
+                <TextBox Text="{Binding Details.Text}" IsReadOnly="True"/>
             </TabItem>
             <TabItem Header="innerHTML">
-                <TextBlock Text="{Binding Details.InnerHTML}"/>
+                <TextBox Text="{Binding Details.InnerHTML}" IsReadOnly="True"/>
             </TabItem>
             <TabItem Header="outerHTML">
-                <TextBlock Text="{Binding Details.OuterHTML}"/>
+                <TextBox Text="{Binding Details.OuterHTML}" IsReadOnly="True"/>
             </TabItem>
         </TabControl>
     </Grid>

@@ -63,69 +63,69 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="Windows\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SelectorGroupsWindow.xaml.cs">
+    <Compile Include="Windows\SelectorGroupsWindow.xaml.cs">
       <DependentUpon>SelectorGroupsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditWindow.xaml.cs">
+    <Compile Include="Windows\EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ExportWindow.xaml.cs">
+    <Compile Include="Windows\ExportWindow.xaml.cs">
       <DependentUpon>ExportWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImportWindow.xaml.cs">
+    <Compile Include="Windows\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Link.cs" />
-    <Compile Include="OptionWindow.xaml.cs">
+    <Compile Include="Classes\Link.cs" />
+    <Compile Include="Windows\OptionWindow.xaml.cs">
       <DependentUpon>OptionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ResultDetailsWindow.xaml.cs">
-      <DependentUpon>ResultDetailsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ResultWindow.xaml.cs">
-      <DependentUpon>ResultWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WatchResultWindow.xaml.cs">
+    <Compile Include="Windows\WatchResultWindow.xaml.cs">
       <DependentUpon>WatchResultWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="About.xaml">
+    <Compile Include="Windows\ResultWindow.xaml.cs">
+      <DependentUpon>ResultWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WatchResultDetailsWindow.xaml.cs">
+      <DependentUpon>WatchResultDetailsWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Windows\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SelectorGroupsWindow.xaml">
+    <Page Include="Windows\SelectorGroupsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditWindow.xaml">
+    <Page Include="Windows\EditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ExportWindow.xaml">
+    <Page Include="Windows\ExportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ImportWindow.xaml">
+    <Page Include="Windows\ImportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="About.xaml.cs">
+    <Compile Include="Windows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="Windows\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Config.cs" />
-    <Compile Include="Group.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Classes\Config.cs" />
+    <Compile Include="Classes\Group.cs" />
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -133,25 +133,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignData>
-    <Page Include="OptionWindow.xaml">
+    <Page Include="Windows\OptionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResultDetailsWindow.xaml">
+    <Page Include="Windows\WatchResultWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResultWindow.xaml">
+    <Page Include="Windows\ResultWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WatchResultWindow.xaml">
+    <Page Include="Windows\WatchResultDetailsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProgressCrawl.cs" />
+    <Compile Include="Classes\ProgressCrawl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

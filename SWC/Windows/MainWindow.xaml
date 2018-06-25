@@ -7,8 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="mainWindow"
     Title="SimpleWebCrawler"
-    d:DataContext="{d:DesignData /SampleData/GroupSampleData.xaml}"
-    d:DesignHeight="1136"
     Closed="MainWindow_Closed"
     Loaded="mainWindow_Loaded"
     WindowStartupLocation="CenterScreen"
@@ -50,33 +48,28 @@
         </Menu>
         <TabControl
             Grid.Row="1"
-            MinHeight="800"
-            SelectedIndex="2">
+            >
             <TabItem Header="Gruppen / Links">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition />
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Suche:" />
-                            <TextBox Width="500" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Optionen:" />
-                            <Label Content="Baustelle..." />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Gruppenname(n):" />
-                            <TextBox Name="txtGroups" KeyUp="TxtGroups_KeyUp" Width="500"/>
-                        </StackPanel>
+                        <GroupBox Header="Gruppenname(n)">
+                            <TextBox Name="txtGroups" KeyUp="TxtGroups_KeyUp" Background="Azure"/>
+                        </GroupBox>
+                        <GroupBox Header="Suche">
+                            <StackPanel>
+                                <TextBox Name="txtSearch" Background="Azure"/>
+                            </StackPanel>
+                        </GroupBox>
                     </StackPanel>
                     <TabControl
                         Name="tcGroups"
                         Grid.Row="1"
                         KeyUp="tcGroups_KeyUp"
-                        SelectedIndex="0">
+                        >
                         <TabControl.ItemTemplate>
                             <DataTemplate>
                                 <ContentPresenter Content="{Binding Name}" MouseLeftButtonDown="ContentPresenter_MouseLeftButtonDown" />
@@ -85,7 +78,9 @@
                         <TabControl.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBox Background="Azure" Name="txtLinks" KeyUp="txtLinks_KeyUp"/>
+                                    <GroupBox Header="Link(s)">
+                                        <TextBox Background="Azure" Name="txtLinks" KeyUp="txtLinks_KeyUp"/>
+                                    </GroupBox>
                                     <DataGrid
                                     AutoGenerateColumns="False"
                                     ItemsSource="{Binding Links}"
@@ -120,9 +115,9 @@
                                             Header="Encoding"
                                             IsReadOnly="True" />
                                             <DataGridCheckBoxColumn Header="Crawl" />
-                                            <DataGridCheckBoxColumn Header="CrawlText" />
-                                            <DataGridCheckBoxColumn Header="CrawlInnerHTML" />
-                                            <DataGridCheckBoxColumn Header="CrawlOuterHTML" />
+                                            <DataGridCheckBoxColumn Header="Text" />
+                                            <DataGridCheckBoxColumn Header="innerHTML" />
+                                            <DataGridCheckBoxColumn Header="outerHTML" />
                                             <DataGridTemplateColumn Header="Selektors">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -160,7 +155,7 @@
             <TabItem Header="Selektoren einlesen">
                 <Grid>
                     <StackPanel Margin="10">
-                        <TextBox Name="txtSelectors" Height="400" />
+                        <TextBox Name="txtSelectors" Background="Azure" />
                         <Button
                             Name="btnReadSelectors"
                             Padding="10"
@@ -175,26 +170,30 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <StackPanel Grid.Row="2" CanVerticallyScroll="True">
+        <StackPanel Grid.Row="2">
             <StackPanel
                 Margin="10"
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
-                <Label Content="Text" />
-                <CheckBox
+                <GroupBox Header="Crawl-Optionen" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Text" />
+                        <CheckBox
                     Name="chkText"
                     VerticalAlignment="Center"
                     IsChecked="True" />
-                <Label Content="innerHTML" />
-                <CheckBox
+                        <Label Content="innerHTML" />
+                        <CheckBox
                     Name="chkInnerHTML"
                     VerticalAlignment="Center"
                     IsChecked="True" />
-                <Label Content="outerHTML" />
-                <CheckBox
+                        <Label Content="outerHTML" />
+                        <CheckBox
                     Name="chkOuterHTML"
                     VerticalAlignment="Center"
                     IsChecked="True" />
+                    </StackPanel>
+                </GroupBox>
             </StackPanel>
             <Button
                 Name="btnCrawl"
