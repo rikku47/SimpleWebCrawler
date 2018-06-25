@@ -1,6 +1,6 @@
 ﻿<Application
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SWC"
-             x:Class="SWC.App"
-             StartupUri="MainWindow.xaml"/>
+    x:Class="SWC.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:SWC"
+    StartupUri="MainWindow.xaml" />

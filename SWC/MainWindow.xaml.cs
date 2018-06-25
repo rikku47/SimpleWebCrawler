@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using AngleSharp;
-using AngleSharp.Dom;
-using AngleSharp.Html;
-using Microsoft.Win32;
-using Newtonsoft.Json;
 
 namespace SWC
 {
@@ -24,15 +18,19 @@ namespace SWC
             InitializeComponent();
         }
 
-        Config config = null;
-        ObservableCollection<Group> groups;
-        ObservableCollection<string> customSelectors;
+        private Config _config;
+        private ObservableCollection<Group> _groups;
+        private ObservableCollection<string> _customSelectors;
+
+        public Config Config { get => _config; set => _config = value; }
+        internal ObservableCollection<Group> Groups { get => _groups; set => _groups = value; }
+        public ObservableCollection<string> CustomSelectors { get => _customSelectors; set => _customSelectors = value; }
 
         private void btnCrawl_Click(object sender, RoutedEventArgs e)
         {
             //var progress = new Progress<ProgressCrawl>(ReportProgress);
 
-            foreach (var group in groups)
+            foreach (var group in Groups)
             {
                 foreach (var link in group.Links)
                 {
@@ -50,9 +48,9 @@ namespace SWC
 
         private void CreateConfig()
         {
-            config = new Config();
+            Config = new Config();
 
-            string configJSON = JsonConvert.SerializeObject(config);
+            string configJSON = JsonConvert.SerializeObject(Config);
 
             using (var sw = new StreamWriter("config.json"))
             {
@@ -62,7 +60,7 @@ namespace SWC
 
         private void WriteConfig()
         {
-            string configJSON = JsonConvert.SerializeObject(config);
+            string configJSON = JsonConvert.SerializeObject(Config);
 
             using (var sw = new StreamWriter("config.json"))
             {
@@ -72,7 +70,6 @@ namespace SWC
 
         private void ReadConfig()
         {
-
             string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
             string path = Path.GetDirectoryName(pathIncludeAssembly);
 
@@ -81,7 +78,7 @@ namespace SWC
                 using (StreamReader sr = new StreamReader(path + "\\config.json"))
                 {
                     String line = sr.ReadToEnd();
-                    config = JsonConvert.DeserializeObject<Config>(line);
+                    Config = JsonConvert.DeserializeObject<Config>(line);
                 }
             }
             catch (Exception e)
@@ -100,8 +97,7 @@ namespace SWC
                 using (StreamReader sr = new StreamReader(path + "\\customSelectors.json"))
                 {
                     String line = sr.ReadToEnd();
-                    customSelectors = JsonConvert.DeserializeObject<ObservableCollection<string>>(line);
-                    libCustomSelectors.ItemsSource = customSelectors;
+                    CustomSelectors = JsonConvert.DeserializeObject<ObservableCollection<string>>(line);
                 }
             }
             catch (Exception e)
@@ -112,7 +108,7 @@ namespace SWC
 
         private void WriteCustomSelectors()
         {
-            string customSelectorsJSON = JsonConvert.SerializeObject(customSelectors);
+            string customSelectorsJSON = JsonConvert.SerializeObject(CustomSelectors);
 
             using (var sw = new StreamWriter("customSelectors.json"))
             {
@@ -130,7 +126,7 @@ namespace SWC
                 using (StreamReader sr = new StreamReader(path + "\\groups.json"))
                 {
                     String line = sr.ReadToEnd();
-                    groups = JsonConvert.DeserializeObject<ObservableCollection<Group>>(line);
+                    Groups = JsonConvert.DeserializeObject<ObservableCollection<Group>>(line);
                 }
             }
             catch (Exception e)
@@ -141,7 +137,7 @@ namespace SWC
 
         private void WriteGroups()
         {
-            string groupsJSON = JsonConvert.SerializeObject(groups);
+            string groupsJSON = JsonConvert.SerializeObject(Groups);
 
             using (var sw = new StreamWriter("groups.json"))
             {
@@ -173,26 +169,14 @@ namespace SWC
                 ReadGroups();
             }
 
-            libDefaultSelectors.ItemsSource = typeof(TagNames).GetFields().Select(field => field.Name).ToList();
-
-            tcGroups.ItemsSource = groups;
+            tcGroups.ItemsSource = Groups;
         }
 
-        private void mainWindow_Closed(object sender, EventArgs e)
+        private void MainWindow_Closed(object sender, EventArgs e)
         {
             WriteConfig();
             WriteCustomSelectors();
             WriteGroups();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ResultWindow resultWindow = new ResultWindow
-            {
-                Link = (Link)((Button)sender).DataContext
-            };
-
-            resultWindow.Show();
         }
 
         private void btnOpenFiles_Click(object sender, RoutedEventArgs e)
@@ -205,7 +189,7 @@ namespace SWC
             openFileDialog.Filter = "html files (*.htm, *html) | *.htm; *html";
             //openFileDialog.FilterIndex = 1;
 
-            if(openFileDialog.ShowDialog() == true)
+            if (openFileDialog.ShowDialog() == true)
             {
                 try
                 {
@@ -235,7 +219,6 @@ namespace SWC
 
         private void MiFiles_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void MiExport_Click(object sender, RoutedEventArgs e)
@@ -249,7 +232,7 @@ namespace SWC
         {
             ImportWindow importWindow = new ImportWindow()
             {
-                CustomSelectors = customSelectors,
+                CustomSelectors = CustomSelectors,
                 Group = (Group)((MenuItem)sender).DataContext
             };
 
@@ -268,75 +251,34 @@ namespace SWC
             optionWindow.Show();
         }
 
-        private void btnReadLinks_Click(object sender, RoutedEventArgs e)
-        {
-            string groupName = txtGroupName.Text;
-
-            string[] links = txtLinks.Text.Split(';');
-
-            IList customSelectors;
-
-            if ((bool)chkSelectAllCustomSelectors.IsChecked)
-            {
-                customSelectors = (IList)libCustomSelectors.ItemsSource;
-            }
-            else
-            {
-                customSelectors = libCustomSelectors.SelectedItems;
-            }
-
-            if (links.Length > 0 && ((bool)chkSelectAllDefaultSelectors.IsChecked || libDefaultSelectors.SelectedItems.Count > 0 || customSelectors.Count > 0))
-            {
-                Group group = new Group(groupName);
-
-                foreach (var linkAdress in links)
-                {
-                    Link link = new Link(linkAdress, (bool)chkSelectAllDefaultSelectors.IsChecked, libDefaultSelectors.SelectedItems, customSelectors);
-
-                    group.Links.Add(link);
-                }
-
-                if (groups == null)
-                {
-                    groups = new ObservableCollection<Group>();
-                }
-
-                groups.Add(group);
-
-                tcGroups.ItemsSource = groups;
-            }
-        }
-
         private void btnReadSelectors_Click(object sender, RoutedEventArgs e)
         {
             string[] selectors = txtSelectors.Text.Split(';');
 
-            if (customSelectors == null)
+            if (CustomSelectors == null)
             {
-                customSelectors = new ObservableCollection<string>();
+                CustomSelectors = new ObservableCollection<string>();
             }
 
             foreach (var selector in selectors)
             {
-                customSelectors.Add(selector);
+                if (!selector.Equals(""))
+                    CustomSelectors.Add(selector);
             }
-
-            libCustomSelectors.ItemsSource = customSelectors;
+            //libCustomSelectors.ItemsSource = _customSelectors;
         }
 
-        private void miDelete_Click(object sender, RoutedEventArgs e)
+        private void MiDelete_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Möchten Sie diesen Datensatz wirklich löschen?");
         }
 
         private void tcGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-
         }
 
         private void DataGrid_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-
         }
 
         private void MiEdit_Click(object sender, RoutedEventArgs e)
@@ -345,21 +287,68 @@ namespace SWC
             {
                 Group = (Group)((MenuItem)sender).DataContext
             };
-
             editWindow.ShowDialog();
         }
 
         private void ContentPresenter_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void TxtGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            ObservableCollection<Group> tempGroups = new ObservableCollection<Group>();
+
+            string[] groups = txtGroups.Text.Split(';');
+
+            foreach (var group in groups)
+            {
+                tempGroups.Add(new Group(group));
+            }
+
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                txtGroups.Text = "";
+
+                foreach (var group in tempGroups)
+                {
+                    Groups.Add(group);
+                }
+            }
+
+            if (Groups.Count > 0 && Groups[0] == null)
+                Groups = null;
+
+            tcGroups.ItemsSource = Groups;
+        }
+
+        private void txtLinks_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            ObservableCollection<Link> tempLinks = new ObservableCollection<Link>();
+
+            string[] links = ((TextBox)e.OriginalSource).Text.Split(';');
+
+            foreach (var link in links)
+            {
+                tempLinks.Add(new Link(link));
+            }
+
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                ((TextBox)sender).Text = "";
+
+                foreach (var link in tempLinks)
+                {
+                    ((Group)((TextBox)sender).DataContext).Links.Add(link);
+                }
+            }
+        }
+
+        private void btnShowSelectorGroups_Click(object sender, RoutedEventArgs e)
         {
             EditSelectorsWindow editSelectorsWindow = new EditSelectorsWindow()
             {
                 Link = (Link)((Button)sender).DataContext,
-                CustomSelectors = customSelectors
+                CustomSelectors = CustomSelectors
             };
 
             editSelectorsWindow.ShowDialog();

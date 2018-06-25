@@ -13,5 +13,6 @@ namespace SWC
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

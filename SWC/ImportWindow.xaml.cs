@@ -49,9 +49,9 @@ namespace SWC
             {
                 foreach (var linkAdress in links)
                 {
-                    Link link = new Link(linkAdress, (bool)chkSelectAllDefaultSelectors.IsChecked, libDefaultSelectors.SelectedItems, customSelectors);
+                    //Link link = new Link(linkAdress, (bool)chkSelectAllDefaultSelectors.IsChecked, libDefaultSelectors.SelectedItems, customSelectors);
 
-                    Group.Links.Add(link);
+                    //Group.Links.Add(link);
                 }
             }
         }

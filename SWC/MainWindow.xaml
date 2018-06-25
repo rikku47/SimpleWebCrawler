@@ -1,97 +1,149 @@
-﻿<Window x:Name="mainWindow" x:Class="SWC.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SWC"
-        mc:Ignorable="d"
-        Title="SimpleWebCrawler" Loaded="mainWindow_Loaded" WindowStartupLocation="CenterScreen" Closed="mainWindow_Closed" d:DataContext="{d:DesignData /SampleData/GroupSampleData.xaml}" WindowState="Maximized" d:DesignHeight="1136">
+﻿<Window
+    x:Class="SWC.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SWC"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="mainWindow"
+    Title="SimpleWebCrawler"
+    d:DataContext="{d:DesignData /SampleData/GroupSampleData.xaml}"
+    d:DesignHeight="1136"
+    Closed="MainWindow_Closed"
+    Loaded="mainWindow_Loaded"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    mc:Ignorable="d">
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="Datei">
-                <MenuItem Header="Datei" Name="miFiles" Click="MiFiles_Click"/>
-                <MenuItem Header="Export" Name="miExport" Click="MiExport_Click"/>
-                <MenuItem Header="Import" Name="miImport" Click="MiImport_Click"/>
-                <MenuItem Header="Beenden" Name="miClose" Click="MiClose_Click"/>
+                <MenuItem
+                    Name="miFiles"
+                    Click="MiFiles_Click"
+                    Header="Datei" />
+                <MenuItem
+                    Name="miExport"
+                    Click="MiExport_Click"
+                    Header="Export" />
+                <MenuItem
+                    Name="miImport"
+                    Click="MiImport_Click"
+                    Header="Import" />
+                <MenuItem
+                    Name="miClose"
+                    Click="MiClose_Click"
+                    Header="Beenden" />
             </MenuItem>
-            <MenuItem Header="Optionen" Name="miOption" Click="MiOption_Click"/>
-            <MenuItem Header="Info" Name="miInfo" Click="MiInfo_Click"/>
+            <MenuItem
+                Name="miOption"
+                Click="MiOption_Click"
+                Header="Optionen" />
+            <MenuItem
+                Name="miInfo"
+                Click="MiInfo_Click"
+                Header="Info" />
         </Menu>
-        <TabControl Grid.Row="1"  MinHeight="800" SelectedIndex="2">
-            <TabItem Header="Links">
+        <TabControl
+            Grid.Row="1"
+            MinHeight="800"
+            SelectedIndex="2">
+            <TabItem Header="Gruppen / Links">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Suche:"/>
-                            <TextBox Width="500"/>
+                            <Label Content="Suche:" />
+                            <TextBox Width="500" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Optionen:"/>
-                            <Label Content="Baustelle..."/>
+                            <Label Content="Optionen:" />
+                            <Label Content="Baustelle..." />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Gruppenname(n):" />
+                            <TextBox Name="txtGroups" KeyUp="TxtGroups_KeyUp" Width="500"/>
                         </StackPanel>
                     </StackPanel>
-                    <TabControl Name="tcGroups" Grid.Row="1" SelectedIndex="0" KeyUp="tcGroups_KeyUp">
+                    <TabControl
+                        Name="tcGroups"
+                        Grid.Row="1"
+                        KeyUp="tcGroups_KeyUp"
+                        SelectedIndex="0">
                         <TabControl.ItemTemplate>
                             <DataTemplate>
-                                <ContentPresenter Content="{Binding Name}" MouseLeftButtonDown="ContentPresenter_MouseLeftButtonDown"/>
+                                <ContentPresenter Content="{Binding Name}" MouseLeftButtonDown="ContentPresenter_MouseLeftButtonDown" />
                             </DataTemplate>
                         </TabControl.ItemTemplate>
                         <TabControl.ContentTemplate>
                             <DataTemplate>
-                                <DataGrid ItemsSource="{Binding Links}" AutoGenerateColumns="False" KeyUp="DataGrid_KeyUp">
-                                    <DataGrid.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="Löschen" Name="miDelete" Click="miDelete_Click"/>
-                                            <MenuItem Header="Editieren" Name="miEdit" Click="MiEdit_Click"/>
-                                            <MenuItem Header="Export" Name="miExport" Click="MiExport_Click"/>
-                                            <MenuItem Header="Import" Name="miImport" Click="MiImport_Click"/>
-                                        </ContextMenu>
-                                    </DataGrid.ContextMenu>
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Link" Binding="{Binding Adress}" IsReadOnly="True"/>
-                                        <DataGridTextColumn Header="Encoding" Binding="{Binding Encoding}" IsReadOnly="True"/>
-                                        <DataGridCheckBoxColumn Header="Crawl" Binding="{Binding IsCrawl}"/>
-                                        <DataGridCheckBoxColumn Header="CrawlDefault" Binding="{Binding IsCrawlDefault}"/>
-                                        <DataGridCheckBoxColumn Header="CrawlDefaultText" Binding="{Binding IsCrawlDefaultText}"/>
-                                        <DataGridCheckBoxColumn Header="CrawlDefaultInnerHTML" Binding="{Binding IsCrawlDefaultInnerHTML}"/>
-                                        <DataGridCheckBoxColumn Header="CrawlDefaultOuterHTML" Binding="{Binding IsCrawlDefaultOuterHTML}"/>
-                                        <DataGridCheckBoxColumn Header="CrawlCustom" Binding="{Binding IsCrawlCustom}"/>
-                                        <DataGridCheckBoxColumn Header="CrawlCustomText" Binding="{Binding IsCrawlCustomText}"/>
-                                        <DataGridCheckBoxColumn Header="CrawlCustomInnerHTML" Binding="{Binding IsCrawlCustomInnerHTML}"/>
-                                        <DataGridCheckBoxColumn Header="CrawlCustomOuterHTML" Binding="{Binding IsCrawlCustomOuterHTML}"/>
-                                        <DataGridTemplateColumn Header="Selektors">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Content="Anzeigen / Editieren" Click="Button_Click_1"/>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Resultate">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Button Content="Anzeigen" Click="Button_Click"/>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Status">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <ProgressBar />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTextColumn Header="Datum" Binding="{Binding CreationDate}" IsReadOnly="True"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
+                                <StackPanel>
+                                    <TextBox Background="Azure" Name="txtLinks" KeyUp="txtLinks_KeyUp"/>
+                                    <DataGrid
+                                    AutoGenerateColumns="False"
+                                    ItemsSource="{Binding Links}"
+                                    KeyUp="DataGrid_KeyUp">
+                                        <DataGrid.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem
+                                                Name="miDelete"
+                                                Click="MiDelete_Click"
+                                                Header="Löschen" />
+                                                <MenuItem
+                                                Name="miEdit"
+                                                Click="MiEdit_Click"
+                                                Header="Editieren" />
+                                                <MenuItem
+                                                Name="miExport"
+                                                Click="MiExport_Click"
+                                                Header="Export" />
+                                                <MenuItem
+                                                Name="miImport"
+                                                Click="MiImport_Click"
+                                                Header="Import" />
+                                            </ContextMenu>
+                                        </DataGrid.ContextMenu>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn
+                                            Binding="{Binding Adress}"
+                                            Header="Link"
+                                            IsReadOnly="True" />
+                                            <DataGridTextColumn
+                                            Binding="{Binding Encoding}"
+                                            Header="Encoding"
+                                            IsReadOnly="True" />
+                                            <DataGridCheckBoxColumn Header="Crawl" />
+                                            <DataGridCheckBoxColumn Header="CrawlText" />
+                                            <DataGridCheckBoxColumn Header="CrawlInnerHTML" />
+                                            <DataGridCheckBoxColumn Header="CrawlOuterHTML" />
+                                            <DataGridTemplateColumn Header="Selektors">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Click="btnShowSelectorGroups_Click" Content="Anzeigen" Name="btnShowSelectorGroups" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="Status">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <ProgressBar />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn
+                                            Binding="{Binding CreationDate}"
+                                            Header="Datum"
+                                            IsReadOnly="True" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
@@ -99,61 +151,61 @@
             </TabItem>
             <TabItem Header="Dateien">
                 <Grid>
-                    <Button Name="btnOpenFiles" Content="Dateien öffnen / einlesen" Click="btnOpenFiles_Click"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Links einlesen">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Margin="10">
-                        <StackPanel Orientation="Horizontal" Margin="10">
-                            <Label Content="Gruppenname"/>
-                            <TextBox MinWidth="200" Name="txtGroupName" Width="400"/>
-                        </StackPanel>
-                        <TextBox Height="400" Margin="10" Name="txtLinks"/>
-                        <StackPanel Margin="10" Orientation="Horizontal">
-                            <Label Content="Ankreuzen für alle Selectoren"/>
-                            <CheckBox Name="chkSelectAllDefaultSelectors" VerticalAlignment="Center" IsChecked="False"/>
-                        </StackPanel>
-                        <ListBox Name="libDefaultSelectors" Margin="10" SelectionMode="Multiple" MaxHeight="120" SelectedIndex="87"/>
-                        <StackPanel Margin="10" Orientation="Horizontal">
-                            <Label Content="Ankreuzen für alle Selectoren"/>
-                            <CheckBox Name="chkSelectAllCustomSelectors" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <ListBox Name="libCustomSelectors" Margin="10" SelectionMode="Multiple" MaxHeight="120"/>
-                        <Button Name="btnReadLinks" Content="Einlesen" Margin="10" Padding="10" Click="btnReadLinks_Click"/>
-                    </StackPanel>
+                    <Button
+                        Name="btnOpenFiles"
+                        Click="btnOpenFiles_Click"
+                        Content="Dateien öffnen / einlesen" />
                 </Grid>
             </TabItem>
             <TabItem Header="Selektoren einlesen">
                 <Grid>
                     <StackPanel Margin="10">
-                        <TextBox Height="400" Name="txtSelectors"/>
-                        <Button Name="btnReadSelectors" Content="Einlesen" Click="btnReadSelectors_Click" Padding="10"/>
+                        <TextBox Name="txtSelectors" Height="400" />
+                        <Button
+                            Name="btnReadSelectors"
+                            Padding="10"
+                            Click="btnReadSelectors_Click"
+                            Content="Einlesen" />
                     </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="Linksammler">
                 <Grid>
-                    <TextBlock Text="Baustelle..."/>
+                    <TextBlock Text="Baustelle..." />
                 </Grid>
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="2" CanVerticallyScroll="True">
-            <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label Content="Text"/>
-                <CheckBox Name="chkText" IsChecked="True" VerticalAlignment="Center"/>
-                <Label Content="innerHTML"/>
-                <CheckBox Name="chkInnerHTML" IsChecked="True" VerticalAlignment="Center"/>
-                <Label Content="outerHTML"/>
-                <CheckBox Name="chkOuterHTML" IsChecked="True" VerticalAlignment="Center"/>
+            <StackPanel
+                Margin="10"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Label Content="Text" />
+                <CheckBox
+                    Name="chkText"
+                    VerticalAlignment="Center"
+                    IsChecked="True" />
+                <Label Content="innerHTML" />
+                <CheckBox
+                    Name="chkInnerHTML"
+                    VerticalAlignment="Center"
+                    IsChecked="True" />
+                <Label Content="outerHTML" />
+                <CheckBox
+                    Name="chkOuterHTML"
+                    VerticalAlignment="Center"
+                    IsChecked="True" />
             </StackPanel>
-            <Button Name="btnCrawl" Content="Crawl" Margin="10" Padding="10" Click="btnCrawl_Click"/>
-            <ProgressBar Name="pgbTotal" Height="40" Margin="10"/>
+            <Button
+                Name="btnCrawl"
+                Margin="10"
+                Padding="10"
+                Click="btnCrawl_Click"
+                Content="Crawl" />
+            <ProgressBar
+                Name="pgbTotal"
+                Height="40"
+                Margin="10" />
         </StackPanel>
     </Grid>
 </Window>

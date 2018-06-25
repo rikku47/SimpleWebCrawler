@@ -67,8 +67,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EditSelectorsWindow.xaml.cs">
-      <DependentUpon>EditSelectorsWindow.xaml</DependentUpon>
+    <Compile Include="SelectorGroupsWindow.xaml.cs">
+      <DependentUpon>SelectorGroupsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
@@ -79,6 +79,7 @@
     <Compile Include="ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Link.cs" />
     <Compile Include="OptionWindow.xaml.cs">
       <DependentUpon>OptionWindow.xaml</DependentUpon>
     </Compile>
@@ -95,7 +96,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditSelectorsWindow.xaml">
+    <Page Include="SelectorGroupsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,7 +125,6 @@
     </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="Group.cs" />
-    <Compile Include="Link.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

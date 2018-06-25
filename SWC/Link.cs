@@ -1,145 +1,110 @@
-﻿using System;
-using System.Collections;
+﻿using AngleSharp;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
-using AngleSharp;
-using AngleSharp.Html;
 
 namespace SWC
 {
-    class Link
+    internal class Link
     {
-        private string _adress;
+        private readonly string _adress;
         private string _encoding;
-        private bool _allDefaultSelectors;
-        private bool _allCustomSelectors;
         private bool _isTrim;
         private bool _crawl;
-        private bool _crawlDefault;
-        private bool _crawlDefaultText;
-        private bool _crawlDefaultInnerHTML;
-        private bool _crawlDefaultOuterHTML;
-        private bool _crawlCustom;
-        private bool _crawlCustomText;
-        private bool _crawlCustomInnerHTML;
-        private bool _crawlCustomOuterHTML;
-        private Selector _selectors;
-        private DateTime _creationDate;
+        private readonly ObservableCollection<SelectorGroup> _selectorGroups;
+        private readonly DateTime _creationDate;
 
-        private Link()
+        public Link(string adress)
         {
-            _isTrim = true;
-            _isTrim = true;
-            _crawl = true;
-            _crawlDefault = true;
-            _crawlDefaultText = true;
-            _crawlDefaultInnerHTML = true;
-            _crawlDefaultOuterHTML = true;
-            _crawlCustom = true;
-            _crawlCustomText = true;
-            _crawlCustomInnerHTML = true;
-            _crawlCustomOuterHTML = true;
-            _selectors = new Selector();
+            _adress = adress;
+            Encoding = "";
+            IsTrim = true;
+            IsCrawl = true;
+            _selectorGroups = new ObservableCollection<SelectorGroup>();
+
+            //if (selectorGroupNames != null && selectorGroupNames.Count > 0)
+            //    foreach (var selectorGroupName in selectorGroupNames)
+            //    {
+            //        if (!selectorGroupName.Equals(""))
+            //            SelectorGroups.Add(new SelectorGroup(selectorGroupName));
+            //    }
+
+            //AddSelectorsToSelectorGroup(selectors);
 
             _creationDate = DateTime.Now;
         }
 
-        private Link(string adress) : this()
-        {
-            _adress = adress;
-        }
-
-        public Link(string adress, bool allDefaultSelectors, IList defaultSelectors) : this(adress)
-        {
-            _selectors.DefaultSelectors = new ObservableCollection<Selector.DefaultSelector>();
-
-            if (allDefaultSelectors)
-            {
-                foreach (var defaultSelector in typeof(TagNames).GetFields().Select(field => field.Name).ToList())
-                {
-                    _selectors.DefaultSelectors.Add(new Selector.DefaultSelector(defaultSelector));
-                }
-            }
-            else
-            {
-                foreach (string defaultSelector in defaultSelectors)
-                {
-                    _selectors.DefaultSelectors.Add(new Selector.DefaultSelector(defaultSelector));
-                }
-            }
-        }
-
-        public Link(string adress, bool allDefaultSelectors, IList defaultSelectors, IList customSelectors) : this(adress, allDefaultSelectors, defaultSelectors)
-        {
-            _selectors.CustomSelectors = new ObservableCollection<Selector.CustomSelector>();
-
-            foreach (string customSelector in customSelectors)
-            {
-                _selectors.CustomSelectors.Add(new Selector.CustomSelector(customSelector));
-            }
-        }
-
-        public string Adress { get => _adress; set => _adress = value; }
+        public string Adress { get => _adress; }
         public string Encoding { get => _encoding; set => _encoding = value; }
         public bool IsTrim { get => _isTrim; set => _isTrim = value; }
         public bool IsCrawl { get => _crawl; set => _crawl = value; }
-        public bool IsCrawlDefault { get => _crawlDefault; set => _crawlDefault = value; }
-        public bool IsCrawlDefaultText { get => _crawlDefaultText; set => _crawlDefaultText = value; }
-        public bool IsCrawlDefaultInnerHTML { get => _crawlDefaultInnerHTML; set => _crawlDefaultInnerHTML = value; }
-        public bool IsCrawlDefaultOuterHTML { get => _crawlDefaultOuterHTML; set => _crawlDefaultOuterHTML = value; }
-        public bool IsCrawlCustom { get => _crawlCustom; set => _crawlCustom = value; }
-        public bool IsCrawlCustomText { get => _crawlCustomText; set => _crawlCustomText = value; }
-        public bool IsCrawlCustomInnerHTML { get => _crawlCustomInnerHTML; set => _crawlCustomInnerHTML = value; }
-        public bool IsCrawlCustomOuterHTML { get => _crawlCustomOuterHTML; set => _crawlCustomOuterHTML = value; }
-        //public bool AllDefaultSelectors { get => _allDefaultSelectors; set => _allDefaultSelectors = value; }
-        //public bool AllCustomSelectors { get => _allCustomSelectors; set => _allCustomSelectors = value; }
-        public Selector Selectors { get => _selectors; set => _selectors = value; }
-        public DateTime CreationDate { get => _creationDate; set => _creationDate = value; }
+        public ObservableCollection<SelectorGroup> SelectorGroups { get => _selectorGroups; }
+        public DateTime CreationDate { get => _creationDate; }
+
+        private void AddSelectorsToSelectorGroup(IList<string> selectors = null)
+        {
+            if (selectors != null && selectors.Count > 0)
+            {
+                foreach (var selectorGroup in SelectorGroups)
+                {
+                    foreach (var selector in selectors)
+                    {
+                        selectorGroup.Selectors.Add(new Selector(selector));
+                    }
+                }
+            }
+        }
+
+        public class SelectorGroup
+        {
+            private string _name;
+            private bool _crawl;                      //Use it later for global configuration
+            private bool _crawlText;               //Use it later for global configuration
+            private bool _crawlInnerHTML;   //Use it later for global configuration
+            private bool _crawlOuterHTML;  //Use it later for global configuration
+            private ObservableCollection<Selector> _selectors;
+
+            public SelectorGroup(string name)
+            {
+                _name = name;
+                _selectors = new ObservableCollection<Selector>();
+            }
+
+            public string Name { get => _name; set => _name = value; }
+            public bool Crawl { get => _crawl; set => _crawl = value; }
+            public bool CrawlText { get => _crawlText; set => _crawlText = value; }
+            public bool CrawlInnerHTML { get => _crawlInnerHTML; set => _crawlInnerHTML = value; }
+            public bool CrawlOuterHTML { get => _crawlOuterHTML; set => _crawlOuterHTML = value; }
+            public ObservableCollection<Selector> Selectors { get => _selectors; set => _selectors = value; }
+        }
 
         public class Selector
         {
-            private ObservableCollection<DefaultSelector> _defaultSelectors;
-            private ObservableCollection<CustomSelector> _customSelectors;
+            private string _cssselector;
+            private bool _crawl;
+            private bool _crawlText;
+            private bool _crawlInnerHTML;
+            private bool _crawlOuterHTML;
+            private ObservableCollection<Result> _results;
+            private DateTime _creationDate;
 
-            public ObservableCollection<DefaultSelector> DefaultSelectors { get => _defaultSelectors; set => _defaultSelectors = value; }
-            public ObservableCollection<CustomSelector> CustomSelectors { get => _customSelectors; set => _customSelectors = value; }
-
-            public class DefaultSelector
+            public Selector(string cssselector)
             {
-                private string _cssselector;
-                private DateTime _creationDate;
-                private ObservableCollection<Result> _results;
-
-                public DefaultSelector(string cssselector)
-                {
-                    _cssselector = cssselector;
-                    _results = new ObservableCollection<Result>();
-                    _creationDate = DateTime.Now;
-                }
-
-                public string CSSSelector { get => _cssselector; set => _cssselector = value; }
-                public ObservableCollection<Result> Results { get => _results; set => _results = value; }
-                public DateTime CreationDate { get => _creationDate; set => _creationDate = value; }
+                _cssselector = cssselector;
+                _crawl = true;
+                _crawlText = true;
+                _results = new ObservableCollection<Result>();
+                _creationDate = DateTime.Now;
             }
 
-            public class CustomSelector
-            {
-                private string _cssselector;
-                private DateTime _creationDate;
-                private ObservableCollection<Result> _results;
-
-                public CustomSelector(string cssselector)
-                {
-                    _cssselector = cssselector;
-                    _results = new ObservableCollection<Result>();
-                    _creationDate = DateTime.Now;
-                }
-
-                public string CSSSelector { get => _cssselector; set => _cssselector = value; }
-                public ObservableCollection<Result> Results { get => _results; set => _results = value; }
-                public DateTime CreationDate { get => _creationDate; set => _creationDate = value; }
-            }
+            public string CSSSelector { get => _cssselector; set => _cssselector = value; }
+            public bool Crawl { get => _crawl; set => _crawl = value; }
+            public bool CrawlText { get => _crawlText; set => _crawlText = value; }
+            public bool CrawlInnerHTML { get => _crawlInnerHTML; set => _crawlInnerHTML = value; }
+            public bool CrawlOuterHTML { get => _crawlOuterHTML; set => _crawlOuterHTML = value; }
+            public ObservableCollection<Result> Results { get => _results; set => _results = value; }
+            public DateTime CreationDate { get => _creationDate; set => _creationDate = value; }
 
             public class Result
             {
@@ -215,98 +180,67 @@ namespace SWC
 
                 Encoding = document.CharacterSet;
 
-                if (IsCrawlDefault && (IsCrawlDefaultText || IsCrawlDefaultInnerHTML || IsCrawlDefaultOuterHTML))
+                foreach (var selectorGroup in SelectorGroups)
                 {
-                    foreach (var selector in Selectors.DefaultSelectors)
+#pragma warning disable CS4014 // Da dieser Aufruf nicht abgewartet wird, wird die Ausführung der aktuellen Methode fortgesetzt, bevor der Aufruf abgeschlossen ist
+                    Task.Factory.StartNew(() =>
                     {
-                        var cells = document.QuerySelectorAll(selector.CSSSelector);
-
-                        var result = new Selector.Result();
-
-                        foreach (var cell in cells)
-                        {
-                            string text = "";
-                            string innerHTML = "";
-                            string outerHTML = "";
-
-                            if (IsCrawlDefaultText)
-                            {
-                                if (IsTrim)
-                                {
-                                    text = cell.TextContent.Trim();
-                                }
-                                else
-                                {
-                                    text = cell.TextContent;
-                                }
-                            }
-
-                            if (IsCrawlDefaultInnerHTML)
-                            {
-                                innerHTML = cell.InnerHtml;
-                            }
-
-                            if (IsCrawlDefaultOuterHTML)
-                            {
-                                outerHTML = cell.OuterHtml;
-                            }
-
-                            Selector.Result.Item.Detail details = new Selector.Result.Item.Detail(text, innerHTML, outerHTML);
-
-                            var item = new Selector.Result.Item(details);
-
-                            result.Items.Add(item);
-                        }
-
-                        selector.Results.Add(result);
-                    }
+                        ExtractDatas(document, selectorGroup.Selectors);
+                    });
+#pragma warning restore CS4014 // Da dieser Aufruf nicht abgewartet wird, wird die Ausführung der aktuellen Methode fortgesetzt, bevor der Aufruf abgeschlossen ist
                 }
+            }
+        }
 
-                if (IsCrawlCustom && (IsCrawlCustomText || IsCrawlCustomInnerHTML || IsCrawlCustomOuterHTML))
+        private void ExtractDatas(AngleSharp.Dom.IDocument document, ObservableCollection<Selector> selectors)
+        {
+            foreach (var selector in selectors)
+            {
+                if (selector.Crawl)
                 {
-                    foreach (var selector in Selectors.CustomSelectors)
+                    var cells = document.QuerySelectorAll(selector.CSSSelector);
+
+                    var result = new Selector.Result();
+
+                    foreach (var cell in cells)
                     {
-                        var cells = document.QuerySelectorAll(selector.CSSSelector);
+                        string text = "";
+                        string innerHTML = "";
+                        string outerHTML = "";
 
-                        var result = new Selector.Result();
-
-                        foreach (var cell in cells)
+                        if (selector.CrawlText)
                         {
-                            string text = "";
-                            string innerHTML = "";
-                            string outerHTML = "";
-
-                            if (IsCrawlDefaultText)
+                            if (IsTrim)
                             {
-                                if (IsTrim)
-                                {
-                                    text = cell.TextContent.Trim();
-                                }
-                                else
-                                {
-                                    text = cell.TextContent;
-                                }
+                                text = cell.TextContent.Trim();
                             }
-
-                            if (IsCrawlDefaultInnerHTML)
+                            else
                             {
-                                innerHTML = cell.InnerHtml;
+                                text = cell.TextContent;
                             }
-
-                            if (IsCrawlDefaultOuterHTML)
-                            {
-                                outerHTML = cell.OuterHtml;
-                            }
-
-                            Selector.Result.Item.Detail details = new Selector.Result.Item.Detail(text, innerHTML, outerHTML);
-
-                            var item = new Selector.Result.Item(details);
-
-                            result.Items.Add(item);
                         }
 
-                        selector.Results.Add(result);
+                        if (selector.CrawlInnerHTML)
+                        {
+                            innerHTML = cell.InnerHtml;
+                        }
+
+                        if (selector.CrawlOuterHTML)
+                        {
+                            outerHTML = cell.OuterHtml;
+                        }
+
+                        Selector.Result.Item.Detail details = new Selector.Result.Item.Detail(text, innerHTML, outerHTML);
+
+                        var item = new Selector.Result.Item(details);
+
+                        result.Items.Add(item);
                     }
+
+                    App.Current.Dispatcher.Invoke(delegate
+                    {
+                        selector.Results.Add(result);
+                    });
                 }
             }
         }
