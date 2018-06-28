@@ -8,7 +8,7 @@
     x:Name="mainWindow"
     Title="SimpleWebCrawler"
     Closed="MainWindow_Closed"
-    Loaded="mainWindow_Loaded"
+    Loaded="MainWindow_Loaded"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
@@ -23,15 +23,15 @@
                 <MenuItem
                     Name="miFiles"
                     Click="MiFiles_Click"
-                    Header="Datei" />
+                    Header="Datei" IsEnabled="False" />
                 <MenuItem
                     Name="miExport"
                     Click="MiExport_Click"
-                    Header="Export" />
+                    Header="Export" IsEnabled="False" />
                 <MenuItem
                     Name="miImport"
                     Click="MiImport_Click"
-                    Header="Import" />
+                    Header="Import" IsEnabled="False" />
                 <MenuItem
                     Name="miClose"
                     Click="MiClose_Click"
@@ -46,74 +46,99 @@
                 Click="MiInfo_Click"
                 Header="Info" />
         </Menu>
-        <TabControl
-            Grid.Row="1"
-            >
+        <TabControl Grid.Row="1">
             <TabItem Header="Gruppen / Links">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <StackPanel>
-                        <GroupBox Header="Gruppenname(n)">
-                            <TextBox Name="txtGroups" KeyUp="TxtGroups_KeyUp" Background="Azure"/>
-                        </GroupBox>
-                        <GroupBox Header="Suche">
-                            <StackPanel>
-                                <TextBox Name="txtSearch" Background="Azure"/>
-                            </StackPanel>
-                        </GroupBox>
-                    </StackPanel>
+                    <Expander Header="Options">
+                        <StackPanel>
+                            <GroupBox Header="Gruppenname(n)">
+                                <TextBox
+                                    Name="txtGroups"
+                                    Background="Azure"
+                                    KeyUp="TxtGroups_KeyUp" />
+                            </GroupBox>
+                            <GroupBox Header="Suche">
+                                <StackPanel>
+                                    <TextBox Name="txtSearch" Background="Azure" />
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </Expander>
                     <TabControl
                         Name="tcGroups"
                         Grid.Row="1"
-                        KeyUp="tcGroups_KeyUp"
-                        >
+                        KeyUp="TcGroups_KeyUp">
                         <TabControl.ItemTemplate>
                             <DataTemplate>
-                                <ContentPresenter Content="{Binding Name}" MouseLeftButtonDown="ContentPresenter_MouseLeftButtonDown" />
+                                <ContentPresenter Content="{Binding Name}">
+                                </ContentPresenter>
                             </DataTemplate>
                         </TabControl.ItemTemplate>
                         <TabControl.ContentTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <GroupBox Header="Link(s)">
-                                        <TextBox Background="Azure" Name="txtLinks" KeyUp="txtLinks_KeyUp"/>
-                                    </GroupBox>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Expander Header="Options">
+                                        <StackPanel>
+                                            <GroupBox Header="Gruppe">
+                                                <StackPanel>
+                                                    <TextBox
+                                                        Name="txtGroupname"
+                                                        Background="Azure"
+                                                        Text="{Binding Name}"/>
+                                                </StackPanel>
+                                            </GroupBox>
+                                            <GroupBox Header="Link(s)">
+                                                <StackPanel>
+                                                    <TextBox
+                                                        Name="txtLinks"
+                                                        Background="Azure"
+                                                        KeyUp="TxtLinks_KeyUp" />
+                                                </StackPanel>
+                                            </GroupBox>
+                                        </StackPanel>
+                                    </Expander>
                                     <DataGrid
-                                    AutoGenerateColumns="False"
-                                    ItemsSource="{Binding Links}"
-                                    KeyUp="DataGrid_KeyUp">
+                                        Grid.Row="1"
+                                        AutoGenerateColumns="False"
+                                        ItemsSource="{Binding Links}"
+                                        KeyUp="DataGrid_KeyUp">
                                         <DataGrid.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem
-                                                Name="miDelete"
-                                                Click="MiDelete_Click"
-                                                Header="Löschen" />
+                                                    Name="miDelete"
+                                                    Click="MiDelete_Click"
+                                                    Header="Löschen" />
                                                 <MenuItem
-                                                Name="miEdit"
-                                                Click="MiEdit_Click"
-                                                Header="Editieren" />
+                                                    Name="miEdit"
+                                                    Click="MiEdit_Click"
+                                                    Header="Editieren" />
                                                 <MenuItem
-                                                Name="miExport"
-                                                Click="MiExport_Click"
-                                                Header="Export" />
+                                                    Name="miExport"
+                                                    Click="MiExport_Click"
+                                                    Header="Export" />
                                                 <MenuItem
-                                                Name="miImport"
-                                                Click="MiImport_Click"
-                                                Header="Import" />
+                                                    Name="miImport"
+                                                    Click="MiImport_Click"
+                                                    Header="Import" />
                                             </ContextMenu>
                                         </DataGrid.ContextMenu>
                                         <DataGrid.Columns>
                                             <DataGridTextColumn
-                                            Binding="{Binding Adress}"
-                                            Header="Link"
-                                            IsReadOnly="True" />
+                                                Binding="{Binding Adress}"
+                                                Header="Link"
+                                                IsReadOnly="True" />
                                             <DataGridTextColumn
-                                            Binding="{Binding Encoding}"
-                                            Header="Encoding"
-                                            IsReadOnly="True" />
+                                                Binding="{Binding Encoding}"
+                                                Header="Encoding"
+                                                IsReadOnly="True" />
                                             <DataGridCheckBoxColumn Header="Crawl" />
                                             <DataGridCheckBoxColumn Header="Text" />
                                             <DataGridCheckBoxColumn Header="innerHTML" />
@@ -121,7 +146,10 @@
                                             <DataGridTemplateColumn Header="Selektors">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <Button Click="btnShowSelectorGroups_Click" Content="Anzeigen" Name="btnShowSelectorGroups" />
+                                                        <Button
+                                                            Name="btnShowSelectorGroups"
+                                                            Click="BtnShowSelectorGroups_Click"
+                                                            Content="Anzeigen" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -133,12 +161,12 @@
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
                                             <DataGridTextColumn
-                                            Binding="{Binding CreationDate}"
-                                            Header="Datum"
-                                            IsReadOnly="True" />
+                                                Binding="{Binding CreationDate}"
+                                                Header="Datum"
+                                                IsReadOnly="True" />
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
@@ -148,7 +176,7 @@
                 <Grid>
                     <Button
                         Name="btnOpenFiles"
-                        Click="btnOpenFiles_Click"
+                        Click="BtnOpenFiles_Click"
                         Content="Dateien öffnen / einlesen" />
                 </Grid>
             </TabItem>
@@ -159,7 +187,7 @@
                         <Button
                             Name="btnReadSelectors"
                             Padding="10"
-                            Click="btnReadSelectors_Click"
+                            Click="BtnReadSelectors_Click"
                             Content="Einlesen" />
                     </StackPanel>
                 </Grid>
@@ -179,19 +207,19 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Text" />
                         <CheckBox
-                    Name="chkText"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
+                            Name="chkText"
+                            VerticalAlignment="Center"
+                            IsChecked="True" />
                         <Label Content="innerHTML" />
                         <CheckBox
-                    Name="chkInnerHTML"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
+                            Name="chkInnerHTML"
+                            VerticalAlignment="Center"
+                            IsChecked="True" />
                         <Label Content="outerHTML" />
                         <CheckBox
-                    Name="chkOuterHTML"
-                    VerticalAlignment="Center"
-                    IsChecked="True" />
+                            Name="chkOuterHTML"
+                            VerticalAlignment="Center"
+                            IsChecked="True" />
                     </StackPanel>
                 </GroupBox>
             </StackPanel>
@@ -199,7 +227,7 @@
                 Name="btnCrawl"
                 Margin="10"
                 Padding="10"
-                Click="btnCrawl_Click"
+                Click="BtnCrawl_Click"
                 Content="Crawl" />
             <ProgressBar
                 Name="pgbTotal"

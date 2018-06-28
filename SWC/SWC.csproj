@@ -67,14 +67,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\ExportFunctions.cs" />
+    <Compile Include="Windows\EditGroup.xaml.cs">
+      <DependentUpon>EditGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ExportSelectorGroup.xaml.cs">
+      <DependentUpon>ExportSelectorGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ExportSelectorGroups.xaml.cs">
+      <DependentUpon>ExportSelectorGroups.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SelectorGroupsWindow.xaml.cs">
       <DependentUpon>SelectorGroupsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ExportWindow.xaml.cs">
-      <DependentUpon>ExportWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ImportWindow.xaml.cs">
       <DependentUpon>ImportWindow.xaml</DependentUpon>
@@ -86,13 +93,22 @@
     <Compile Include="Windows\WatchResultWindow.xaml.cs">
       <DependentUpon>WatchResultWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ResultWindow.xaml.cs">
-      <DependentUpon>ResultWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\WatchResultDetailsWindow.xaml.cs">
       <DependentUpon>WatchResultDetailsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ExportSelectorGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ExportSelectorGroups.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,10 +117,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EditWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ExportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,19 +141,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <DesignData Include="SampleData\GroupSampleData.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </DesignData>
     <Page Include="Windows\OptionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\WatchResultWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ResultWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,7 +183,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SampleData\SampleDataSource\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

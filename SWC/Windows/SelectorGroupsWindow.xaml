@@ -15,22 +15,28 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <GroupBox Header="Selektorgruppe(n)">
-            <TextBox
-                Name="txtSelectorGroups"
-                Background="Azure"
-                KeyUp="TxtSelectorGroups_KeyUp" />
-        </GroupBox>
+        <StackPanel>
+            <GroupBox Header="Selektorgruppe(n)">
+                <TextBox
+                    Name="txtSelectorGroups"
+                    Background="Azure"
+                    KeyUp="TxtSelectorGroups_KeyUp" />
+            </GroupBox>
+            <GroupBox Header="Export">
+                <Button
+                    Name="btnExportSelectorGroups"
+                    Padding="10"
+                    Click="BtnExportSelectorGroups_Click"
+                    Content="Export" />
+            </GroupBox>
+        </StackPanel>
         <TabControl
             Name="tcSelectorGroups"
             Grid.Row="1"
             ItemsSource="{Binding SelectorGroups}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <ContentPresenter
-                        Content="{Binding Name}"
-                        Loaded="ContentPresenter_Loaded"
-                        MouseLeftButtonDown="ContentPresenter_MouseLeftButtonDown" />
+                    <ContentPresenter Content="{Binding Name}" />
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
@@ -38,71 +44,130 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <GroupBox
-                                MinHeight="120"
-                                Header="Standard Selektors">
-                                <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="Alle wählen"/>
-                                    <CheckBox
-                                        Name="chkSelectAllDefaultSelectors"
-                                        Margin="0,0,0,5"
-                                        VerticalAlignment="Center" />
-                                </StackPanel>
-                                <ListBox
-                                        Name="libDefaultSelectors"
-                                        MinHeight="120"
-                                        MaxHeight="120"
-                                        Margin="0,0,0,5"
-                                        Loaded="LibDefaultSelectors_Loaded"
-                                        SelectionMode="Multiple" />
-                                </StackPanel>
-                            </GroupBox>
-                        <GroupBox
-                            Grid.Column="1"
-                                MinHeight="120"
-                                Header="Benutzerdefinierte Selektoren">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="Alle wählen"/>
-                                    <CheckBox
-                                        Name="chkSelectAllCustomSelectors"
-                                        Margin="0,0,0,5"
-                                        VerticalAlignment="Center" />
-                                </StackPanel>
-                                <ListBox
-                                        Name="libCustomSelectors"
-                                        MinHeight="120"
-                                        MaxHeight="120"
-                                        Margin="0,0,0,5"
-                                        Loaded="LibCustomSelectors_Loaded"
-                                        SelectionMode="Multiple" />
-                                <TextBox
-                                        Name="txtSelectors"
-                                        Margin="0,0,0,5"
+                        <Expander Grid.ColumnSpan="2" Header="Optionen">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <GroupBox Grid.ColumnSpan="2" Header="Selektorgruppenname">
+                                    <TextBox
+                                        Name="txtSelectorGroup"
                                         Background="Azure"
-                                        KeyUp="TxtSelectors_KeyUp" />
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Grid.Row="1" Grid.ColumnSpan="2" Header="Optionen">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Crawl"/>
-                                <CheckBox Name="chkCrawl" IsChecked="{Binding Crawl}" VerticalAlignment="Center"/>
-                                <Label Content="Text"/>
-                                <CheckBox Name="chkText" IsChecked="{Binding CrawlText}" VerticalAlignment="Center"/>
-                                <Label Content="innerHTML"/>
-                                <CheckBox Name="chkInnerHTML" IsChecked="{Binding CrawlInnerHTML}" VerticalAlignment="Center"/>
-                                <Label Content="outerHTML"/>
-                                <CheckBox Name="chkOuterHTML" IsChecked="{Binding CrawlOuterHTML}" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </GroupBox>
+                                        Text="{Binding Name}" />
+                                </GroupBox>
+                                <GroupBox
+                                    Grid.Row="1"
+                                    MinHeight="120"
+                                    Header="Standard Selektors">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Alle wählen" />
+                                            <CheckBox
+                                                Name="chkSelectAllDefaultSelectors"
+                                                Margin="0,0,0,5"
+                                                VerticalAlignment="Center" Checked="ChkSelectAllDefaultSelectors_Checked"/>
+                                        </StackPanel>
+                                        <ListBox
+                                            Name="libDefaultSelectors"
+                                            MinHeight="120"
+                                            MaxHeight="120"
+                                            Margin="0,0,0,5"
+                                            Loaded="LibDefaultSelectors_Loaded"
+                                            SelectionMode="Multiple" 
+                                            SelectionChanged="LibDefaultSelectors_SelectionChanged"
+                                            />
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    MinHeight="120"
+                                    Header="Benutzerdefinierte Selektoren">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Alle wählen" />
+                                            <CheckBox
+                                                Name="chkSelectAllCustomSelectors"
+                                                Margin="0,0,0,5"
+                                                VerticalAlignment="Center" 
+                                                Checked="ChkSelectAllCustomSelectors_Checked"/>
+                                        </StackPanel>
+                                        <ListBox
+                                            Name="libCustomSelectors"
+                                            MinHeight="120"
+                                            MaxHeight="120"
+                                            Margin="0,0,0,5"
+                                            Loaded="LibCustomSelectors_Loaded"
+                                            SelectionMode="Multiple" 
+                                            SelectionChanged="LibCustomSelectors_SelectionChanged"
+                                            />
+                                        <TextBox
+                                            Name="txtSelectors"
+                                            Margin="0,0,0,5"
+                                            Background="Azure"
+                                            KeyUp="TxtSelectors_KeyUp" />
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox
+                                    Grid.Row="2"
+                                    Header="Selektoren hinzufügen">
+                                    <Button
+                                        Name="btnAddSelectors"
+                                        Padding="10"
+                                        Content="Hinzufügen" 
+                                        Click="BtnAddSelectors_Click"/>
+                                </GroupBox>
+                                <GroupBox Grid.Row="3" Header="Optionen">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Crawl" />
+                                            <CheckBox
+                                                Name="chkCrawl"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding Crawl}" />
+                                            <Label Content="Text" />
+                                            <CheckBox
+                                                Name="chkText"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding CrawlText}" />
+                                            <Label Content="innerHTML" />
+                                            <CheckBox
+                                                Name="chkInnerHTML"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding CrawlInnerHTML}" />
+                                            <Label Content="outerHTML" />
+                                            <CheckBox
+                                                Name="chkOuterHTML"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding CrawlOuterHTML}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Header="Export">
+                                    <Button
+                                        Name="btnExport"
+                                        Click="BtnExportSelectorGroup_Click"
+                                        Content="Export" />
+                                </GroupBox>
+                            </Grid>
+                        </Expander>
                         <TabControl
                             Name="tcSelectors"
                             Grid.Row="2"
@@ -110,50 +175,74 @@
                             ItemsSource="{Binding Selectors}">
                             <TabControl.ItemTemplate>
                                 <DataTemplate>
-                                    <ContentPresenter Content="{Binding CSSSelector}" MouseLeftButtonDown="ContentPresenter_MouseLeftButtonDown" />
+                                    <ContentPresenter Content="{Binding CSSSelector}" />
                                 </DataTemplate>
                             </TabControl.ItemTemplate>
                             <TabControl.ContentTemplate>
                                 <DataTemplate>
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
+                                            <RowDefinition />
+                                            <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <GroupBox Header="Optionen">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="Crawl"/>
-                                                <CheckBox Name="chkCrawl" IsChecked="{Binding Crawl}" VerticalAlignment="Center"/>
-                                                <Label Content="Text"/>
-                                                <CheckBox Name="chkText" IsChecked="{Binding CrawlText}" VerticalAlignment="Center"/>
-                                                <Label Content="innerHTML"/>
-                                                <CheckBox Name="chkInnerHTML" IsChecked="{Binding CrawlInnerHTML}" VerticalAlignment="Center"/>
-                                                <Label Content="outerHTML"/>
-                                                <CheckBox Name="chkOuterHTML" IsChecked="{Binding CrawlOuterHTML}" VerticalAlignment="Center"/>
+                                            <StackPanel>
+                                                <StackPanel>
+                                                    <Label Content="Script aktivieren" />
+                                                    <CheckBox
+                                                        Name="chkScript"
+                                                        VerticalAlignment="Center"
+                                                        IsChecked="{Binding ScriptActivate}" />
+                                                    <Label Content="Script Pfad" />
+                                                    <TextBox
+                                                        Name="txtScriptPath"
+                                                        Background="Azure"
+                                                        Text="{Binding ScriptPath}" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="Crawl" />
+                                                    <CheckBox
+                                                        Name="chkCrawl"
+                                                        VerticalAlignment="Center"
+                                                        IsChecked="{Binding Crawl}" />
+                                                    <Label Content="Text" />
+                                                    <CheckBox
+                                                        Name="chkText"
+                                                        VerticalAlignment="Center"
+                                                        IsChecked="{Binding CrawlText}" />
+                                                    <Label Content="innerHTML" />
+                                                    <CheckBox
+                                                        Name="chkInnerHTML"
+                                                        VerticalAlignment="Center"
+                                                        IsChecked="{Binding CrawlInnerHTML}" />
+                                                    <Label Content="outerHTML" />
+                                                    <CheckBox
+                                                        Name="chkOuterHTML"
+                                                        VerticalAlignment="Center"
+                                                        IsChecked="{Binding CrawlOuterHTML}" />
+                                                </StackPanel>
                                             </StackPanel>
-                                    </GroupBox>
-                                    <DataGrid
-                                        AutoGenerateColumns="False"
-                                        Grid.Row="1"
-                                        IsReadOnly="True"
-                                        ItemsSource="{Binding Results}">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn Binding="{Binding CreationDate}" Header="Resultate vom" />
-                                                <DataGridTemplateColumn Header="Scripts">
-                                                    
+                                        </GroupBox>
+                                        <DataGrid
+                                            Grid.Row="1"
+                                            AutoGenerateColumns="False"
+                                            IsReadOnly="True"
+                                            ItemsSource="{Binding Results}">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding CreationDate}" Header="Resultate vom" />
+                                                <DataGridTemplateColumn Header="Scripts" />
+                                                <DataGridTemplateColumn Header="Details">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button
+                                                                Name="btnShowResultDetails"
+                                                                Click="BtnShowResultDetails_Click"
+                                                                Content="Anzeigen" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn Header="Details">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Button
-                                                            Name="btnShowResultDetails"
-                                                            Click="BtnShowResultDetails_Click"
-                                                            Content="Anzeigen" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
                                     </Grid>
                                 </DataTemplate>
                             </TabControl.ContentTemplate>

@@ -2,9 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace SWC
 {
@@ -18,15 +20,12 @@ namespace SWC
             InitializeComponent();
         }
 
-        private Config _config;
-        private ObservableCollection<Group> _groups;
-        private ObservableCollection<string> _customSelectors;
+        string AppPath { get; set; }
+        public Config Config { get; set; }
+        internal ObservableCollection<Group> Groups { get; set; }
+        public ObservableCollection<string> CustomSelectors { get; set; }
 
-        public Config Config { get => _config; set => _config = value; }
-        internal ObservableCollection<Group> Groups { get => _groups; set => _groups = value; }
-        public ObservableCollection<string> CustomSelectors { get => _customSelectors; set => _customSelectors = value; }
-
-        private void btnCrawl_Click(object sender, RoutedEventArgs e)
+        private void BtnCrawl_Click(object sender, RoutedEventArgs e)
         {
             //var progress = new Progress<ProgressCrawl>(ReportProgress);
 
@@ -68,14 +67,11 @@ namespace SWC
             }
         }
 
-        private void ReadConfig()
+        private void ReadConfig(string path)
         {
-            string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string path = Path.GetDirectoryName(pathIncludeAssembly);
-
             try
             {
-                using (StreamReader sr = new StreamReader(path + "\\config.json"))
+                using (StreamReader sr = new StreamReader(path))
                 {
                     String line = sr.ReadToEnd();
                     Config = JsonConvert.DeserializeObject<Config>(line);
@@ -87,14 +83,11 @@ namespace SWC
             }
         }
 
-        private void ReadCustomSelectors()
+        private void ReadCustomSelectors(string path)
         {
-            string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string path = Path.GetDirectoryName(pathIncludeAssembly);
-
             try
             {
-                using (StreamReader sr = new StreamReader(path + "\\customSelectors.json"))
+                using (StreamReader sr = new StreamReader(path))
                 {
                     String line = sr.ReadToEnd();
                     CustomSelectors = JsonConvert.DeserializeObject<ObservableCollection<string>>(line);
@@ -116,14 +109,11 @@ namespace SWC
             }
         }
 
-        private void ReadGroups()
+        private void ReadGroups(string path)
         {
-            string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string path = Path.GetDirectoryName(pathIncludeAssembly);
-
             try
             {
-                using (StreamReader sr = new StreamReader(path + "\\groups.json"))
+                using (StreamReader sr = new StreamReader(path))
                 {
                     String line = sr.ReadToEnd();
                     Groups = JsonConvert.DeserializeObject<ObservableCollection<Group>>(line);
@@ -145,28 +135,42 @@ namespace SWC
             }
         }
 
-        private void mainWindow_Loaded(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            string pathIncludeAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string path = Path.GetDirectoryName(pathIncludeAssembly);
+            AppPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-            if (File.Exists(path + "\\config.json"))
+            string configPath = AppPath + "\\config.json";
+            string customSelectorsPath = AppPath + "\\customSelectors.json";
+            string groupsPath = AppPath + "\\groups.json";
+            string exportPath = AppPath + "\\export";
+
+            if (File.Exists(configPath))
             {
-                ReadConfig();
+                ReadConfig(configPath);
             }
             else
             {
                 CreateConfig();
             }
 
-            if (File.Exists(path + "\\customSelectors.json"))
+            if (File.Exists(customSelectorsPath))
             {
-                ReadCustomSelectors();
+                ReadCustomSelectors(customSelectorsPath);
             }
 
-            if (File.Exists(path + "\\groups.json"))
+            if (File.Exists(groupsPath))
             {
-                ReadGroups();
+                ReadGroups(groupsPath);
+            }
+
+            if(!Directory.Exists(exportPath))
+            {
+                Directory.CreateDirectory(exportPath);
+            }
+
+            if(Groups == null)
+            {
+                Groups = new ObservableCollection<Group>();
             }
 
             tcGroups.ItemsSource = Groups;
@@ -179,21 +183,24 @@ namespace SWC
             WriteGroups();
         }
 
-        private void btnOpenFiles_Click(object sender, RoutedEventArgs e)
+        private void BtnOpenFiles_Click(object sender, RoutedEventArgs e)
         {
-            Stream[] myStream = null;
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Multiselect = true;
-            openFileDialog.Filter = "html files (*.htm, *html) | *.htm; *html";
-            //openFileDialog.FilterIndex = 1;
-
-            if (openFileDialog.ShowDialog() == true)
+            if (new OpenFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Multiselect = true,
+                Filter = "html files (*.htm, *html) | *.htm; *html"
+            }.ShowDialog() == true)
             {
                 try
                 {
-                    if ((myStream = openFileDialog.OpenFiles()) != null)
+                    Stream[] myStream = null;
+                    if ((myStream = new OpenFileDialog
+                    {
+                        InitialDirectory = "c:\\",
+                        Multiselect = true,
+                        Filter = "html files (*.htm, *html) | *.htm; *html"
+                    }.OpenFiles()) != null)
                     {
                         //using (myStream)
                         {
@@ -223,9 +230,6 @@ namespace SWC
 
         private void MiExport_Click(object sender, RoutedEventArgs e)
         {
-            ExportWindow exportWindow = new ExportWindow();
-
-            exportWindow.ShowDialog();
         }
 
         private void MiImport_Click(object sender, RoutedEventArgs e)
@@ -251,7 +255,7 @@ namespace SWC
             optionWindow.Show();
         }
 
-        private void btnReadSelectors_Click(object sender, RoutedEventArgs e)
+        private void BtnReadSelectors_Click(object sender, RoutedEventArgs e)
         {
             string[] selectors = txtSelectors.Text.Split(';');
 
@@ -265,7 +269,6 @@ namespace SWC
                 if (!selector.Equals(""))
                     CustomSelectors.Add(selector);
             }
-            //libCustomSelectors.ItemsSource = _customSelectors;
         }
 
         private void MiDelete_Click(object sender, RoutedEventArgs e)
@@ -273,7 +276,7 @@ namespace SWC
             MessageBox.Show("Möchten Sie diesen Datensatz wirklich löschen?");
         }
 
-        private void tcGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void TcGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
         }
 
@@ -288,10 +291,6 @@ namespace SWC
                 Group = (Group)((MenuItem)sender).DataContext
             };
             editWindow.ShowDialog();
-        }
-
-        private void ContentPresenter_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
         }
 
         private void TxtGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
@@ -321,7 +320,7 @@ namespace SWC
             tcGroups.ItemsSource = Groups;
         }
 
-        private void txtLinks_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void TxtLinks_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             ObservableCollection<Link> tempLinks = new ObservableCollection<Link>();
 
@@ -343,7 +342,7 @@ namespace SWC
             }
         }
 
-        private void btnShowSelectorGroups_Click(object sender, RoutedEventArgs e)
+        private void BtnShowSelectorGroups_Click(object sender, RoutedEventArgs e)
         {
             EditSelectorsWindow editSelectorsWindow = new EditSelectorsWindow()
             {

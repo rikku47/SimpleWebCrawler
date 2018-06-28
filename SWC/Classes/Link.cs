@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace SWC
 {
@@ -59,6 +60,7 @@ namespace SWC
             public bool CrawlText { get; set; }
             public bool CrawlInnerHTML { get; set; }
             public bool CrawlOuterHTML { get; set; }
+            public bool Export { get; set; }
             public ObservableCollection<Selector> Selectors { get; }
             public DateTime CreationDate { get; }
         }
@@ -70,15 +72,19 @@ namespace SWC
                 CSSSelector = cssselector;
                 Crawl = true;
                 CrawlText = true;
+                ScriptPath = "";
                 Results = new ObservableCollection<Result>();
                 CreationDate = DateTime.Now;
             }
 
-            public string CSSSelector { get; set; }
+            public string CSSSelector { get; }
             public bool Crawl { get; set; }
             public bool CrawlText { get; set; }
             public bool CrawlInnerHTML { get; set; }
             public bool CrawlOuterHTML { get; set; }
+            public bool ScriptActivate { get; set; }
+            public string ScriptPath { get; set; }
+            public bool Export { get; set; }
             public ObservableCollection<Result> Results { get; }
             public DateTime CreationDate { get; }
 
@@ -111,7 +117,7 @@ namespace SWC
                             Text = "";
                             InnerHTML = "";
                             OuterHTML = "";
-                        CreationDate = DateTime.Now;
+                            CreationDate = DateTime.Now;
                         }
 
                         public Detail(string text) : this()
@@ -166,45 +172,60 @@ namespace SWC
             {
                 if (selector.Crawl)
                 {
-                    var cells = document.QuerySelectorAll(selector.CSSSelector);
-
                     var result = new Selector.Result();
+                    Selector.Result.Item.Detail details;
 
-                    foreach (var cell in cells)
+                    if (selector.ScriptActivate)
                     {
-                        string text = "";
-                        string innerHTML = "";
-                        string outerHTML = "";
-
-                        if (selector.CrawlText)
+                        var process = new Process();
+                        var processStartInfo = new ProcessStartInfo
                         {
-                            if (IsTrim)
-                            {
-                                text = cell.TextContent.Trim();
-                            }
-                            else
-                            {
-                                text = cell.TextContent;
-                            }
-                        }
-
-                        if (selector.CrawlInnerHTML)
-                        {
-                            innerHTML = cell.InnerHtml;
-                        }
-
-                        if (selector.CrawlOuterHTML)
-                        {
-                            outerHTML = cell.OuterHtml;
-                        }
-
-                        Selector.Result.Item.Detail details = new Selector.Result.Item.Detail(text, innerHTML, outerHTML);
-
-                        var item = new Selector.Result.Item(details);
-
-                        result.Items.Add(item);
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            FileName = "cmd.exe",
+                            Arguments = @"node C:\Users\RacOO\Desktop\example.js"
+                        };
+                        process.StartInfo = processStartInfo;
+                        process.Start();
                     }
+                    else
+                    {
+                        var cells = document.QuerySelectorAll(selector.CSSSelector);
 
+                        foreach (var cell in cells)
+                        {
+                            string text = "";
+                            string innerHTML = "";
+                            string outerHTML = "";
+
+                            if (selector.CrawlText)
+                            {
+                                if (IsTrim)
+                                {
+                                    text = cell.TextContent.Trim();
+                                }
+                                else
+                                {
+                                    text = cell.TextContent;
+                                }
+                            }
+
+                            if (selector.CrawlInnerHTML)
+                            {
+                                innerHTML = cell.InnerHtml;
+                            }
+
+                            if (selector.CrawlOuterHTML)
+                            {
+                                outerHTML = cell.OuterHtml;
+                            }
+
+                            details = new Selector.Result.Item.Detail(text, innerHTML, outerHTML);
+
+                            var item = new Selector.Result.Item(details);
+
+                            result.Items.Add(item);
+                        }
+                    }
                     App.Current.Dispatcher.Invoke(delegate
                     {
                         selector.Results.Add(result);
