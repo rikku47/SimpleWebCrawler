@@ -1,14 +1,19 @@
 ﻿using AngleSharp;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace SWC
 {
-    internal class Link
+    internal class Link : INotifyPropertyChanged
     {
+        private int _totalSelectors;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public Link(string adress)
         {
             Adress = adress;
@@ -28,20 +33,21 @@ namespace SWC
         public bool CrawlInnerHTML { get; set; }
         public bool CrawlOuterHTML { get; set; }
         public ObservableCollection<SelectorGroup> SelectorGroups { get; }
+        [JsonIgnore]
+        public int TotalSelectors
+        {
+            get => _totalSelectors;
+            set
+            {
+                _totalSelectors = value;
+                Changed(nameof(TotalSelectors));
+            }
+        }
         public DateTime CreationDate { get; }
 
-        private void AddSelectorsToSelectorGroup(IList<string> selectors = null)
+        private void Changed(string propertyName)
         {
-            if (selectors != null && selectors.Count > 0)
-            {
-                foreach (var selectorGroup in SelectorGroups)
-                {
-                    foreach (var selector in selectors)
-                    {
-                        selectorGroup.Selectors.Add(new Selector(selector));
-                    }
-                }
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public class SelectorGroup
@@ -49,6 +55,7 @@ namespace SWC
             public SelectorGroup(string name)
             {
                 Name = name;
+                IsTrim = true;
                 Crawl = true;
                 CrawlText = true;
                 Selectors = new ObservableCollection<Selector>();
@@ -56,6 +63,7 @@ namespace SWC
             }
 
             public string Name { get; set; }
+            public bool IsTrim { get; set; }
             public bool Crawl { get; set; }
             public bool CrawlText { get; set; }
             public bool CrawlInnerHTML { get; set; }
@@ -70,6 +78,7 @@ namespace SWC
             public Selector(string cssselector)
             {
                 CSSSelector = cssselector;
+                IsTrim = true;
                 Crawl = true;
                 CrawlText = true;
                 ScriptPath = "";
@@ -78,6 +87,7 @@ namespace SWC
             }
 
             public string CSSSelector { get; }
+            public bool IsTrim { get; set; }
             public bool Crawl { get; set; }
             public bool CrawlText { get; set; }
             public bool CrawlInnerHTML { get; set; }

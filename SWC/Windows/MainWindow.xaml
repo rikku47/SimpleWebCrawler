@@ -21,18 +21,6 @@
         <Menu>
             <MenuItem Header="Datei">
                 <MenuItem
-                    Name="miFiles"
-                    Click="MiFiles_Click"
-                    Header="Datei" IsEnabled="False" />
-                <MenuItem
-                    Name="miExport"
-                    Click="MiExport_Click"
-                    Header="Export" IsEnabled="False" />
-                <MenuItem
-                    Name="miImport"
-                    Click="MiImport_Click"
-                    Header="Import" IsEnabled="False" />
-                <MenuItem
                     Name="miClose"
                     Click="MiClose_Click"
                     Header="Beenden" />
@@ -110,26 +98,6 @@
                                         AutoGenerateColumns="False"
                                         ItemsSource="{Binding Links}"
                                         KeyUp="DataGrid_KeyUp">
-                                        <DataGrid.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem
-                                                    Name="miDelete"
-                                                    Click="MiDelete_Click"
-                                                    Header="Löschen" />
-                                                <MenuItem
-                                                    Name="miEdit"
-                                                    Click="MiEdit_Click"
-                                                    Header="Editieren" />
-                                                <MenuItem
-                                                    Name="miExport"
-                                                    Click="MiExport_Click"
-                                                    Header="Export" />
-                                                <MenuItem
-                                                    Name="miImport"
-                                                    Click="MiImport_Click"
-                                                    Header="Import" />
-                                            </ContextMenu>
-                                        </DataGrid.ContextMenu>
                                         <DataGrid.Columns>
                                             <DataGridTextColumn
                                                 Binding="{Binding Adress}"
@@ -139,10 +107,12 @@
                                                 Binding="{Binding Encoding}"
                                                 Header="Encoding"
                                                 IsReadOnly="True" />
-                                            <DataGridCheckBoxColumn Header="Crawl" />
-                                            <DataGridCheckBoxColumn Header="Text" />
-                                            <DataGridCheckBoxColumn Header="innerHTML" />
-                                            <DataGridCheckBoxColumn Header="outerHTML" />
+                                            <DataGridCheckBoxColumn Header="Trim" Binding="{Binding IsTrim}"/>
+                                            <DataGridCheckBoxColumn Header="Crawl" Binding="{Binding IsCrawl}"/>
+                                            <DataGridCheckBoxColumn Header="Text" Binding="{Binding CrawlText}" />
+                                            <DataGridCheckBoxColumn Header="innerHTML" Binding="{Binding CrawlInnerHTML}" />
+                                            <DataGridCheckBoxColumn Header="outerHTML" Binding="{Binding CrawlOuterHTML}"/>
+                                            <DataGridTextColumn Header="totalSelectors" Binding="{Binding TotalSelectors}" IsReadOnly="True"/>
                                             <DataGridTemplateColumn Header="Selektors">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -203,7 +173,7 @@
                 Margin="10"
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
-                <GroupBox Header="Crawl-Optionen" IsEnabled="False">
+                <GroupBox Header="Crawl-Optionen" IsEnabled="False" Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Text" />
                         <CheckBox

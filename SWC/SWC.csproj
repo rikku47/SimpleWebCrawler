@@ -80,12 +80,6 @@
     <Compile Include="Windows\SelectorGroupsWindow.xaml.cs">
       <DependentUpon>SelectorGroupsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\EditWindow.xaml.cs">
-      <DependentUpon>EditWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ImportWindow.xaml.cs">
-      <DependentUpon>ImportWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Classes\Link.cs" />
     <Compile Include="Windows\OptionWindow.xaml.cs">
       <DependentUpon>OptionWindow.xaml</DependentUpon>
@@ -113,14 +107,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SelectorGroupsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\EditWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ImportWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

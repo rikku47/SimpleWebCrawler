@@ -2,11 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace SWC
 {
@@ -33,7 +31,12 @@ namespace SWC
             {
                 foreach (var link in group.Links)
                 {
-                    //implement bool to crawl
+                    CalculateTotalSelectorsOfALink(link);
+
+                    foreach (var selectorGroup in link.SelectorGroups)
+                    {
+                        link.TotalSelectors = link.TotalSelectors + selectorGroup.Selectors.Count;
+                    }
 
                     link.CrawlAsync();
                 }
@@ -163,17 +166,24 @@ namespace SWC
                 ReadGroups(groupsPath);
             }
 
-            if(!Directory.Exists(exportPath))
+            if (!Directory.Exists(exportPath))
             {
                 Directory.CreateDirectory(exportPath);
             }
 
-            if(Groups == null)
+            if (Groups == null)
             {
                 Groups = new ObservableCollection<Group>();
             }
 
             tcGroups.ItemsSource = Groups;
+
+            if (tcGroups != null && tcGroups.Items.Count > 0)
+            {
+                tcGroups.SelectedIndex = 0;
+
+                CalculateTotalSelectorsOfALinkOfAllGroups();
+            }
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
@@ -224,25 +234,6 @@ namespace SWC
             about.Show();
         }
 
-        private void MiFiles_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void MiExport_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void MiImport_Click(object sender, RoutedEventArgs e)
-        {
-            ImportWindow importWindow = new ImportWindow()
-            {
-                CustomSelectors = CustomSelectors,
-                Group = (Group)((MenuItem)sender).DataContext
-            };
-
-            importWindow.ShowDialog();
-        }
-
         private void MiClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -282,15 +273,6 @@ namespace SWC
 
         private void DataGrid_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-        }
-
-        private void MiEdit_Click(object sender, RoutedEventArgs e)
-        {
-            EditWindow editWindow = new EditWindow()
-            {
-                Group = (Group)((MenuItem)sender).DataContext
-            };
-            editWindow.ShowDialog();
         }
 
         private void TxtGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
@@ -346,11 +328,52 @@ namespace SWC
         {
             EditSelectorsWindow editSelectorsWindow = new EditSelectorsWindow()
             {
-                Link = (Link)((Button)sender).DataContext,
+                DataContext = (Link)((Button)sender).DataContext,
                 CustomSelectors = CustomSelectors
             };
 
             editSelectorsWindow.ShowDialog();
+
+            CalculateTotalSelectorsOfALink((Link)editSelectorsWindow.DataContext);
+        }
+
+        private void CalculateTotalSelectorsOfALinkOfAllGroups()
+        {
+            foreach (var group in Groups)
+            {
+                foreach (var link in group.Links)
+                {
+                    link.TotalSelectors = 0;
+
+                    foreach (var selectorGroup in link.SelectorGroups)
+                    {
+                        link.TotalSelectors = link.TotalSelectors + selectorGroup.Selectors.Count;
+                    }
+                }
+            }
+        }
+
+        private void CalculateTotalSelectorsOfALinkOfAGroup(Group group)
+        {
+            foreach (var link in group.Links)
+            {
+                link.TotalSelectors = 0;
+
+                foreach (var selectorGroup in link.SelectorGroups)
+                {
+                    link.TotalSelectors = link.TotalSelectors + selectorGroup.Selectors.Count;
+                }
+            }
+        }
+
+        private void CalculateTotalSelectorsOfALink(Link link)
+        {
+            link.TotalSelectors = 0;
+
+            foreach (var selectorGroup in link.SelectorGroups)
+            {
+                link.TotalSelectors = link.TotalSelectors + selectorGroup.Selectors.Count;
+            }
         }
     }
 }

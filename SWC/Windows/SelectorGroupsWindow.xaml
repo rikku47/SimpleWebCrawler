@@ -12,10 +12,11 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="26.084" />
+            <RowDefinition Height="75.916"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel>
+        <StackPanel Grid.RowSpan="2">
             <GroupBox Header="Selektorgruppe(n)">
                 <TextBox
                     Name="txtSelectorGroups"
@@ -32,7 +33,7 @@
         </StackPanel>
         <TabControl
             Name="tcSelectorGroups"
-            Grid.Row="1"
+            Grid.Row="2"
             ItemsSource="{Binding SelectorGroups}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
@@ -64,10 +65,14 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <GroupBox Grid.ColumnSpan="2" Header="Selektorgruppenname">
-                                    <TextBox
+                                    <StackPanel>
+                                        <TextBox
                                         Name="txtSelectorGroup"
                                         Background="Azure"
                                         Text="{Binding Name}" />
+                                        <TextBox Text="{Binding Selectors.Count, Mode=OneWay}"/>
+                                    </StackPanel>
+                                 
                                 </GroupBox>
                                 <GroupBox
                                     Grid.Row="1"

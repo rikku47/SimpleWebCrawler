@@ -18,7 +18,6 @@ namespace SWC
             InitializeComponent();
         }
 
-        internal Link Link { get; set; }
         bool AllDefaultSelectors { get; set; }
         bool AllCustomSelectors { get; set; }
         public ObservableCollection<string> DefaultSelectors { get; set; }
@@ -28,9 +27,12 @@ namespace SWC
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DataContext = Link;
-
             DefaultSelectors = new ObservableCollection<string>(typeof(TagNames).GetFields().Select(field => field.Name).ToList());
+
+            if(tcSelectorGroups != null && tcSelectorGroups.Items.Count > 0)
+            {
+                tcSelectorGroups.SelectedIndex = 0;
+            }
         }
 
         private void TxtSelectorGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
