@@ -28,6 +28,10 @@ Still in not stable state. But it is possible to download just static html and s
 
 ...
 
+#### Partial goals for SimpleWebCrawler so far reached
+
+* Added a simple Method for binding scripts, that are for Puppeteer. If you want to use it, you have to install it from [Google](https://developers.google.com/web/tools/puppeteer/) or [GitHub](https://github.com/GoogleChrome/puppeteer) to use it.
+
 ### GitHub
 
 * A wiki with stuff like howto, manuels etc.
