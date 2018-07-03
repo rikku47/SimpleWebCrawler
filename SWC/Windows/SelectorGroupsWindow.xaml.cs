@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Html;
+using SWC.Classes;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -52,7 +53,7 @@ namespace SWC
 
                 foreach (var selectorGroup in tempSelectorGroups)
                 {
-                    ((Link)((TextBox)sender).DataContext).SelectorGroups.Add(new Link.SelectorGroup(selectorGroup));
+                    ((Link)((TextBox)sender).DataContext).SelectorGroups.Add(new SelectorGroup(selectorGroup));
                 }
             }
         }
@@ -74,7 +75,7 @@ namespace SWC
 
                 foreach (var tempSelector in tempSelectors)
                 {
-                    ((Link.SelectorGroup)((TextBox)sender).DataContext).Selectors.Add(new Link.Selector(tempSelector));
+                    ((SelectorGroup)((TextBox)sender).DataContext).Selectors.Add(new Selector(tempSelector));
                 }
             }
         }
@@ -83,7 +84,7 @@ namespace SWC
         {
             ResultDetailsWindow resultDetailsWindow = new ResultDetailsWindow()
             {
-                Result = (Link.Selector.Result)((Button)sender).DataContext
+                Result = (Result)((Button)sender).DataContext
             };
 
             resultDetailsWindow.Show();
@@ -103,7 +104,7 @@ namespace SWC
         {
             Windows.ExportSelectorGroup exportSelectorGroup = new Windows.ExportSelectorGroup()
             {
-                DataContext = (Link.SelectorGroup)((Button)sender).DataContext
+                DataContext = (SelectorGroup)((Button)sender).DataContext
             };
 
             exportSelectorGroup.ShowDialog();
@@ -121,20 +122,20 @@ namespace SWC
 
         private void BtnAddSelectors_Click(object sender, RoutedEventArgs e)
         {
-            Link.SelectorGroup selectorGroup = (Link.SelectorGroup)((Button)sender).DataContext;
+            SelectorGroup selectorGroup = (SelectorGroup)((Button)sender).DataContext;
 
             if (AllDefaultSelectors & DefaultSelectors != null && DefaultSelectors.Count > 0)
             {
                 foreach (var selector in DefaultSelectors)
                 {
-                    selectorGroup.Selectors.Add(new Link.Selector(selector));
+                    selectorGroup.Selectors.Add(new Selector(selector));
                 }
             }
             else if(DefaultSelectorsSelected != null && DefaultSelectorsSelected.Count > 0)
             {
                 foreach (var selector in DefaultSelectorsSelected)
                 {
-                    selectorGroup.Selectors.Add(new Link.Selector((string)selector));
+                    selectorGroup.Selectors.Add(new Selector((string)selector));
                 }
             }
 
@@ -142,14 +143,14 @@ namespace SWC
             {
                 foreach (var selector in CustomSelectors)
                 {
-                    selectorGroup.Selectors.Add(new Link.Selector(selector));
+                    selectorGroup.Selectors.Add(new Selector(selector));
                 }
             }
             else if(CustomSelectorsSelected != null && CustomSelectorsSelected.Count > 0)
             {
                 foreach (var selector in CustomSelectorsSelected)
                 {
-                    selectorGroup.Selectors.Add(new Link.Selector((string)selector));
+                    selectorGroup.Selectors.Add(new Selector((string)selector));
                 }       
             }
         }

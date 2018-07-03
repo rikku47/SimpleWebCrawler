@@ -203,6 +203,10 @@
                                                         Name="txtScriptPath"
                                                         Background="Azure"
                                                         Text="{Binding ScriptPath}" />
+                                                    <TextBox
+                                                        Name="txtScriptArgument"
+                                                        Background="Azure"
+                                                        Text="{Binding ScriptFile}" />
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Label Content="Crawl" />

@@ -16,7 +16,7 @@
                 <DataGridTemplateColumn Header="Details">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Name="btnShow" Content="Anzeigen" Click="btnShow_Click"/>
+                            <Button Name="btnShow" Content="Anzeigen" Click="BtnShow_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

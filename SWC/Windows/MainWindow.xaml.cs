@@ -25,20 +25,13 @@ namespace SWC
 
         private void BtnCrawl_Click(object sender, RoutedEventArgs e)
         {
-            //var progress = new Progress<ProgressCrawl>(ReportProgress);
-
             foreach (var group in Groups)
             {
                 foreach (var link in group.Links)
                 {
                     CalculateTotalSelectorsOfALink(link);
 
-                    foreach (var selectorGroup in link.SelectorGroups)
-                    {
-                        link.TotalSelectors = link.TotalSelectors + selectorGroup.Selectors.Count;
-                    }
-
-                    link.CrawlAsync();
+                    link.CrawlSelectors();
                 }
             }
         }

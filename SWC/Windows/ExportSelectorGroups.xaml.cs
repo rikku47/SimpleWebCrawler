@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using SWC.Classes;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,7 +17,7 @@ namespace SWC.Windows
 
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var selectorGroup in (ObservableCollection<Link.SelectorGroup>)((Button)sender).DataContext)
+            foreach (var selectorGroup in (ObservableCollection<SelectorGroup>)((Button)sender).DataContext)
             {
                 ExportFunctions.ExportSelectorGroupToCSV(selectorGroup);
             }

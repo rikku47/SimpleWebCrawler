@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SWC.Classes;
+using System;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -7,7 +8,7 @@ namespace SWC
 {
     class ExportFunctions
     {
-        public static void ExportSelectorGroupToCSV(Link.SelectorGroup selectorGroup)
+        public static void ExportSelectorGroupToCSV(SelectorGroup selectorGroup)
         {
             int count = 0;
 

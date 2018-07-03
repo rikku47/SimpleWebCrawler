@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using SWC.Classes;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SWC.Windows
@@ -15,7 +16,7 @@ namespace SWC.Windows
 
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
-            Link.SelectorGroup selectorGroup = (Link.SelectorGroup)((Button)sender).DataContext;
+            SelectorGroup selectorGroup = (SelectorGroup)((Button)sender).DataContext;
 
             ExportFunctions.ExportSelectorGroupToCSV(selectorGroup);
         }

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SWC
+﻿namespace SWC
 {
     class ProgressCrawl
     {
-        public int currentProgress { get; set; }
-        public int totalProgress { get; set; }
-
+        public int CurrentProgress { get; set; }
+        public int TotalProgress { get; set; }
     }
 }
