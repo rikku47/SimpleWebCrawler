@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SWC
 {
@@ -19,9 +8,39 @@ namespace SWC
     /// </summary>
     public partial class OptionWindow : Window
     {
+        private bool _loaded = false; 
+
         public OptionWindow()
         {
             InitializeComponent();
+        }
+
+        private void CboLanguage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(_loaded && ((ComboBoxItem)((ComboBox)sender).SelectedItem).Content.Equals("Englisch"))
+            {
+                Properties.Settings.Default.Language = "en-US";
+            }
+            else if(_loaded)
+            {
+                Properties.Settings.Default.Language = "de-DE";
+            }
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void CboLanguage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Properties.Settings.Default.Language.Equals("en-US"))
+            {
+                ((ComboBox)sender).SelectedItem = cboIEnglish;
+            }
+            else
+            {
+                ((ComboBox)sender).SelectedItem = cboIGerman;
+            }
+
+            _loaded = true;
         }
     }
 }

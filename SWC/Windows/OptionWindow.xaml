@@ -16,10 +16,13 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel>
                         <GroupBox Header="Sprache" Padding="10">
-                            <ComboBox SelectedIndex="0">
-                                <ComboBoxItem Content="Deutsch"/>
-                                <ComboBoxItem Content="Englisch"/>
-                            </ComboBox>
+                            <StackPanel>
+                                <ComboBox Name="cboLanguage" SelectedIndex="0" SelectionChanged="CboLanguage_SelectionChanged" Loaded="CboLanguage_Loaded">
+                                    <ComboBoxItem Name="cboIGerman" Content="Deutsch"/>
+                                    <ComboBoxItem Name="cboIEnglish" Content="Englisch"/>
+                                </ComboBox>
+                                <TextBlock Text="Hinweis: Bitte starten Sie die Anwendung neu, damit die Sprache geändert wird." TextWrapping="Wrap"/>
+                            </StackPanel>
                         </GroupBox>
                     </StackPanel>
                 </Grid>

@@ -11,6 +11,7 @@ namespace SWC.Classes
             IsTrim = true;
             IsCrawl = true;
             CrawlText = true;
+            ExportAllSelectors = false;
             Selectors = new ObservableCollection<Selector>();
             CreationDate = DateTime.Now;
         }
@@ -21,7 +22,8 @@ namespace SWC.Classes
         public bool CrawlText { get; set; }
         public bool CrawlInnerHTML { get; set; }
         public bool CrawlOuterHTML { get; set; }
-        public bool Export { get; set; }
+        public bool ExportSelectorGroup { get; set; }
+        public bool ExportAllSelectors { get; set; }
         public ObservableCollection<Selector> Selectors { get; }
         public DateTime CreationDate { get; }
     }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Threading;
 using System.Windows;
 
 namespace SWC
@@ -13,6 +11,12 @@ namespace SWC
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(SWC.Properties.Settings.Default.Language);
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(SWC.Properties.Settings.Default.Language);
 
+            base.OnStartup(e);
+        }
     }
 }

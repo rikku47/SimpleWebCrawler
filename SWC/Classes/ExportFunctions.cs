@@ -11,39 +11,46 @@ namespace SWC
         public static void ExportSelectorGroupToCSV(SelectorGroup selectorGroup)
         {
             int count = 0;
+            StringBuilder stringBuilder = null;
 
-            StringBuilder stringBuilder = new StringBuilder("Gruppenname\n" + selectorGroup.Name + "\n\n");
-
-            foreach (var selector in selectorGroup.Selectors)
+            if (selectorGroup.ExportSelectorGroup)
             {
-                stringBuilder.Append("Selektor;Resultate insgesamt\n");
-                stringBuilder.Append(selector.CSSSelector + ";" + selector.Results.Count + "\n\n");
+                stringBuilder = new StringBuilder("Gruppenname\n" + selectorGroup.Name + "\n\n");
 
-                foreach (var result in selector.Results)
+                foreach (var selector in selectorGroup.Selectors)
                 {
-                    stringBuilder.Append("Erstellt am: " + result.CreationDate + "\n");
-
-                    foreach (var item in result.Items)
+                    if (selector.Export)
                     {
-                        if (true)
-                        {
-                            stringBuilder.Append(item.Details.Text + ";");
-                        }
+                        stringBuilder.Append("Selektor;Resultate insgesamt\n");
+                        stringBuilder.Append(selector.CSSSelector + ";" + selector.Results.Count + "\n\n");
 
-                        if (true)
+                        foreach (var result in selector.Results)
                         {
-                            stringBuilder.Append(item.Details.InnerHTML + ";");
-                        }
+                            stringBuilder.Append("Erstellt am: " + result.CreationDate + "\n");
 
-                        if (true)
-                        {
-                            stringBuilder.Append(item.Details.OuterHTML + ";");
-                        }
+                            foreach (var item in result.Items)
+                            {
+                                if (true)
+                                {
+                                    stringBuilder.Append(item.Details.Text + ";");
+                                }
 
-                        stringBuilder.Append("\n");
+                                if (true)
+                                {
+                                    stringBuilder.Append(item.Details.InnerHTML + ";");
+                                }
+
+                                if (true)
+                                {
+                                    stringBuilder.Append(item.Details.OuterHTML + ";");
+                                }
+
+                                stringBuilder.Append("\n");
+                            }
+
+                            stringBuilder.Append("\n");
+                        }
                     }
-
-                    stringBuilder.Append("\n");
                 }
             }
             count++;

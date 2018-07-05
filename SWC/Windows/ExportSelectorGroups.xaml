@@ -14,10 +14,13 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <TabControl ItemsSource="{Binding}">
+        <TabControl Name="tcSelectorGroups" ItemsSource="{Binding}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <ContentPresenter Content="{Binding Name}" />
+                    <StackPanel Orientation="Horizontal">
+                        <ContentPresenter Content="{Binding Name}" />
+                        <CheckBox Name="chkSelectorGroup" IsChecked="{Binding ExportSelectorGroup}" />
+                    </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
@@ -28,7 +31,30 @@
                                 Binding="{Binding CSSSelector}"
                                 Header="Selektor"
                                 IsReadOnly="True" />
-                            <DataGridCheckBoxColumn Binding="{Binding Export}" Header="Export" />
+                            <DataGridTemplateColumn Header="Export">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ContentPresenter Content="Export" />
+                                            <CheckBox
+                                                Name="chkAllExport"
+                                                Checked="ChkAllExport_Checked"
+                                                IsChecked="{Binding ExportAllSelectors}"
+                                                Loaded="ChkAllExport_Loaded"
+                                                Unchecked="ChkAllExport_Unchecked" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox
+                                            Name="chkExport"
+                                            Checked="ChkExport_Checked"
+                                            IsChecked="{Binding Export, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, Mode=TwoWay}"
+                                            Unchecked="ChkExport_Unchecked" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DataTemplate>

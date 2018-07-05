@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,48 +112,46 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MWMFiles" xml:space="preserve">
-    <value>File</value>
-    <comment>The "File" item on the mainwindow</comment>
+    <value>Datei</value>
   </data>
   <data name="MWMOptions" xml:space="preserve">
-    <value>Options</value>
+    <value>Optionen</value>
   </data>
   <data name="MWMAbout" xml:space="preserve">
-    <value>About</value>
+    <value>Info</value>
   </data>
   <data name="MWTCTIGroupsLinks" xml:space="preserve">
-    <value>Groups / Links</value>
+    <value>Gruppen / Links</value>
+  </data>
+  <data name="MWMClose" xml:space="preserve">
+    <value>Beenden</value>
   </data>
   <data name="MWTCTIFiles" xml:space="preserve">
-    <value>Files</value>
+    <value>Dateien</value>
   </data>
   <data name="MWTCTIImportSelectors" xml:space="preserve">
-    <value>Import Selectors</value>
+    <value>Selektoren importieren</value>
   </data>
   <data name="MWTCTILinkGrabber" xml:space="preserve">
-    <value>Linkgrabber</value>
+    <value>Linksammler</value>
   </data>
   <data name="MWBTNCrawl" xml:space="preserve">
     <value>Crawl</value>
   </data>
   <data name="MWTCOGroupNames" xml:space="preserve">
-    <value>Groupname(s)</value>
+    <value>Gruppenname(n)</value>
   </data>
   <data name="MWTCOSearch" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="MWMClose" xml:space="preserve">
-    <value>Close</value>
-    <comment>The "Close" item within the "File" item</comment>
+    <value>Suche</value>
   </data>
   <data name="MWTCOGroupname" xml:space="preserve">
-    <value>Group</value>
+    <value>Gruppe</value>
   </data>
   <data name="MWTCOLinks" xml:space="preserve">
     <value>Links</value>
@@ -159,13 +160,13 @@
     <value>Link</value>
   </data>
   <data name="MWTCDGEncodingHeader" xml:space="preserve">
-    <value>Encoding</value>
+    <value>Kodierung</value>
   </data>
   <data name="MWTCDGTrimHeader" xml:space="preserve">
     <value>Trim</value>
   </data>
   <data name="MWTCDGCrawlHeader" xml:space="preserve">
-    <value>Crawl</value>
+    <value>Sammeln</value>
   </data>
   <data name="MWTCDGTextHeader" xml:space="preserve">
     <value>Text</value>
@@ -177,18 +178,18 @@
     <value>outerHTML</value>
   </data>
   <data name="MWTCDGTotalSelectorsHeader" xml:space="preserve">
-    <value>Total selectors</value>
+    <value>Gesamtselektoren</value>
   </data>
   <data name="MWTCDGStatusHeader" xml:space="preserve">
     <value>Status</value>
   </data>
   <data name="MWTCDGDateHeader" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="MWTCDGSelectorsHeader" xml:space="preserve">
-    <value>Selectors</value>
+    <value>Datum</value>
   </data>
   <data name="MWTCDGSelectorsButtonShow" xml:space="preserve">
-    <value>Show</value>
+    <value>Anzeigen</value>
+  </data>
+  <data name="MWTCDGSelectorsHeader" xml:space="preserve">
+    <value>Selektoren</value>
   </data>
 </root>

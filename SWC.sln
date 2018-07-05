@@ -26,6 +26,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_ExcelExportMode = MultipleSheets
+		RESX_AutoCreateNewLanguageFiles = True
 		SolutionGuid = {64977558-C07C-4AE6-AB34-8F2A35B8C8CC}
 	EndGlobalSection
 EndGlobal

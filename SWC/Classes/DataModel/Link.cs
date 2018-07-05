@@ -7,9 +7,6 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using SWC.Classes;
-using System.IO;
-using System.Collections.Generic;
-using System.Windows;
 using AngleSharp.Parser.Html;
 using System.Text;
 
@@ -17,6 +14,7 @@ namespace SWC
 {
     internal class Link : INotifyPropertyChanged
     {
+        private bool _isCrawl;
         private int _totalSelectors;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -35,7 +33,18 @@ namespace SWC
         public string Adress { get; }
         public string Encoding { get; set; }
         public bool IsTrim { get; set; }
-        public bool IsCrawl { get; set; }
+        public bool IsCrawl
+        {
+            get
+            {
+                return _isCrawl;
+            }
+            set
+            {
+                _isCrawl = value;
+                Changed(nameof(IsCrawl));
+            }
+        }
         public bool CrawlText { get; set; }
         public bool CrawlInnerHTML { get; set; }
         public bool CrawlOuterHTML { get; set; }

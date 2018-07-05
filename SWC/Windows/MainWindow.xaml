@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:SWC.Properties"
     x:Name="mainWindow"
     Title="SimpleWebCrawler"
     Closed="MainWindow_Closed"
@@ -18,37 +19,37 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Menu>
-            <MenuItem Header="Datei">
+            <MenuItem Header="{x:Static properties:Resources.MWMFiles}">
                 <MenuItem
                     Name="miClose"
                     Click="MiClose_Click"
-                    Header="Beenden" />
+                    Header="{x:Static properties:Resources.MWMClose}" />
             </MenuItem>
             <MenuItem
                 Name="miOption"
                 Click="MiOption_Click"
-                Header="Optionen" />
+                Header="{x:Static properties:Resources.MWMOptions}" />
             <MenuItem
                 Name="miInfo"
                 Click="MiInfo_Click"
-                Header="Info" />
+                Header="{x:Static properties:Resources.MWMAbout}" />
         </Menu>
         <TabControl Grid.Row="1">
-            <TabItem Header="Gruppen / Links">
+            <TabItem Header="{x:Static properties:Resources.MWTCTIGroupsLinks}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <Expander Header="Options">
+                    <Expander Header="{x:Static properties:Resources.MWMOptions}">
                         <StackPanel>
-                            <GroupBox Header="Gruppenname(n)">
+                            <GroupBox Header="{x:Static properties:Resources.MWTCOGroupNames}">
                                 <TextBox
                                     Name="txtGroups"
                                     Background="Azure"
                                     KeyUp="TxtGroups_KeyUp" />
                             </GroupBox>
-                            <GroupBox Header="Suche">
+                            <GroupBox Header="{x:Static properties:Resources.MWTCOSearch}">
                                 <StackPanel>
                                     <TextBox Name="txtSearch" Background="Azure" />
                                 </StackPanel>
@@ -61,8 +62,7 @@
                         KeyUp="TcGroups_KeyUp">
                         <TabControl.ItemTemplate>
                             <DataTemplate>
-                                <ContentPresenter Content="{Binding Name}">
-                                </ContentPresenter>
+                                <ContentPresenter Content="{Binding Name}" />
                             </DataTemplate>
                         </TabControl.ItemTemplate>
                         <TabControl.ContentTemplate>
@@ -72,17 +72,17 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Expander Header="Options">
+                                    <Expander Header="{x:Static properties:Resources.MWMOptions}">
                                         <StackPanel>
-                                            <GroupBox Header="Gruppe">
+                                            <GroupBox Header="{x:Static properties:Resources.MWTCOGroupname}">
                                                 <StackPanel>
                                                     <TextBox
                                                         Name="txtGroupname"
                                                         Background="Azure"
-                                                        Text="{Binding Name}"/>
+                                                        Text="{Binding Name}" />
                                                 </StackPanel>
                                             </GroupBox>
-                                            <GroupBox Header="Link(s)">
+                                            <GroupBox Header="{x:Static properties:Resources.MWTCOLinks}">
                                                 <StackPanel>
                                                     <TextBox
                                                         Name="txtLinks"
@@ -100,29 +100,82 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn
                                                 Binding="{Binding Adress}"
-                                                Header="Link"
+                                                Header="{x:Static properties:Resources.MWTCDGLinkHeader}"
                                                 IsReadOnly="True" />
                                             <DataGridTextColumn
                                                 Binding="{Binding Encoding}"
-                                                Header="Encoding"
+                                                Header="{x:Static properties:Resources.MWTCDGEncodingHeader}"
                                                 IsReadOnly="True" />
-                                            <DataGridCheckBoxColumn Header="Trim" Binding="{Binding IsTrim}"/>
-                                            <DataGridCheckBoxColumn Header="Crawl" Binding="{Binding IsCrawl}"/>
-                                            <DataGridCheckBoxColumn Header="Text" Binding="{Binding CrawlText}" />
-                                            <DataGridCheckBoxColumn Header="innerHTML" Binding="{Binding CrawlInnerHTML}" />
-                                            <DataGridCheckBoxColumn Header="outerHTML" Binding="{Binding CrawlOuterHTML}"/>
-                                            <DataGridTextColumn Header="totalSelectors" Binding="{Binding TotalSelectors}" IsReadOnly="True"/>
-                                            <DataGridTemplateColumn Header="Selektors">
+                                            <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGTrimHeader}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox
+                                                            Name="chkTrim"
+                                                            Checked="ChkTrim_Checked"
+                                                            IsChecked="{Binding IsTrim, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, Mode=TwoWay}"
+                                                            Unchecked="ChkTrim_Unchecked" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGCrawlHeader}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox
+                                                            Name="chkCrawl"
+                                                            Checked="ChkCrawl_Checked"
+                                                            IsChecked="{Binding IsCrawl, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, Mode=TwoWay}"
+                                                            Unchecked="ChkCrawl_Unchecked" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGTextHeader}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox
+                                                            Name="chkText"
+                                                            Checked="ChkText_Checked"
+                                                            IsChecked="{Binding CrawlText, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, Mode=TwoWay}"
+                                                            Unchecked="ChkText_Unchecked" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGInnerHTMLHeader}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox
+                                                            Name="chkInnerHTML"
+                                                            Checked="ChkInnerHTML_Checked"
+                                                            IsChecked="{Binding CrawlInnerHTML, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, Mode=TwoWay}"
+                                                            Unchecked="ChkInnerHTML_Unchecked" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGOuterHTMLHeader}">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox
+                                                            Name="chkOuterHTML"
+                                                            Checked="ChkOuterHTML_Checked"
+                                                            IsChecked="{Binding CrawlOuterHTML, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, Mode=TwoWay}"
+                                                            Unchecked="ChkOuterHTML_Unchecked" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTextColumn
+                                                Binding="{Binding TotalSelectors}"
+                                                Header="{x:Static properties:Resources.MWTCDGTotalSelectorsHeader}"
+                                                IsReadOnly="True" />
+                                            <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGSelectorsHeader}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button
                                                             Name="btnShowSelectorGroups"
                                                             Click="BtnShowSelectorGroups_Click"
-                                                            Content="Anzeigen" />
+                                                            Content="{x:Static properties:Resources.MWTCDGSelectorsButtonShow}" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn Header="Status">
+                                            <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGStatusHeader}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <ProgressBar />
@@ -131,7 +184,7 @@
                                             </DataGridTemplateColumn>
                                             <DataGridTextColumn
                                                 Binding="{Binding CreationDate}"
-                                                Header="Datum"
+                                                Header="{x:Static properties:Resources.MWTCDGDateHeader}"
                                                 IsReadOnly="True" />
                                         </DataGrid.Columns>
                                     </DataGrid>
@@ -141,7 +194,7 @@
                     </TabControl>
                 </Grid>
             </TabItem>
-            <TabItem Header="Dateien">
+            <TabItem Header="{x:Static properties:Resources.MWTCTIFiles}">
                 <Grid>
                     <Button
                         Name="btnOpenFiles"
@@ -149,7 +202,7 @@
                         Content="Dateien öffnen / einlesen" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Selektoren einlesen">
+            <TabItem Header="{x:Static properties:Resources.MWTCTIImportSelectors}">
                 <Grid>
                     <StackPanel Margin="10">
                         <TextBox Name="txtSelectors" Background="Azure" />
@@ -161,9 +214,9 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Linksammler">
+            <TabItem Header="{x:Static properties:Resources.MWTCTILinkGrabber}">
                 <Grid>
-                    <TextBlock Text="Baustelle..." />
+                    <TextBlock Text="..." />
                 </Grid>
             </TabItem>
         </TabControl>
@@ -172,7 +225,10 @@
                 Margin="10"
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
-                <GroupBox Header="Crawl-Optionen" IsEnabled="False" Visibility="Collapsed">
+                <GroupBox
+                    Header="Crawl-Optionen"
+                    IsEnabled="False"
+                    Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Text" />
                         <CheckBox
@@ -197,7 +253,7 @@
                 Margin="10"
                 Padding="10"
                 Click="BtnCrawl_Click"
-                Content="Crawl" />
+                Content="{x:Static properties:Resources.MWBTNCrawl}" />
             <ProgressBar
                 Name="pgbTotal"
                 Height="40"

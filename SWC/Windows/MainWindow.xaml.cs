@@ -18,8 +18,6 @@ namespace SWC
             InitializeComponent();
         }
 
-        string AppPath { get; set; }
-        public Config Config { get; set; }
         internal ObservableCollection<Group> Groups { get; set; }
         public ObservableCollection<string> CustomSelectors { get; set; }
 
@@ -38,45 +36,7 @@ namespace SWC
 
         private void ReportProgress(ProgressCrawl progress)
         {
-            btnCrawl.IsEnabled = true;
-        }
-
-        private void CreateConfig()
-        {
-            Config = new Config();
-
-            string configJSON = JsonConvert.SerializeObject(Config);
-
-            using (var sw = new StreamWriter("config.json"))
-            {
-                sw.WriteLine(configJSON);
-            }
-        }
-
-        private void WriteConfig()
-        {
-            string configJSON = JsonConvert.SerializeObject(Config);
-
-            using (var sw = new StreamWriter("config.json"))
-            {
-                sw.WriteLine(configJSON);
-            }
-        }
-
-        private void ReadConfig(string path)
-        {
-            try
-            {
-                using (StreamReader sr = new StreamReader(path))
-                {
-                    String line = sr.ReadToEnd();
-                    Config = JsonConvert.DeserializeObject<Config>(line);
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            btnCrawl.IsEnabled = true; 
         }
 
         private void ReadCustomSelectors(string path)
@@ -133,30 +93,19 @@ namespace SWC
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            AppPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string customSelectorsPathWithFile = appPath + "\\customSelectors.json";
+            string groupsPathWithFile = appPath + "\\groups.json";
+            string exportPath = appPath + "\\export";
 
-            string configPath = AppPath + "\\config.json";
-            string customSelectorsPath = AppPath + "\\customSelectors.json";
-            string groupsPath = AppPath + "\\groups.json";
-            string exportPath = AppPath + "\\export";
-
-            if (File.Exists(configPath))
+            if (File.Exists(customSelectorsPathWithFile))
             {
-                ReadConfig(configPath);
-            }
-            else
-            {
-                CreateConfig();
+                ReadCustomSelectors(customSelectorsPathWithFile);
             }
 
-            if (File.Exists(customSelectorsPath))
+            if (File.Exists(groupsPathWithFile))
             {
-                ReadCustomSelectors(customSelectorsPath);
-            }
-
-            if (File.Exists(groupsPath))
-            {
-                ReadGroups(groupsPath);
+                ReadGroups(groupsPathWithFile);
             }
 
             if (!Directory.Exists(exportPath))
@@ -181,7 +130,6 @@ namespace SWC
 
         private void MainWindow_Closed(object sender, EventArgs e)
         {
-            WriteConfig();
             WriteCustomSelectors();
             WriteGroups();
         }
@@ -367,6 +315,66 @@ namespace SWC
             {
                 link.TotalSelectors = link.TotalSelectors + selectorGroup.Selectors.Count;
             }
+        }
+
+        private void CheckBox_TargetUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+
+        }
+
+        private void CheckBox_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
+        {
+
+        }
+
+        private void ChkTrim_Checked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).IsTrim = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkTrim_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).IsTrim = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkCrawl_Checked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).IsCrawl = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkCrawl_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).IsCrawl = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkText_Checked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).CrawlText = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkText_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).CrawlText = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkInnerHTML_Checked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).CrawlInnerHTML = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkInnerHTML_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).CrawlInnerHTML = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkOuterHTML_Checked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).CrawlOuterHTML = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkOuterHTML_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ((Link)((CheckBox)sender).DataContext).CrawlOuterHTML = (bool)((CheckBox)sender).IsChecked;
         }
     }
 }

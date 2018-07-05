@@ -20,5 +20,36 @@ namespace SWC.Windows
 
             ExportFunctions.ExportSelectorGroupToCSV(selectorGroup);
         }
+
+        private void ChkExport_Checked(object sender, RoutedEventArgs e)
+        {
+            ((Selector)((CheckBox)sender).DataContext).Export = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkExport_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ((Selector)((CheckBox)sender).DataContext).Export = (bool)((CheckBox)sender).IsChecked;
+        }
+
+        private void ChkAllExport_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (var selector in ((SelectorGroup)((CheckBox)sender).DataContext).Selectors)
+            {
+                selector.Export = true;
+            }
+        }
+
+        private void ChkAllExport_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (var selector in ((SelectorGroup)((CheckBox)sender).DataContext).Selectors)
+            {
+                selector.Export = false;
+            }
+        }
+
+        private void ChkAllExport_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((CheckBox)sender).DataContext = DataContext;
+        }
     }
 }

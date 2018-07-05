@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace SWC.Classes
 {
-    class Selector
+    class Selector : INotifyPropertyChanged
     {
+        private bool _export;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public Selector(string cssselector)
         {
             CSSSelector = cssselector;
@@ -26,8 +31,21 @@ namespace SWC.Classes
         public bool ScriptActivate { get; set; }
         public string ScriptPath { get; set; }
         public string ScriptFile { get; set; }
-        public bool Export { get; set; }
+        public bool Export
+        {
+            get => _export;
+            set
+            {
+                _export = value;
+                Changed(nameof(Export));
+            }
+        }
         public ObservableCollection<Result> Results { get; }
         public DateTime CreationDate { get; }
+
+        private void Changed(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
