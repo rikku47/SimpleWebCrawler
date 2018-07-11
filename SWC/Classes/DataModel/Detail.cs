@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SWC.Classes
 {
-    class Detail
+    public class Detail
     {
         public Detail()
         {

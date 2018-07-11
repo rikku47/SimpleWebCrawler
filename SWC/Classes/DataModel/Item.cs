@@ -2,7 +2,7 @@
 
 namespace SWC.Classes
 {
-    class Item
+    public class Item
     {
         public Item(Detail details)
         {

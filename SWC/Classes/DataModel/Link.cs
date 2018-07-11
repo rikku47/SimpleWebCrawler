@@ -16,6 +16,11 @@ namespace SWC
     {
         private bool _isCrawl;
         private int _totalSelectors;
+        private bool _isAdressFound;
+        private bool _isEncodingFound;
+        private bool _isTotalSelectorsFound;
+        private bool _isCreationDateFound;
+        private bool _isFilterOut;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -31,8 +36,33 @@ namespace SWC
         }
 
         public string Adress { get; }
+
+        [JsonIgnore]
+        public bool IsAdressFound
+        {
+            get => _isAdressFound;
+            set
+            {
+                _isAdressFound = value;
+                Changed(nameof(IsAdressFound));
+            }
+        }
+
         public string Encoding { get; set; }
+
+        [JsonIgnore]
+        public bool IsEncodingFound
+        {
+            get => _isEncodingFound;
+            set
+            {
+                _isEncodingFound = value;
+                Changed(nameof(IsEncodingFound));
+            }
+        }
+
         public bool IsTrim { get; set; }
+
         public bool IsCrawl
         {
             get
@@ -45,10 +75,15 @@ namespace SWC
                 Changed(nameof(IsCrawl));
             }
         }
+
         public bool CrawlText { get; set; }
+
         public bool CrawlInnerHTML { get; set; }
+
         public bool CrawlOuterHTML { get; set; }
+
         public ObservableCollection<SelectorGroup> SelectorGroups { get; }
+
         [JsonIgnore]
         public int TotalSelectors
         {
@@ -59,7 +94,41 @@ namespace SWC
                 Changed(nameof(TotalSelectors));
             }
         }
+
+        [JsonIgnore]
+        public bool IsTotalSelectorsFound
+        {
+            get => _isTotalSelectorsFound;
+            set
+            {
+                _isTotalSelectorsFound = value;
+                Changed(nameof(IsTotalSelectorsFound));
+            }
+        }
+
         public DateTime CreationDate { get; }
+
+        [JsonIgnore]
+        public bool IsCreationDateFound
+        {
+            get => _isCreationDateFound;
+            set
+            {
+                _isCreationDateFound = value;
+                Changed(nameof(IsCreationDateFound));
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsFilterOut
+        {
+            get => _isFilterOut;
+            set
+            {
+                _isFilterOut = value;
+                Changed(nameof(IsFilterOut));
+            }
+        }
 
         private void Changed(string propertyName)
         {
@@ -116,7 +185,6 @@ namespace SWC
                     RedirectStandardInput = true
                 };
                 process.StartInfo = processStartInfo;
-                process.OutputDataReceived += Process_OutputDataReceived;
                 process.Start();
                 process.StandardInput.WriteLine("node " + selector.ScriptFile);
 
@@ -188,14 +256,6 @@ namespace SWC
             {
                 selector.Results.Add(result);
             });
-        }
-
-        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            if (!String.IsNullOrEmpty(e.Data))
-            {
-                int i = 10;
-            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -32,6 +33,18 @@ namespace SWC
         private void Changed(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public override bool Equals(object obj)
+        {
+            var group = obj as Group;
+            return group != null &&
+                   EqualityComparer<ObservableCollection<Link>>.Default.Equals(Links, group.Links);
+        }
+
+        public override int GetHashCode()
+        {
+            return 1817216190 + EqualityComparer<ObservableCollection<Link>>.Default.GetHashCode(Links);
         }
     }
 }

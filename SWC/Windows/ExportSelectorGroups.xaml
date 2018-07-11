@@ -14,7 +14,11 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <TabControl Name="tcSelectorGroups" ItemsSource="{Binding}">
+        <TabControl
+            Name="tcSelectorGroups"
+            ItemsSource="{Binding}"
+            SelectedIndex="0"
+            SelectionChanged="TcSelectorGroups_SelectionChanged">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -25,7 +29,10 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Selectors}">
+                    <DataGrid
+                        Name="dgSelectors"
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding Selectors}">
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Binding="{Binding CSSSelector}"
@@ -39,7 +46,7 @@
                                             <CheckBox
                                                 Name="chkAllExport"
                                                 Checked="ChkAllExport_Checked"
-                                                IsChecked="{Binding ExportAllSelectors}"
+                                                IsChecked="{Binding ExportAllSelectors, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, Mode=TwoWay}"
                                                 Loaded="ChkAllExport_Loaded"
                                                 Unchecked="ChkAllExport_Unchecked" />
                                         </StackPanel>

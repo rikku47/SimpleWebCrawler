@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace SWC.Classes
 {
-    class Selector : INotifyPropertyChanged
+    public class Selector : INotifyPropertyChanged
     {
         private bool _export;
 

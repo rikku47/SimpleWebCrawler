@@ -19,18 +19,21 @@ namespace SWC
             InitializeComponent();
         }
 
-        bool AllDefaultSelectors { get; set; }
-        bool AllCustomSelectors { get; set; }
+        CheckBox ChkDefaultSelectors { get; set; }
+        CheckBox ChkCustomSelectors { get; set; }
+        ListBox LibDefaultSelectors { get; set; }
+        ListBox LibCustomSelectors { get; set; }
         public ObservableCollection<string> DefaultSelectors { get; set; }
         public ObservableCollection<string> CustomSelectors { get; set; }
-        IList DefaultSelectorsSelected;
-        IList CustomSelectorsSelected;
+        string[] Selectors { get; set; }
+        SelectorGroup SelectorGroup { get; set; }
+        TextBox TextBox { get; set; }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DefaultSelectors = new ObservableCollection<string>(typeof(TagNames).GetFields().Select(field => field.Name).ToList());
 
-            if(tcSelectorGroups != null && tcSelectorGroups.Items.Count > 0)
+            if (tcSelectorGroups != null && tcSelectorGroups.Items.Count > 0)
             {
                 tcSelectorGroups.SelectedIndex = 0;
             }
@@ -60,23 +63,14 @@ namespace SWC
 
         private void TxtSelectors_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            ObservableCollection<string> tempSelectors = new ObservableCollection<string>();
-
-            string[] selectors = ((TextBox)e.OriginalSource).Text.Split(';');
-
-            foreach (var selector in selectors)
-            {
-                tempSelectors.Add(selector);
-            }
+            Selectors = TextBox.Text.Split(';');
 
             if (e.Key == System.Windows.Input.Key.Enter)
             {
-                ((TextBox)sender).Text = "";
+                AddSelectorsToSelectorGroup(Selectors, SelectorGroup);
+                AddSelectorsToCustomSelectors(Selectors, CustomSelectors);
 
-                foreach (var tempSelector in tempSelectors)
-                {
-                    ((SelectorGroup)((TextBox)sender).DataContext).Selectors.Add(new Selector(tempSelector));
-                }
+                TextBox.Text = "";
             }
         }
 
@@ -92,19 +86,22 @@ namespace SWC
 
         private void LibDefaultSelectors_Loaded(object sender, RoutedEventArgs e)
         {
-            ((ListBox)sender).ItemsSource = DefaultSelectors;
+            LibDefaultSelectors = (ListBox)sender;
+            LibDefaultSelectors.ItemsSource = DefaultSelectors;
         }
 
         private void LibCustomSelectors_Loaded(object sender, RoutedEventArgs e)
         {
-            ((ListBox)sender).ItemsSource = CustomSelectors;
+            LibCustomSelectors = (ListBox)sender;
+            LibCustomSelectors.ItemsSource = CustomSelectors;
         }
 
         private void BtnExportSelectorGroup_Click(object sender, RoutedEventArgs e)
         {
             Windows.ExportSelectorGroup exportSelectorGroup = new Windows.ExportSelectorGroup()
             {
-                DataContext = (SelectorGroup)((Button)sender).DataContext
+                DataContext = (SelectorGroup)((Button)sender).DataContext,
+                SelectorGroup = (SelectorGroup)((Button)sender).DataContext
             };
 
             exportSelectorGroup.ShowDialog();
@@ -122,57 +119,131 @@ namespace SWC
 
         private void BtnAddSelectors_Click(object sender, RoutedEventArgs e)
         {
-            SelectorGroup selectorGroup = (SelectorGroup)((Button)sender).DataContext;
+            AddSelectorsToSelectorGroup(LibDefaultSelectors.SelectedItems, SelectorGroup);
 
-            if (AllDefaultSelectors & DefaultSelectors != null && DefaultSelectors.Count > 0)
-            {
-                foreach (var selector in DefaultSelectors)
-                {
-                    selectorGroup.Selectors.Add(new Selector(selector));
-                }
-            }
-            else if(DefaultSelectorsSelected != null && DefaultSelectorsSelected.Count > 0)
-            {
-                foreach (var selector in DefaultSelectorsSelected)
-                {
-                    selectorGroup.Selectors.Add(new Selector((string)selector));
-                }
-            }
+            AddSelectorsToSelectorGroup(LibCustomSelectors.SelectedItems, SelectorGroup);
 
-            if (AllCustomSelectors & CustomSelectors != null && CustomSelectors.Count > 0)
+            AddSelectorsToSelectorGroup(Selectors, SelectorGroup);
+
+            AddSelectorsToCustomSelectors(Selectors, CustomSelectors);
+
+            TextBox.Text = "";
+        }
+
+        private void AddSelectorsToSelectorGroup(IList selectors, SelectorGroup selectorGroup)
+        {
+            if (selectors != null && selectors.Count > 0)
             {
-                foreach (var selector in CustomSelectors)
+                foreach (var selector in selectors)
                 {
-                    selectorGroup.Selectors.Add(new Selector(selector));
+                    if (!string.IsNullOrEmpty(selector.ToString()) && SelectorGroup.Selectors.Any(s => s.CSSSelector.Equals(selector)) == false)
+                    {
+                        SelectorGroup.Selectors.Add(new Selector(selector.ToString()));
+                    }
                 }
             }
-            else if(CustomSelectorsSelected != null && CustomSelectorsSelected.Count > 0)
+        }
+
+        private void AddSelectorsToCustomSelectors(string[] selectors, ObservableCollection<string> customSelectors)
+        {
+            if (selectors != null && selectors.Length > 0)
             {
-                foreach (var selector in CustomSelectorsSelected)
+                foreach (var selector in selectors)
                 {
-                    selectorGroup.Selectors.Add(new Selector((string)selector));
-                }       
+                    if (!string.IsNullOrEmpty(selector) && customSelectors.Any(s => s.Equals(selector)) == false)
+                    {
+                        customSelectors.Add(selector);
+                    }
+                }
             }
         }
 
         private void ChkSelectAllDefaultSelectors_Checked(object sender, RoutedEventArgs e)
         {
-            AllDefaultSelectors = (bool)((CheckBox)sender).IsChecked;
+            if (((CheckBox)sender).IsFocused)
+            {
+                foreach (var item in LibDefaultSelectors.ItemsSource)
+                {
+                    LibDefaultSelectors.SelectedItems.Add(item);
+                }
+            }
+        }
+
+        private void ChkSelectAllDefaultSelectors_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (((CheckBox)sender).IsFocused)
+            {
+                LibDefaultSelectors.SelectedItems.Clear();
+            }
         }
 
         private void ChkSelectAllCustomSelectors_Checked(object sender, RoutedEventArgs e)
         {
-            AllCustomSelectors = (bool)((CheckBox)sender).IsChecked;
+            if (((CheckBox)sender).IsFocused)
+            {
+                foreach (var item in LibCustomSelectors.ItemsSource)
+                {
+                    LibCustomSelectors.SelectedItems.Add(item);
+                }
+            }
+        }
+
+        private void ChkSelectAllCustomSelectors_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (((CheckBox)sender).IsFocused)
+            {
+                LibCustomSelectors.SelectedItems.Clear();
+            }
+        }
+
+        private void TcSelectorGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectorGroup = (SelectorGroup)((TabControl)sender).SelectedItem;
+        }
+
+        private void TxtSelectors_Loaded(object sender, RoutedEventArgs e)
+        {
+            TextBox = (TextBox)sender;
         }
 
         private void LibDefaultSelectors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DefaultSelectorsSelected = ((ListBox)sender).SelectedItems;
+            if (((ListBox)sender).IsMouseOver || ((ListBox)sender).IsKeyboardFocusWithin)
+            {
+                if (((ListBox)sender).SelectedItems.Count < ((ListBox)sender).Items.Count)
+                {
+                    ChkDefaultSelectors.IsChecked = false;
+                }
+                else
+                {
+                    ChkDefaultSelectors.IsChecked = true;
+                }
+            }
         }
 
         private void LibCustomSelectors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CustomSelectorsSelected = ((ListBox)sender).SelectedItems;
+            if (((ListBox)sender).IsMouseOver || ((ListBox)sender).IsKeyboardFocusWithin)
+            {
+                if (((ListBox)sender).SelectedItems.Count < ((ListBox)sender).Items.Count)
+                {
+                    ChkCustomSelectors.IsChecked = false;
+                }
+                else
+                {
+                    ChkCustomSelectors.IsChecked = true;
+                }
+            }
+        }
+
+        private void ChkSelectAllCustomSelectors_Loaded(object sender, RoutedEventArgs e)
+        {
+            ChkCustomSelectors = (CheckBox)sender;
+        }
+
+        private void ChkSelectAllDefaultSelectors_Loaded(object sender, RoutedEventArgs e)
+        {
+            ChkDefaultSelectors = (CheckBox)sender;
         }
     }
 }

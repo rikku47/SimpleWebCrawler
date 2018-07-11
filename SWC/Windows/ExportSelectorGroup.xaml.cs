@@ -12,7 +12,10 @@ namespace SWC.Windows
         public ExportSelectorGroup()
         {
             InitializeComponent();
+
         }
+
+        public SelectorGroup SelectorGroup { get; set; }
 
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
@@ -21,35 +24,59 @@ namespace SWC.Windows
             ExportFunctions.ExportSelectorGroupToCSV(selectorGroup);
         }
 
-        private void ChkExport_Checked(object sender, RoutedEventArgs e)
-        {
-            ((Selector)((CheckBox)sender).DataContext).Export = (bool)((CheckBox)sender).IsChecked;
-        }
-
-        private void ChkExport_Unchecked(object sender, RoutedEventArgs e)
-        {
-            ((Selector)((CheckBox)sender).DataContext).Export = (bool)((CheckBox)sender).IsChecked;
-        }
-
         private void ChkAllExport_Checked(object sender, RoutedEventArgs e)
         {
-            foreach (var selector in ((SelectorGroup)((CheckBox)sender).DataContext).Selectors)
+            if (((CheckBox)sender).IsFocused)
             {
-                selector.Export = true;
+                foreach (var selector in SelectorGroup.Selectors)
+                {
+                    selector.Export = true;
+                }
             }
         }
 
         private void ChkAllExport_Unchecked(object sender, RoutedEventArgs e)
         {
-            foreach (var selector in ((SelectorGroup)((CheckBox)sender).DataContext).Selectors)
+            if (((CheckBox)sender).IsFocused)
             {
-                selector.Export = false;
+                foreach (var selector in SelectorGroup.Selectors)
+                {
+                    selector.Export = false;
+                }
             }
         }
 
-        private void ChkAllExport_Loaded(object sender, RoutedEventArgs e)
+        private void ChkExport_Checked(object sender, RoutedEventArgs e)
         {
-            ((CheckBox)sender).DataContext = DataContext;
+            if (((CheckBox)sender).IsFocused)
+            {
+                ((Selector)((CheckBox)sender).DataContext).Export = (bool)((CheckBox)sender).IsChecked;
+
+                if (CheckIfEverySelectorsIsChecked(SelectorGroup))
+                {
+                    SelectorGroup.ExportAllSelectors = true;
+                }
+            }
+        }
+
+        private void ChkExport_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (((CheckBox)sender).IsFocused)
+            {
+                ((Selector)((CheckBox)sender).DataContext).Export = (bool)((CheckBox)sender).IsChecked;
+
+                SelectorGroup.ExportAllSelectors = false;
+            }
+        }
+
+        private bool CheckIfEverySelectorsIsChecked(SelectorGroup selectorGroup)
+        {
+            foreach (var selector in selectorGroup.Selectors)
+            {
+                if (!selector.Export)
+                    return false;
+            }
+            return true;
         }
     }
 }

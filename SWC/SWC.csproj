@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -68,11 +69,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\DataModel\Detail.cs" />
+    <Compile Include="Classes\LinkS.cs" />
+    <Compile Include="Classes\SearchModel\GlobalSearch.cs" />
+    <Compile Include="Classes\SWC.cs" />
     <Compile Include="Classes\ExportFunctions.cs" />
     <Compile Include="Classes\DataModel\Item.cs" />
     <Compile Include="Classes\DataModel\Result.cs" />
     <Compile Include="Classes\DataModel\Selector.cs" />
     <Compile Include="Classes\DataModel\SelectorGroup.cs" />
+    <Compile Include="CustomControls\RangeSlider.xaml.cs">
+      <DependentUpon>RangeSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.de-DE.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -105,6 +112,10 @@
     <Compile Include="Windows\WatchResultDetailsWindow.xaml.cs">
       <DependentUpon>WatchResultDetailsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="CustomControls\RangeSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
