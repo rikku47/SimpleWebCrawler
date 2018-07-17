@@ -32,12 +32,14 @@ namespace SWC
         {
             foreach (var group in Groups)
             {
-                foreach (var link in group.Links)
-                {
-                    CalculateTotalSelectorsOfALink(link);
+                group.Crawl();
 
-                    link.CrawlSelectors();
-                }
+                //foreach (var link in group.Links)
+                //{
+                //    CalculateTotalSelectorsOfALink(link);
+
+                //    link.CrawlSelectors();
+                //}
             }
         }
 

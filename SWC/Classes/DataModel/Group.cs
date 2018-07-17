@@ -10,12 +10,14 @@ namespace SWC
     public class Group : INotifyPropertyChanged
     {
         private string _name = "";
+        private bool _isCrawl;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Group(string name)
         {
             Name = name;
+            IsCrawl = true;
             Links = new ObservableCollection<Link>();
             Links.CollectionChanged += Links_CollectionChanged;
             Search = new Search();
@@ -46,6 +48,7 @@ namespace SWC
         public DateTime CreationDate { get; set; }
 
         public int HighestAmountOfSelectorsOfALink { get; set; }
+        public bool IsCrawl { get => _isCrawl; set => _isCrawl = value; }
 
         private void Changed(string propertyName)
         {
@@ -73,6 +76,17 @@ namespace SWC
         public override int GetHashCode()
         {
             return 1817216190 + EqualityComparer<ObservableCollection<Link>>.Default.GetHashCode(Links);
+        }
+
+        public void Crawl()
+        {
+            if(IsCrawl)
+            {
+                foreach (var link in Links)
+                {
+                    link.Crawl();
+                }
+            }
         }
     }
 }
