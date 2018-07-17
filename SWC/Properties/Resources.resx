@@ -140,7 +140,7 @@
     <value>Crawl</value>
   </data>
   <data name="MWTCOGroupNames" xml:space="preserve">
-    <value>Groupname(s)</value>
+    <value>Add Group(s)</value>
   </data>
   <data name="MWTCOSearch" xml:space="preserve">
     <value>Search</value>
@@ -150,10 +150,10 @@
     <comment>The "Close" item within the "File" item</comment>
   </data>
   <data name="MWTCOGroupname" xml:space="preserve">
-    <value>Group</value>
+    <value>Rename group</value>
   </data>
   <data name="MWTCOLinks" xml:space="preserve">
-    <value>Links</value>
+    <value>Add link(s)</value>
   </data>
   <data name="MWTCDGLinkHeader" xml:space="preserve">
     <value>Link</value>

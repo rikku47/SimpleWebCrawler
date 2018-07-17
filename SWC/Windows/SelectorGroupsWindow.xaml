@@ -11,30 +11,48 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="26.084" />
-            <RowDefinition Height="75.916" />
-            <RowDefinition />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.RowSpan="2">
-            <GroupBox Header="Selektorgruppe(n)">
-                <TextBox
-                    Name="txtSelectorGroups"
-                    Background="Azure"
-                    KeyUp="TxtSelectorGroups_KeyUp" />
-            </GroupBox>
-            <GroupBox Header="Export">
-                <Button
-                    Name="btnExportSelectorGroups"
-                    Padding="10"
-                    Click="BtnExportSelectorGroups_Click"
-                    Content="Export" />
-            </GroupBox>
-        </StackPanel>
+        <GroupBox Header="Selektorgruppe(n) hinzufügen">
+            <TextBox
+                Name="txtSelectorGroups"
+                Background="Azure"
+                KeyUp="TxtSelectorGroups_KeyUp" />
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Export">
+            <Button
+                Name="btnExportSelectorGroups"
+                Padding="10"
+                Click="BtnExportSelectorGroups_Click"
+                Content="Export" />
+        </GroupBox>
+        <ListBox
+            Name="libSelectorgroups"
+            Grid.Row="1"
+            MinHeight="120"
+            MaxHeight="120"
+            ItemsSource="{Binding SelectorGroups, Mode=OneWay}"
+            SelectionMode="Extended">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <ContentPresenter Content="{Binding Name, Mode=OneWay}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <TabControl
             Name="tcSelectorGroups"
             Grid.Row="2"
-            ItemsSource="{Binding SelectorGroups}"
+            Grid.ColumnSpan="2"
+            MinHeight="800"
+            MaxHeight="800"
+            ItemsSource="{Binding ElementName=libSelectorgroups, Path=SelectedItems}"
             SelectionChanged="TcSelectorGroups_SelectionChanged">
             <TabControl.ItemTemplate>
                 <DataTemplate>
@@ -44,28 +62,17 @@
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="20*" />
+                            <ColumnDefinition Width="80*" />
                         </Grid.ColumnDefinitions>
-                        <Expander Grid.ColumnSpan="2" Header="Optionen">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <GroupBox Grid.ColumnSpan="2" Header="Selektorgruppenname">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <ScrollViewer>
+                            <StackPanel CanVerticallyScroll="True">
+                                <GroupBox Header="Selektorgruppenname">
                                     <StackPanel>
                                         <TextBox
                                             Name="txtSelectorGroup"
@@ -77,10 +84,7 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </GroupBox>
-                                <GroupBox
-                                    Grid.Row="1"
-                                    MinHeight="120"
-                                    Header="Standard Selektors">
+                                <GroupBox Grid.Row="1" Header="Standard Selektors">
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Alle wählen" />
@@ -100,7 +104,7 @@
                                             Margin="0,0,0,5"
                                             Loaded="LibDefaultSelectors_Loaded"
                                             SelectionChanged="LibDefaultSelectors_SelectionChanged"
-                                            SelectionMode="Multiple" />
+                                            SelectionMode="Extended" />
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox
@@ -127,7 +131,7 @@
                                             Margin="0,0,0,5"
                                             Loaded="LibCustomSelectors_Loaded"
                                             SelectionChanged="LibCustomSelectors_SelectionChanged"
-                                            SelectionMode="Multiple" />
+                                            SelectionMode="Extended" />
                                         <TextBox
                                             Name="txtSelectors"
                                             Margin="0,0,0,5"
@@ -169,22 +173,35 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </GroupBox>
-                                <GroupBox
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    Header="Export">
+                                <GroupBox Header="Export">
                                     <Button
                                         Name="btnExport"
                                         Click="BtnExportSelectorGroup_Click"
                                         Content="Export" />
                                 </GroupBox>
-                            </Grid>
-                        </Expander>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <GroupBox Grid.Row="1" Header="Gewählte Selektoren">
+                            <ListBox
+                                Name="libSelectorGroupsSelected"
+                                MinHeight="400"
+                                MaxHeight="400"
+                                ItemsSource="{Binding Selectors}"
+                                SelectionMode="Extended">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ContentPresenter Content="{Binding CSSSelector}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
                         <TabControl
-                            Name="tcSelectors"
-                            Grid.Row="2"
-                            Grid.ColumnSpan="2"
-                            ItemsSource="{Binding Selectors}">
+                            Name="tcResults"
+                            Grid.RowSpan="2"
+                            Grid.Column="1"
+                            MinHeight="800"
+                            MaxHeight="800"
+                            ItemsSource="{Binding ElementName=libSelectorGroupsSelected, Path=SelectedItems}">
                             <TabControl.ItemTemplate>
                                 <DataTemplate>
                                     <ContentPresenter Content="{Binding CSSSelector}" />
@@ -193,76 +210,123 @@
                             <TabControl.ContentTemplate>
                                 <DataTemplate>
                                     <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20*" />
+                                            <ColumnDefinition Width="80*" />
+                                        </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <Expander Header="Optionen">
-                                            <GroupBox Header="Skript">
-                                                <StackPanel>
-                                                    <StackPanel>
-                                                        <Label Content="Aktivieren" />
-                                                        <CheckBox
-                                                            Name="chkScript"
-                                                            VerticalAlignment="Center"
-                                                            IsChecked="{Binding ScriptActivate}" />
-                                                        <Label Content="Script Pfad" />
-                                                        <TextBox
-                                                            Name="txtScriptPath"
-                                                            Background="Azure"
-                                                            Text="{Binding ScriptPath}" />
-                                                        <Label Content="Script Argumente" />
-                                                        <TextBox
-                                                            Name="txtScriptArgument"
-                                                            Background="Azure"
-                                                            Text="{Binding ScriptFile}" />
-                                                    </StackPanel>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Label Content="Crawl" />
-                                                        <CheckBox
-                                                            Name="chkCrawl"
-                                                            VerticalAlignment="Center"
-                                                            IsChecked="{Binding Crawl}" />
-                                                        <Label Content="Text" />
-                                                        <CheckBox
-                                                            Name="chkText"
-                                                            VerticalAlignment="Center"
-                                                            IsChecked="{Binding CrawlText}" />
-                                                        <Label Content="innerHTML" />
-                                                        <CheckBox
-                                                            Name="chkInnerHTML"
-                                                            VerticalAlignment="Center"
-                                                            IsChecked="{Binding CrawlInnerHTML}" />
-                                                        <Label Content="outerHTML" />
-                                                        <CheckBox
-                                                            Name="chkOuterHTML"
-                                                            VerticalAlignment="Center"
-                                                            IsChecked="{Binding CrawlOuterHTML}" />
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </GroupBox>
-                                        </Expander>
-                                        <DataGrid
-                                            Grid.Row="1"
-                                            AutoGenerateColumns="False"
-                                            IsReadOnly="True"
-                                            ItemsSource="{Binding Results}">
-                                            <DataGrid.Columns>
-                                                <DataGridTextColumn Binding="{Binding CreationDate}" Header="Resultate vom" />
-                                                <DataGridTemplateColumn Header="Scripts" />
-                                                <DataGridTemplateColumn Header="Details">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <Button
-                                                                Name="btnShowResultDetails"
-                                                                Click="BtnShowResultDetails_Click"
-                                                                Content="Anzeigen" />
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                </DataGridTemplateColumn>
-                                                <DataGridTextColumn Binding="{Binding ResultsCount}" Header="Resultate insgesamt" />
-                                            </DataGrid.Columns>
-                                        </DataGrid>
+                                        <GroupBox Header="Optionen">
+                                            <StackPanel>
+                                                <Label Content="Trim"/>
+                                                <CheckBox Name="chkTrim" IsChecked="{Binding IsTrim}"/>
+                                                <Label Content="Crawl"/>
+                                                <CheckBox Name="chkCrawl" IsChecked="{Binding Crawl}"/>
+                                                <Label Content="Text"/>
+                                                <CheckBox Name="chkCrawlText" IsChecked="{Binding CrawlText}"/>
+                                                <Label Content="InnerHTML"/>
+                                                <CheckBox Name="chkCrawlInnerHTML" IsChecked="{Binding CrawlInnerHTML}"/>
+                                                <Label Content="OuterHTML"/>
+                                                <CheckBox Name="chkCrawlOuterHTML" IsChecked="{Binding CrawlOuterHTML}"/>
+                                                <Label Content="ScriptActivate"/>
+                                                <CheckBox Name="chkScriptActivate" IsChecked="{Binding ScriptActivate}"/>
+                                                <Label Content="ScriptPath"/>
+                                                <TextBox Name="txtScriptPath" Text="{Binding ScriptPath}"/>
+                                                <Label Content="ScriptFile"/>
+                                                <TextBox Name="txtScriptFile" Text="{Binding ScriptFile}"/>
+                                            </StackPanel>
+                                        </GroupBox>
+                                        <GroupBox  Grid.Row="1" Header="Datum">
+                                            <ListBox
+                                            Name="libDates"
+                                            MinHeight="800"
+                                            MaxHeight="800"
+                                            ItemsSource="{Binding DateEntries}"
+                                            SelectionMode="Extended">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ContentPresenter Content="{Binding CreationDateOnly}" />
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </GroupBox>
+                                        <TabControl
+                                            Name="tcDates"
+                                            Grid.RowSpan="2"
+                                            Grid.Column="1"
+                                            MinHeight="800"
+                                            MaxHeight="800"
+                                            ItemsSource="{Binding ElementName=libDates, Path=SelectedItems}">
+                                            <TabControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ContentPresenter Content="{Binding CreationDate}" />
+                                                </DataTemplate>
+                                            </TabControl.ItemTemplate>
+                                            <TabControl.ContentTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="20*" />
+                                                            <ColumnDefinition Width="80*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <GroupBox Header="Resultate">
+                                                            <ListBox
+                                                            Name="libResults"
+                                                            ItemsSource="{Binding Results}"
+                                                            SelectionMode="Extended">
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <ContentPresenter Content="{Binding CreationDate}" />
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+                                                            </ListBox>
+                                                        </GroupBox>
+                                                        <TabControl
+                                                            Name="tcFootPrints"
+                                                            Grid.Column="1"
+                                                            ItemsSource="{Binding ElementName=libResults, Path=SelectedItems}">
+                                                            <TabControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <ContentPresenter Content="{Binding CreationDate}" />
+                                                                </DataTemplate>
+                                                            </TabControl.ItemTemplate>
+                                                            <TabControl.ContentTemplate>
+                                                                <DataTemplate>
+                                                                    <Grid>
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="20*" />
+                                                                            <ColumnDefinition Width="80*" />
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <GroupBox Header="Fußabdrücke">
+                                                                            <ListBox Name="libFootPrints" ItemsSource="{Binding FootPrintsAResult}">
+                                                                                <ListBox.ItemTemplate>
+                                                                                    <DataTemplate>
+                                                                                        <ContentPresenter Content="{Binding CreationDate}" />
+                                                                                    </DataTemplate>
+                                                                                </ListBox.ItemTemplate>
+                                                                            </ListBox>
+                                                                        </GroupBox>
+                                                                        <Grid Grid.Column="1" DataContext="{Binding ElementName=libFootPrints, Path=SelectedItem}">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition />
+                                                                                <ColumnDefinition />
+                                                                                <ColumnDefinition />
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <TextBox Text="{Binding Text}" />
+                                                                            <TextBox Grid.Column="1" Text="{Binding InnerHTML}" />
+                                                                            <TextBox Grid.Column="2" Text="{Binding OuterHTML}" />
+                                                                        </Grid>
+                                                                    </Grid>
+
+                                                                </DataTemplate>
+                                                            </TabControl.ContentTemplate>
+                                                        </TabControl>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </TabControl.ContentTemplate>
+                                        </TabControl>
                                     </Grid>
                                 </DataTemplate>
                             </TabControl.ContentTemplate>

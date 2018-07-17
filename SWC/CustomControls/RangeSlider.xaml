@@ -58,7 +58,8 @@
             Value="{Binding ElementName=root, Path=LowerValue}"
             Template="{StaticResource simpleSlider}"
             Margin="0,0,10,0"
-            AutoToolTipPlacement="BottomRight"/>
+            AutoToolTipPlacement="BottomRight" ValueChanged="LowerSlider_ValueChanged_1"
+            />
         
         <Slider
             x:Name="UpperSlider"
@@ -67,6 +68,6 @@
             Value="{Binding ElementName=root, Path=UpperValue}"
             Template="{StaticResource simpleSlider}"
             Margin="0,0,10,0"
-            AutoToolTipPlacement="BottomRight"/>
+            AutoToolTipPlacement="BottomRight" ValueChanged="UpperSlider_ValueChanged_1"/>
     </Grid>
 </UserControl>

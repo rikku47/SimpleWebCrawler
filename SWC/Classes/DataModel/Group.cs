@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SWC.Classes.SearchModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace SWC
 {
-    class Group : INotifyPropertyChanged
+    public class Group : INotifyPropertyChanged
     {
         private string _name = "";
 
@@ -15,7 +17,19 @@ namespace SWC
         {
             Name = name;
             Links = new ObservableCollection<Link>();
+            Links.CollectionChanged += Links_CollectionChanged;
+            Search = new Search();
             CreationDate = DateTime.Now;
+        }
+
+        private void Links_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            foreach (var link in (ObservableCollection<Link>)sender)
+            {
+                link.Group = this;
+            }
+            
+               SetHighestAmountOfSelectorsOfALink();
         }
 
         public string Name
@@ -27,12 +41,26 @@ namespace SWC
                 Changed(nameof(Name));
             }
         }
-        public ObservableCollection<Link> Links { get; }
-        public DateTime CreationDate { get; }
+        public ObservableCollection<Link> Links { get; set; }
+        public Search Search { get; set; }
+        public DateTime CreationDate { get; set; }
+
+        public int HighestAmountOfSelectorsOfALink { get; set; }
 
         private void Changed(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void SetHighestAmountOfSelectorsOfALink()
+        {
+            foreach (var link in Links)
+            {
+                if(link.TotalSelectors > HighestAmountOfSelectorsOfALink)
+                {
+                    HighestAmountOfSelectorsOfALink = link.TotalSelectors;
+                }
+            }
         }
 
         public override bool Equals(object obj)

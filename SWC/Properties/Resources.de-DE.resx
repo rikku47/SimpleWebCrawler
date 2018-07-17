@@ -145,16 +145,16 @@
     <value>Crawl</value>
   </data>
   <data name="MWTCOGroupNames" xml:space="preserve">
-    <value>Gruppenname(n)</value>
+    <value>Gruppe(n) hinzufügen</value>
   </data>
   <data name="MWTCOSearch" xml:space="preserve">
     <value>Suche</value>
   </data>
   <data name="MWTCOGroupname" xml:space="preserve">
-    <value>Gruppe</value>
+    <value>Gruppe umbenennen</value>
   </data>
   <data name="MWTCOLinks" xml:space="preserve">
-    <value>Links</value>
+    <value>Link(s) hinzufügen</value>
   </data>
   <data name="MWTCDGLinkHeader" xml:space="preserve">
     <value>Link</value>

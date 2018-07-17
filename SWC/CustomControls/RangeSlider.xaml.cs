@@ -77,5 +77,15 @@ namespace SWC.CustomControls
         {
             LowerSlider.Value = Math.Min(UpperSlider.Value, LowerSlider.Value);
         }
+
+        private void LowerSlider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //MainWindow.SearchSelectors();
+        }
+
+        private void UpperSlider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            //MainWindow.SearchSelectors();
+        }
     }
 }

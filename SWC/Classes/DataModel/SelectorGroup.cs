@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -18,7 +19,21 @@ namespace SWC.Classes
             CrawlText = true;
             ExportAllSelectors = false;
             Selectors = new ObservableCollection<Selector>();
+            Selectors.CollectionChanged += Selectors_CollectionChanged;
             CreationDate = DateTime.Now;
+        }
+
+        private void Selectors_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            foreach (var selector in (ObservableCollection<Selector>)sender)
+            {
+                selector.SelectorGroup = this;
+                //selector.SelectorGroup.CallLink(sender, e);
+                if (selector.SelectorGroup.Link != null)
+                {
+                    selector.SelectorGroup.Link.CallSelectorGroupsCollectionChanged(sender, e);
+                }
+            }
         }
 
         public string Name { get; set; }
@@ -37,8 +52,11 @@ namespace SWC.Classes
                 Changed(nameof(ExportAllSelectors));
             }
         }
-        public ObservableCollection<Selector> Selectors { get; }
-        public DateTime CreationDate { get; }
+        public ObservableCollection<Selector> Selectors { get; set; }
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public Link Link { get; set; }
 
         private void Changed(string propertyName)
         {

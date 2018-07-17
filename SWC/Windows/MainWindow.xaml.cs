@@ -26,7 +26,7 @@ namespace SWC
 
         internal ObservableCollection<Group> Groups { get; set; }
         public ObservableCollection<string> CustomSelectors { get; set; }
-        GlobalSearch globalSearch { get; set; }
+        Search GlobalSearch { get; set; }
 
         private void BtnCrawl_Click(object sender, RoutedEventArgs e)
         {
@@ -72,6 +72,32 @@ namespace SWC
             }
         }
 
+        private void ReadGlobalSearch(string path)
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    String line = sr.ReadToEnd();
+                    GlobalSearch = JsonConvert.DeserializeObject<Search>(line);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void WriteGlobalSearch()
+        {
+            string globalSearchJSON = JsonConvert.SerializeObject(GlobalSearch);
+
+            using (var sw = new StreamWriter("globalSearch.json"))
+            {
+                sw.WriteLine(globalSearchJSON);
+            }
+        }
+
         private void ReadGroups(string path)
         {
             try
@@ -104,6 +130,7 @@ namespace SWC
             string customSelectorsPathWithFile = appPath + "\\customSelectors.json";
             string groupsPathWithFile = appPath + "\\groups.json";
             string exportPath = appPath + "\\export";
+            string globalSearchPathWithFile = appPath + "\\globalSearch.json";
 
             if (File.Exists(customSelectorsPathWithFile))
             {
@@ -119,6 +146,21 @@ namespace SWC
             {
                 Directory.CreateDirectory(exportPath);
             }
+
+            if (File.Exists(globalSearchPathWithFile))
+            {
+                ReadGlobalSearch(globalSearchPathWithFile);
+            }
+            else
+            {
+                GlobalSearch = new Search
+                {
+                    SelectorsMax = 0
+                };
+                WriteGlobalSearch();
+            }
+
+            gbGlobalSearch.DataContext = GlobalSearch;
 
             if (CustomSelectors == null)
             {
@@ -140,15 +182,13 @@ namespace SWC
 
                 CalculateTotalSelectorsOfALinkOfAllGroups();
             }
-
-            libTest.DataContext = CustomSelectors;
-            libTest.ItemsSource = CustomSelectors;
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
         {
             WriteCustomSelectors();
             WriteGroups();
+            WriteGlobalSearch();
         }
 
         private void BtnOpenFiles_Click(object sender, RoutedEventArgs e)
@@ -310,6 +350,7 @@ namespace SWC
             editSelectorsWindow.ShowDialog();
 
             CalculateTotalSelectorsOfALink((Link)editSelectorsWindow.DataContext);
+            GlobalSearch.SelectorsMax = 0;
         }
 
         private void CalculateTotalSelectorsOfALinkOfAllGroups()
@@ -558,7 +599,7 @@ namespace SWC
             }
         }
 
-        private void btnTest_Click(object sender, RoutedEventArgs e)
+        private void BtnTest_Click(object sender, RoutedEventArgs e)
         {
             Link link = new Link("www5678");
 
@@ -569,31 +610,34 @@ namespace SWC
 
         private void TxtSearchLink_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            string searchInput = ((TextBox)sender).Text;
-
-            Group group = new Group(((Group)tcGroups.SelectedItem).Name);
-
-            foreach (var item in tcGroups.Items)
+            if (tcGroups != null && tcGroups.Items.Count > 0)
             {
-                foreach (var link in ((Group)item).Links)
+                string searchInput = ((TextBox)sender).Text;
+
+                //Group group = new Group(((Group)tcGroups.SelectedItem).Name);
+
+                foreach (var item in tcGroups.Items)
                 {
-                    if (!string.IsNullOrEmpty(searchInput))
+                    foreach (var link in ((Group)item).Links)
                     {
-                        if (link.Adress.Contains(searchInput))
+                        if (!string.IsNullOrEmpty(searchInput))
                         {
-                            link.IsAdressFound = true;
-                            link.IsFilterOut = false;
+                            if (link.Adress.Contains(searchInput))
+                            {
+                                link.IsAdressFound = true;
+                                link.IsFilterOut = false;
+                            }
+                            else
+                            {
+                                link.IsAdressFound = false;
+                                link.IsFilterOut = true;
+                            }
                         }
                         else
                         {
                             link.IsAdressFound = false;
-                            link.IsFilterOut = true;
+                            link.IsFilterOut = false;
                         }
-                    }
-                    else
-                    {
-                        link.IsAdressFound = false;
-                        link.IsFilterOut = false;
                     }
                 }
             }
@@ -601,31 +645,34 @@ namespace SWC
 
         private void TxtSearchEncoding_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            string searchInput = ((TextBox)sender).Text;
-
-            Group group = new Group(((Group)tcGroups.SelectedItem).Name);
-
-            foreach (var item in tcGroups.Items)
+            if (tcGroups != null && tcGroups.Items.Count > 0)
             {
-                foreach (var link in ((Group)item).Links)
+                string searchInput = ((TextBox)sender).Text;
+
+                //Group group = new Group(((Group)tcGroups.SelectedItem).Name);
+
+                foreach (var item in tcGroups.Items)
                 {
-                    if (!string.IsNullOrEmpty(searchInput))
+                    foreach (var link in ((Group)item).Links)
                     {
-                        if (link.Encoding.Contains(searchInput))
+                        if (!string.IsNullOrEmpty(searchInput))
                         {
-                            link.IsEncodingFound = true;
-                            link.IsFilterOut = false;
+                            if (link.Encoding.Contains(searchInput))
+                            {
+                                link.IsEncodingFound = true;
+                                link.IsFilterOut = false;
+                            }
+                            else
+                            {
+                                link.IsEncodingFound = false;
+                                link.IsFilterOut = true;
+                            }
                         }
                         else
                         {
                             link.IsEncodingFound = false;
-                            link.IsFilterOut = true;
+                            link.IsFilterOut = false;
                         }
-                    }
-                    else
-                    {
-                        link.IsEncodingFound = false;
-                        link.IsFilterOut = false;
                     }
                 }
             }
@@ -682,7 +729,7 @@ namespace SWC
 
         private void LibTest_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(((ListBox)sender).IsMouseOver || ((ListBox)sender).IsKeyboardFocusWithin)
+            if (((ListBox)sender).IsMouseOver || ((ListBox)sender).IsKeyboardFocusWithin)
             {
                 if (((ListBox)sender).SelectedItems.Count < ((ListBox)sender).Items.Count)
                 {
@@ -691,6 +738,66 @@ namespace SWC
                 else
                 {
                     chkTest.IsChecked = true;
+                }
+            }
+        }
+
+        private void GroupBox_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DpStart_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchDate();
+        }
+
+        private void DpEnd_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchDate();
+        }
+
+        private void SearchDate()
+        {
+            if (tcGroups != null && tcGroups.Items.Count > 0)
+            {
+                foreach (var item in tcGroups.Items)
+                {
+                    foreach (var link in ((Group)item).Links)
+                    {
+                        if (link.CreationDate >= GlobalSearch.DateTimeStart & link.CreationDate <= GlobalSearch.DateTimeEnd)
+                        {
+                            link.IsCreationDateFound = true;
+                        }
+                        else
+                        {
+                            link.IsCreationDateFound = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SearchSelectors()
+        {
+            if (tcGroups != null && tcGroups.Items.Count > 0)
+            {
+                foreach (var item in tcGroups.Items)
+                {
+                    foreach (var link in ((Group)item).Links)
+                    {
+                        foreach (var selectorGroup in link.SelectorGroups)
+                        {
+                            if(selectorGroup.Selectors.Count >= GlobalSearch.SelectorsMin & selectorGroup.Selectors.Count <= GlobalSearch.SelectorsMax)
+                            {
+                                link.IsTotalSelectorsFound = true;
+                            }
+                            else
+                            {
+                                link.IsTotalSelectorsFound = false;
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -18,11 +19,11 @@ namespace SWC.Classes
             CrawlText = true;
             ScriptPath = "";
             ScriptFile = "";
-            Results = new ObservableCollection<Result>();
+            DateEntries = new ObservableCollection<DateEntry>();
             CreationDate = DateTime.Now;
         }
 
-        public string CSSSelector { get; }
+        public string CSSSelector { get; set; }
         public bool IsTrim { get; set; }
         public bool Crawl { get; set; }
         public bool CrawlText { get; set; }
@@ -40,8 +41,13 @@ namespace SWC.Classes
                 Changed(nameof(Export));
             }
         }
-        public ObservableCollection<Result> Results { get; }
-        public DateTime CreationDate { get; }
+        public ObservableCollection<DateEntry> DateEntries { get; set; }
+        public DateTime CreationDate { get; set; }
+
+        [JsonIgnore]
+        public SelectorGroup SelectorGroup { get; set; }
+        [JsonIgnore]
+        public Link Link { get; set; }
 
         private void Changed(string propertyName)
         {

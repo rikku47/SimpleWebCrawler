@@ -14,7 +14,7 @@ namespace SWC
             InitializeComponent();
         }
 
-        internal Result Result { get; set; } = null;
+        internal DateEntry Result { get; set; } = null;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -25,7 +25,7 @@ namespace SWC
         {
             WatchResultWindow watchResultWindow = new WatchResultWindow()
             {
-                Item = (Item)((Button)sender).DataContext
+                Item = (FootPrintOfAResult)((Button)sender).DataContext
             };
 
             watchResultWindow.Show();

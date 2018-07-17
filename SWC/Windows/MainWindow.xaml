@@ -43,32 +43,55 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <Expander Header="{x:Static properties:Resources.MWMOptions}">
-                        <StackPanel>
-                            <GroupBox Header="{x:Static properties:Resources.MWTCOGroupNames}">
-                                <TextBox
-                                    x:Name="txtGroups"
-                                    Background="Azure"
-                                    KeyUp="TxtGroups_KeyUp" />
-                            </GroupBox>
-                            <GroupBox Margin="0,5,0,0" Header="{x:Static properties:Resources.MWTCOSearch}">
+                    <StackPanel>
+                        <GroupBox Header="{x:Static properties:Resources.MWTCOGroupNames}">
+                            <TextBox
+                                x:Name="txtGroups"
+                                Background="Azure"
+                                KeyUp="TxtGroups_KeyUp" />
+                        </GroupBox>
+                        <Expander Header="{x:Static properties:Resources.MWMOptions}">
+                            <GroupBox
+                                Name="gbGlobalSearch"
+                                Margin="0,5,0,0"
+                                Header="{x:Static properties:Resources.MWTCOSearch}"
+                                Loaded="GroupBox_Loaded">
                                 <StackPanel>
+                                    <Label Name="lblSearchLinks" Content="Link(s)" />
                                     <TextBox
                                         x:Name="txtSearchLink"
                                         Background="Azure"
-                                        KeyUp="TxtSearchLink_KeyUp" />
+                                        KeyUp="TxtSearchLink_KeyUp"
+                                        Text="{Binding LinksSearch}" />
+                                    <Label Name="lblSearchEncodings" Content="Encoding(s)" />
                                     <TextBox
                                         x:Name="txtSearchEncoding"
                                         Margin="0,5,0,0"
                                         Background="Azure"
-                                        KeyUp="TxtSearchEncoding_KeyUp" />
-                                    <CustomControls:RangeSlider Margin="0,5,0,0" />
-                                    <DatePicker x:Name="dpStart" Margin="0,5,0,0" />
-                                    <DatePicker x:Name="dpEnd" Margin="0,5,0,0" />
+                                        KeyUp="TxtSearchEncoding_KeyUp"
+                                        Text="{Binding EncodingsSearch}" />
+                                    <Label Name="lblSearchRangeSelectors" Content="Selektoren" />
+                                    <CustomControls:RangeSlider
+                                        Margin="0,5,0,0"
+                                        LowerValue="{Binding SelectorsMin}"
+                                        Maximum="{Binding SelectorsMax}"
+                                        Minimum="{Binding SelectorsMin}"
+                                        UpperValue="{Binding SelectorsMax}" />
+                                    <Label Name="lblSearchRangeDate" Content="Zeitraum" />
+                                    <DatePicker
+                                        x:Name="dpStart"
+                                        Margin="0,5,0,0"
+                                        SelectedDate="{Binding DateTimeStart}"
+                                        SelectedDateChanged="DpStart_SelectedDateChanged" />
+                                    <DatePicker
+                                        x:Name="dpEnd"
+                                        Margin="0,5,0,0"
+                                        SelectedDate="{Binding DateTimeEnd}"
+                                        SelectedDateChanged="DpEnd_SelectedDateChanged" />
                                 </StackPanel>
                             </GroupBox>
-                        </StackPanel>
-                    </Expander>
+                        </Expander>
+                    </StackPanel>
                     <TabControl
                         x:Name="tcGroups"
                         Grid.Row="1"
@@ -85,43 +108,62 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Expander Header="{x:Static properties:Resources.MWMOptions}">
-                                        <StackPanel>
-                                            <GroupBox Header="{x:Static properties:Resources.MWTCOGroupname}">
-                                                <StackPanel>
-                                                    <TextBox
-                                                        x:Name="txtGroupname"
-                                                        Background="Azure"
-                                                        Text="{Binding Name}" />
-                                                </StackPanel>
-                                            </GroupBox>
-                                            <GroupBox Header="{x:Static properties:Resources.MWTCOLinks}">
-                                                <StackPanel>
-                                                    <TextBox
-                                                        x:Name="txtLinks"
-                                                        Background="Azure"
-                                                        KeyUp="TxtLinks_KeyUp" />
-                                                    <TextBlock x:Name="tbText" />
-                                                </StackPanel>
-                                            </GroupBox>
-                                            <GroupBox Margin="0,5,0,0" Header="{x:Static properties:Resources.MWTCOSearch}">
-                                                <StackPanel>
-                                                    <TextBox
-                                                        x:Name="txtSearchLink"
-                                                        Background="Azure"
-                                                        KeyUp="TxtSearchLink_KeyUp" />
-                                                    <TextBox
-                                                        x:Name="txtSearchEncoding"
-                                                        Margin="0,5,0,0"
-                                                        Background="Azure"
-                                                        KeyUp="TxtSearchEncoding_KeyUp" />
-                                                    <CustomControls:RangeSlider Margin="0,5,0,0" />
-                                                    <DatePicker x:Name="dpStart" Margin="0,5,0,0" />
-                                                    <DatePicker x:Name="dpEnd" Margin="0,5,0,0" />
-                                                </StackPanel>
-                                            </GroupBox>
-                                        </StackPanel>
-                                    </Expander>
+                                    <StackPanel>
+                                        <GroupBox Header="{x:Static properties:Resources.MWTCOLinks}">
+                                            <StackPanel>
+                                                <TextBox
+                                                    x:Name="txtLinks"
+                                                    Background="Azure"
+                                                    KeyUp="TxtLinks_KeyUp" />
+                                                <TextBlock x:Name="tbText" />
+                                            </StackPanel>
+                                        </GroupBox>
+                                        <Expander Header="{x:Static properties:Resources.MWMOptions}">
+                                            <StackPanel>
+                                                <GroupBox Header="{x:Static properties:Resources.MWTCOGroupname}">
+                                                    <StackPanel>
+                                                        <TextBox
+                                                            x:Name="txtGroupname"
+                                                            Background="Azure"
+                                                            Text="{Binding Name}" />
+                                                    </StackPanel>
+                                                </GroupBox>
+                                                <GroupBox Margin="0,5,0,0" Header="{x:Static properties:Resources.MWTCOSearch}">
+                                                    <StackPanel>
+                                                        <Label Name="lblSearchLinks" Content="Link(s)" />
+                                                        <TextBox
+                                                            x:Name="txtSearchLink"
+                                                            Background="Azure"
+                                                            KeyUp="TxtSearchLink_KeyUp"
+                                                            Text="{Binding Search.LinksSearch}" />
+                                                        <Label Name="lblSearchEncodings" Content="Encoding(s)" />
+                                                        <TextBox
+                                                            x:Name="txtSearchEncoding"
+                                                            Margin="0,5,0,0"
+                                                            Background="Azure"
+                                                            KeyUp="TxtSearchEncoding_KeyUp"
+                                                            Text="{Binding Search.EncodingsSearch}" />
+                                                        <Label Name="lblSearchRangeSelectors" Content="Selektoren" />
+                                                        <CustomControls:RangeSlider
+                                                            Margin="0,5,0,0"
+                                                            LowerValue="{Binding Search.SelectorsMin}"
+                                                            Maximum="{Binding Search.SelectorsMax}"
+                                                            Minimum="{Binding Search.SelectorsMin}"
+                                                            UpperValue="{Binding Search.SelectorsMax}" />
+                                                        <Label Name="lblSearchRangeDate" Content="Zeitraum" />
+                                                        <DatePicker
+                                                            x:Name="dpStart"
+                                                            Margin="0,5,0,0"
+                                                            SelectedDate="{Binding DateTimeStart}" />
+                                                        <DatePicker
+                                                            x:Name="dpEnd"
+                                                            Margin="0,5,0,0"
+                                                            SelectedDate="{Binding DateTimeEnd}" />
+                                                    </StackPanel>
+                                                </GroupBox>
+                                            </StackPanel>
+                                        </Expander>
+                                    </StackPanel>
                                     <DataGrid
                                         Grid.Row="1"
                                         AutoGenerateColumns="False"
@@ -299,7 +341,7 @@
                             Padding="10"
                             Click="BtnReadSelectors_Click"
                             Content="Einlesen" />
-                        <ListBox Name="libCustomSelectors" MaxHeight="400"/>
+                        <ListBox Name="libCustomSelectors" MaxHeight="400" />
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -317,7 +359,7 @@
                         <DataGrid x:Name="dgPlayground" />
                         <Button
                             x:Name="btnTest"
-                            Click="btnTest_Click"
+                            Click="BtnTest_Click"
                             Content="Test"
                             DataContext="{Binding DataContext, ElementName=dgPlayground}" />
                         <CustomControls:RangeSlider />
@@ -325,7 +367,10 @@
                             Name="chkTest"
                             Checked="ChkTest_Checked"
                             Unchecked="ChkTest_Unchecked" />
-                        <ListBox Name="libTest" SelectionMode="Multiple" SelectionChanged="LibTest_SelectionChanged" />
+                        <ListBox
+                            Name="libTest"
+                            SelectionChanged="LibTest_SelectionChanged"
+                            SelectionMode="Multiple" />
                     </StackPanel>
                 </Grid>
             </TabItem>

@@ -7,12 +7,13 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using SWC.Classes;
+using SWC.Classes.DataModel;
 using AngleSharp.Parser.Html;
 using System.Text;
 
 namespace SWC
 {
-    internal class Link : INotifyPropertyChanged
+    public class Link : INotifyPropertyChanged
     {
         private bool _isCrawl;
         private int _totalSelectors;
@@ -32,10 +33,34 @@ namespace SWC
             IsCrawl = true;
             CrawlText = true;
             SelectorGroups = new ObservableCollection<SelectorGroup>();
+            SelectorGroups.CollectionChanged += SelectorGroups_CollectionChanged;
             CreationDate = DateTime.Now;
         }
 
-        public string Adress { get; }
+        private void SelectorGroups_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (sender is ObservableCollection<Selector>)
+            {
+                TotalSelectors++;
+            }
+            else if (sender is ObservableCollection<SelectorGroup>)
+            {
+                TotalSelectors += ((ObservableCollection<SelectorGroup>)sender)[(((ObservableCollection<SelectorGroup>)sender).Count - 1)].Selectors.Count;
+
+                foreach (var selectorGroup in (ObservableCollection<SelectorGroup>)sender)
+                {
+                    selectorGroup.Link = this;
+
+                    foreach (var selector in selectorGroup.Selectors)
+                    {
+                        selector.Link = this;
+
+                    }
+                }
+            }
+        }
+
+        public string Adress { get; set; }
 
         [JsonIgnore]
         public bool IsAdressFound
@@ -82,7 +107,7 @@ namespace SWC
 
         public bool CrawlOuterHTML { get; set; }
 
-        public ObservableCollection<SelectorGroup> SelectorGroups { get; }
+        public ObservableCollection<SelectorGroup> SelectorGroups { get; set; }
 
         [JsonIgnore]
         public int TotalSelectors
@@ -106,7 +131,7 @@ namespace SWC
             }
         }
 
-        public DateTime CreationDate { get; }
+        public DateTime CreationDate { get; set; }
 
         [JsonIgnore]
         public bool IsCreationDateFound
@@ -129,6 +154,9 @@ namespace SWC
                 Changed(nameof(IsFilterOut));
             }
         }
+
+        [JsonIgnore]
+        public Group Group { get; set; }
 
         private void Changed(string propertyName)
         {
@@ -168,94 +196,117 @@ namespace SWC
 
         private void ExtractDatas(IDocument document, Selector selector)
         {
-            var result = new Result();
-            Detail details;
-            IDocument documentFromScript = null;
+            DateEntry dateEntry = null;
 
-            if (selector.ScriptActivate)
+            if (selector.DateEntries.Count == 0 || DateTime.Today > selector.DateEntries[(selector.DateEntries.Count - 1)].CreationDateOnly)
             {
-                var process = new Process();
-                var processStartInfo = new ProcessStartInfo
+                dateEntry = new DateEntry();
+
+                App.Current.Dispatcher.Invoke(delegate
                 {
-                    WindowStyle = ProcessWindowStyle.Normal,
-                    FileName = "cmd.exe",
-                    WorkingDirectory = selector.ScriptPath,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardInput = true
-                };
-                process.StartInfo = processStartInfo;
-                process.Start();
-                process.StandardInput.WriteLine("node " + selector.ScriptFile);
+                    selector.DateEntries.Add(dateEntry);
+                });
+            }
+            else if (selector.DateEntries.Count > 0 && DateTime.Today == selector.DateEntries[(selector.DateEntries.Count - 1)].CreationDateOnly)
+            {
+                    dateEntry = selector.DateEntries[(selector.DateEntries.Count - 1)];
+            }
 
-                bool isClosed = false;
-                StringBuilder outp = new StringBuilder();
+            if (dateEntry != null)
+            {
+                IDocument documentFromScript = null;
 
-                while (isClosed == false && !process.StandardOutput.EndOfStream)
+                if (selector.ScriptActivate)
                 {
-                    outp.Append(process.StandardOutput.ReadLine());
-
-                    if (process.StandardOutput.ReadLine().Contains("exit"))
+                    var process = new Process();
+                    var processStartInfo = new ProcessStartInfo
                     {
-                        process.Close();
-                        isClosed = true;
-                    }
-                }
+                        WindowStyle = ProcessWindowStyle.Normal,
+                        FileName = "cmd.exe",
+                        WorkingDirectory = selector.ScriptPath,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardInput = true
+                    };
+                    process.StartInfo = processStartInfo;
+                    process.Start();
+                    process.StandardInput.WriteLine("node " + selector.ScriptFile);
 
-                HtmlParser parser = new HtmlParser();
-                documentFromScript = parser.Parse(outp.ToString());
-            }
+                    bool isClosed = false;
+                    StringBuilder outp = new StringBuilder();
 
-            IHtmlCollection<IElement> cells = null;
-
-            if (documentFromScript != null)
-            {
-                cells = documentFromScript.QuerySelectorAll(selector.CSSSelector);
-            }
-            else
-            {
-                cells = document.QuerySelectorAll(selector.CSSSelector);
-            }
-
-            foreach (var cell in cells)
-            {
-                string text = "";
-                string innerHTML = "";
-                string outerHTML = "";
-
-                if (selector.CrawlText)
-                {
-                    if (IsTrim)
+                    while (isClosed == false && !process.StandardOutput.EndOfStream)
                     {
-                        text = cell.TextContent.Trim();
+                        outp.Append(process.StandardOutput.ReadLine());
+
+                        if (process.StandardOutput.ReadLine().Contains("exit"))
+                        {
+                            process.Close();
+                            isClosed = true;
+                        }
                     }
-                    else
+
+                    HtmlParser parser = new HtmlParser();
+                    documentFromScript = parser.Parse(outp.ToString());
+                }
+
+                IHtmlCollection<IElement> cells = null;
+
+                if (documentFromScript != null)
+                {
+                    cells = documentFromScript.QuerySelectorAll(selector.CSSSelector);
+                }
+                else
+                {
+                    cells = document.QuerySelectorAll(selector.CSSSelector);
+                }
+
+                if (cells.Length > 0)
+                {
+                    var result = new Result();
+
+                    foreach (var cell in cells)
                     {
-                        text = cell.TextContent;
+                        string text = "";
+                        string innerHTML = "";
+                        string outerHTML = "";
+
+                        if (selector.CrawlText)
+                        {
+                            if (IsTrim)
+                            {
+                                text = cell.TextContent.Trim();
+                            }
+                            else
+                            {
+                                text = cell.TextContent;
+                            }
+                        }
+
+                        if (selector.CrawlInnerHTML)
+                        {
+                            innerHTML = cell.InnerHtml;
+                        }
+
+                        if (selector.CrawlOuterHTML)
+                        {
+                            outerHTML = cell.OuterHtml;
+                        }
+                        result.FootPrintsAResult.Add(new FootPrintOfAResult(text, innerHTML, outerHTML));
+
+                        //var item = new FootPrintOfAResult(text, innerHTML, outerHTML);
                     }
+
+                    App.Current.Dispatcher.Invoke(delegate
+                    {
+                        dateEntry.Results.Add(result);
+                    });
                 }
-
-                if (selector.CrawlInnerHTML)
-                {
-                    innerHTML = cell.InnerHtml;
-                }
-
-                if (selector.CrawlOuterHTML)
-                {
-                    outerHTML = cell.OuterHtml;
-                }
-
-                details = new Detail(text, innerHTML, outerHTML);
-
-                var item = new Item(details);
-
-                result.Items.Add(item);
             }
-
-            App.Current.Dispatcher.Invoke(delegate
-            {
-                selector.Results.Add(result);
-            });
+        }
+        public void CallSelectorGroupsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            SelectorGroups_CollectionChanged(sender, e);
         }
     }
 }

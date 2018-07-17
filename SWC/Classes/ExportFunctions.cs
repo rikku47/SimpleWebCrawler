@@ -22,32 +22,34 @@ namespace SWC
                     if (selector.Export)
                     {
                         stringBuilder.Append("Selektor;Resultate insgesamt\n");
-                        stringBuilder.Append(selector.CSSSelector + ";" + selector.Results.Count + "\n\n");
+                        stringBuilder.Append(selector.CSSSelector + ";" + selector.DateEntries.Count + "\n\n");
 
-                        foreach (var result in selector.Results)
+                        foreach (var dateEntry in selector.DateEntries)
                         {
-                            stringBuilder.Append("Erstellt am: " + result.CreationDate + "\n");
+                            stringBuilder.Append("Erstellt am: " + dateEntry.CreationDate + "\n");
 
-                            foreach (var item in result.Items)
+                            foreach (var result in dateEntry.Results)
                             {
-                                if (true)
+                                foreach (var footPrintAResult in result.FootPrintsAResult)
                                 {
-                                    stringBuilder.Append(item.Details.Text + ";");
-                                }
+                                    if (true)
+                                    {
+                                        stringBuilder.Append(footPrintAResult.Text + ";");
+                                    }
 
-                                if (true)
-                                {
-                                    stringBuilder.Append(item.Details.InnerHTML + ";");
-                                }
+                                    if (true)
+                                    {
+                                        stringBuilder.Append(footPrintAResult.InnerHTML + ";");
+                                    }
 
-                                if (true)
-                                {
-                                    stringBuilder.Append(item.Details.OuterHTML + ";");
-                                }
+                                    if (true)
+                                    {
+                                        stringBuilder.Append(footPrintAResult.OuterHTML + ";");
+                                    }
 
-                                stringBuilder.Append("\n");
+                                    stringBuilder.Append("\n");
+                                }
                             }
-
                             stringBuilder.Append("\n");
                         }
                     }

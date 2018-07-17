@@ -68,13 +68,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Classes\DataModel\Detail.cs" />
+    <Compile Include="Classes\DataModel\Result.cs" />
     <Compile Include="Classes\LinkS.cs" />
-    <Compile Include="Classes\SearchModel\GlobalSearch.cs" />
+    <Compile Include="Classes\SearchModel\Search.cs" />
     <Compile Include="Classes\SWC.cs" />
     <Compile Include="Classes\ExportFunctions.cs" />
-    <Compile Include="Classes\DataModel\Item.cs" />
-    <Compile Include="Classes\DataModel\Result.cs" />
+    <Compile Include="Classes\DataModel\FootPrintOfAResult.cs" />
+    <Compile Include="Classes\DataModel\DateEntry.cs" />
     <Compile Include="Classes\DataModel\Selector.cs" />
     <Compile Include="Classes\DataModel\SelectorGroup.cs" />
     <Compile Include="CustomControls\RangeSlider.xaml.cs">

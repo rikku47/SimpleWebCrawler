@@ -33,10 +33,10 @@ namespace SWC
         {
             DefaultSelectors = new ObservableCollection<string>(typeof(TagNames).GetFields().Select(field => field.Name).ToList());
 
-            if (tcSelectorGroups != null && tcSelectorGroups.Items.Count > 0)
-            {
-                tcSelectorGroups.SelectedIndex = 0;
-            }
+            //if (tcSelectorGroups != null && tcSelectorGroups.Items.Count > 0)
+            //{
+            //    tcSelectorGroups.SelectedIndex = 0;
+            //}
         }
 
         private void TxtSelectorGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
@@ -78,7 +78,7 @@ namespace SWC
         {
             ResultDetailsWindow resultDetailsWindow = new ResultDetailsWindow()
             {
-                Result = (Result)((Button)sender).DataContext
+                Result = (DateEntry)((Button)sender).DataContext
             };
 
             resultDetailsWindow.Show();
@@ -244,6 +244,56 @@ namespace SWC
         private void ChkSelectAllDefaultSelectors_Loaded(object sender, RoutedEventArgs e)
         {
             ChkDefaultSelectors = (CheckBox)sender;
+        }
+
+        private void TcSelectorGroups_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            var temp = e.OriginalSource;
+
+            if (sender is TabControl tcsg && e.OriginalSource is SelectorGroup sg)
+            {
+                if (e.Key == System.Windows.Input.Key.Delete)
+                {
+                    MessageBoxResult result = MessageBox.Show("Wollen Sie den/die  Datensatz/Datensätze endgültig löschen?", null, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        //((Link)DataContext).SelectorGroups.RemoveAt(tcSelectorGroups.SelectedIndex);
+
+                        MessageBox.Show("Datensatz gelöscht.");
+                    }
+                    else if (result == MessageBoxResult.No)
+                    {
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
+            else if (sender is TabControl tcsl && e.OriginalSource is Selector se)
+            {
+                if (e.Key == System.Windows.Input.Key.Delete)
+                {
+                    MessageBoxResult result = MessageBox.Show("Wollen Sie den/die  Datensatz/Datensätze endgültig löschen?", null, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        //((Link)DataContext).SelectorGroups[tcSelectorGroups.SelectedIndex].Selectors.RemoveAt(0);
+
+                        MessageBox.Show("Datensatz gelöscht.");
+                    }
+                    else if (result == MessageBoxResult.No)
+                    {
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        e.Handled = true;
+                    }
+                }
+            }
         }
     }
 }

@@ -13,9 +13,9 @@ namespace SWC
             InitializeComponent();
         }
 
-        private Item _item = null;
+        private FootPrintOfAResult _item = null;
 
-        internal Item Item { get => _item; set => _item = value; }
+        internal FootPrintOfAResult Item { get => _item; set => _item = value; }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
