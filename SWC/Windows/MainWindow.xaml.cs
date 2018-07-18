@@ -790,7 +790,7 @@ namespace SWC
                     {
                         foreach (var selectorGroup in link.SelectorGroups)
                         {
-                            if(selectorGroup.Selectors.Count >= GlobalSearch.SelectorsMin & selectorGroup.Selectors.Count <= GlobalSearch.SelectorsMax)
+                            if (selectorGroup.Selectors.Count >= GlobalSearch.SelectorsMin & selectorGroup.Selectors.Count <= GlobalSearch.SelectorsMax)
                             {
                                 link.IsTotalSelectorsFound = true;
                             }
@@ -804,76 +804,7 @@ namespace SWC
             }
         }
 
-        private void DpStartTimeGroup_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboStartHourGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboStartHourGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboStartMinuteGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboStartMinuteGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboStartSecondGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboStartSecondGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void DpEndTimeGroup_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboEndHourGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboEndHourGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboEndMinuteGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboEndMinuteGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboEndSecondGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboEndSecondGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
+        #region DateTimeGroup
         private void BtnStartInterval_Click(object sender, RoutedEventArgs e)
         {
 
@@ -893,95 +824,44 @@ namespace SWC
         {
 
         }
+        #endregion
 
-        private void DpStartTimeGroups_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+
+        private void CboHours_Initialized(object sender, EventArgs e)
         {
-
+            ((ComboBox)sender).ItemsSource = CreateListWithHoursOfADay();
         }
 
-        private void CboStartHourGroups_Loaded(object sender, RoutedEventArgs e)
+        private void cboMinutesOrSeconds_Initialized(object sender, EventArgs e)
         {
-
+            ((ComboBox)sender).ItemsSource = CreateListWithMinutesOrSecondsOfAnHourOrMinute();
         }
 
-        private void CboStartHourGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private static List<int> CreateListWithHoursOfADay()
         {
+            List<int> hours = new List<int>();
 
+            for (int i = 0; i < 23; i++)
+            {
+                hours.Add(i);
+            }
+
+            return hours;
         }
 
-        private void CboStartMinuteGroups_Loaded(object sender, RoutedEventArgs e)
+        private static List<int> CreateListWithMinutesOrSecondsOfAnHourOrMinute()
         {
+            List<int> hours = new List<int>();
 
+            for (int i = 0; i < 59; i++)
+            {
+                hours.Add(i);
+            }
+
+            return hours;
         }
 
-        private void CboStartMinuteGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboStartSecondGroups_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboStartSecondGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void DpEndTimeGroups_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboEndHourGroups_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboEndHourGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboEndMinuteGroups_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboEndMinuteGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CboEndSecondGroups_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CboEndSecondGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void BtnStartIntervalGroups_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnStartIntervalGroups_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnStartIntervalCancelGroups_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnStartIntervalCancelGroups_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
+       
     }
 }

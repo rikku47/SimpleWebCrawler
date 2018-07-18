@@ -1,5 +1,6 @@
 ﻿using AngleSharp;
 using Newtonsoft.Json;
+using SWC.Classes.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,14 +13,6 @@ namespace SWC.Classes
     public class SelectorGroup : INotifyPropertyChanged
     {
         private bool _exportAllSelectors;
-        private DateTime _startTimeSelectorGroup;
-        private KeyValuePair<int, string> _startTimeSelectorGroupHour;
-        private KeyValuePair<int, string> _startTimeSelectorGroupMinute;
-        private KeyValuePair<int, string> _startTimeSelectorGroupSecond;
-        private DateTime _endTimeSelectorGroup;
-        private KeyValuePair<int, string> _endTimeSelectorGroupHour;
-        private KeyValuePair<int, string> _endTimeSelectorGroupMinute;
-        private KeyValuePair<int, string> _endTimeSelectorGroupSecond;
         private int _interval;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -33,7 +26,7 @@ namespace SWC.Classes
             ExportAllSelectors = false;
             Selectors = new ObservableCollection<Selector>();
             Selectors.CollectionChanged += Selectors_CollectionChanged;
-            StartTimeSelectorGroupHour = new KeyValuePair<int, string>(0, "00");
+            DateTimeAutomation = new DateTimeAutomation();
             CreationDate = DateTime.Now;
         }
 
@@ -68,58 +61,8 @@ namespace SWC.Classes
         }
         private bool Lock { get; set; }
         public ObservableCollection<Selector> Selectors { get; }
-        public DateTime StartTimeSelectorGroup
-        {
-            get => _startTimeSelectorGroup;
-            set => _startTimeSelectorGroup = value;
-        }
-        public KeyValuePair<int, string> StartTimeSelectorGroupHour
-        {
-            get => _startTimeSelectorGroupHour;
-            set => _startTimeSelectorGroupHour = value;
-        }
-        public KeyValuePair<int, string> StartTimeSelectorGroupMinute
-        {
-            get => _startTimeSelectorGroupMinute;
-            set => _startTimeSelectorGroupMinute = value;
-        }
-        public KeyValuePair<int, string> StartTimeSelectorGroupSecond
-        {
-            get => _startTimeSelectorGroupSecond;
-            set => _startTimeSelectorGroupSecond = value;
-        }
-        public DateTime EndTimeSelectorGroup
-        {
-            get => _endTimeSelectorGroup;
-            set => _endTimeSelectorGroup = value;
-        }
-        public KeyValuePair<int, string> EndTimeSelectorGroupHour
-        {
-            get => _endTimeSelectorGroupHour;
-            set => _endTimeSelectorGroupHour = value;
-        }
-        public KeyValuePair<int, string> EndTimeSelectorGroupMinute
-        {
-            get => _endTimeSelectorGroupMinute;
-            set => _endTimeSelectorGroupMinute = value;
-        }
-        public KeyValuePair<int, string> EndTimeSelectorGroupSecond
-        {
-            get => _endTimeSelectorGroupSecond;
-            set => _endTimeSelectorGroupSecond = value;
-        }
-        public int Interval
-        {
-            get => _interval;
-            set
-            {
-                if (value < 0)
-                {
-                    value = 0;
-                }
-                _interval = value;
-            }
-        }
+        public DateTimeAutomation DateTimeAutomation { get; set; }
+        
         public DateTime CreationDate { get; set; }
 
         [JsonIgnore]
@@ -156,25 +99,25 @@ namespace SWC.Classes
         public void CrawlInterval(CancellationToken ct)
         {
             #region DateTimeStart
-            DateTime dtStart = StartTimeSelectorGroup;
+            DateTime dtStart = DateTimeAutomation.StartDate;
 
-            TimeSpan tsStart = new TimeSpan(Convert.ToInt32(StartTimeSelectorGroupHour.Value), Convert.ToInt32(StartTimeSelectorGroupMinute.Value), Convert.ToInt32(StartTimeSelectorGroupSecond.Value));
+            TimeSpan tsStart = new TimeSpan(DateTimeAutomation.StartDateHour, Convert.ToInt32(DateTimeAutomation.StartDateMinute.Value), Convert.ToInt32(DateTimeAutomation.StartDateSecond.Value));
 
             DateTime finalDateStart = dtStart.Add(tsStart);
             #endregion
 
             #region DateTimeEnd
-            DateTime dtEnd = EndTimeSelectorGroup;
+            DateTime dtEnd = DateTimeAutomation.EndDate;
 
-            TimeSpan tsEnd = new TimeSpan(Convert.ToInt32(EndTimeSelectorGroupHour.Value), Convert.ToInt32(EndTimeSelectorGroupMinute.Value), Convert.ToInt32(EndTimeSelectorGroupSecond.Value));
+            TimeSpan tsEnd = new TimeSpan(Convert.ToInt32(DateTimeAutomation.EndDateHour.Value), Convert.ToInt32(DateTimeAutomation.EndDateMinute.Value), Convert.ToInt32(DateTimeAutomation.EndDateSecond.Value));
 
             DateTime finalDateEnd = dtEnd.Add(tsEnd);
             #endregion
 
             #region DateTimeInterval
-            DateTime dtStartInterval = StartTimeSelectorGroup;
+            DateTime dtStartInterval = DateTimeAutomation.StartDate;
 
-            TimeSpan tsStartInterval = new TimeSpan(Convert.ToInt32(StartTimeSelectorGroupHour.Value), Convert.ToInt32(StartTimeSelectorGroupMinute.Value), (Convert.ToInt32(StartTimeSelectorGroupSecond.Value) + Interval));
+            TimeSpan tsStartInterval = new TimeSpan(DateTimeAutomation.StartDateHour, Convert.ToInt32(DateTimeAutomation.StartDateMinute.Value), (Convert.ToInt32(DateTimeAutomation.StartDateSecond.Value) + DateTimeAutomation.Interval));
 
             DateTime finalDateStartInterval = dtStart.Add(tsStart);
             #endregion
@@ -187,7 +130,7 @@ namespace SWC.Classes
                     {
                         CrawlAsync();
 
-                        TimeSpan ts = new TimeSpan(0, 0, Interval);
+                        TimeSpan ts = new TimeSpan(0, 0, DateTimeAutomation.Interval);
                         finalDateStartInterval = finalDateStartInterval.Add(ts);
                     }
                 }

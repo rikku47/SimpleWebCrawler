@@ -191,6 +191,7 @@
                                         <DatePicker
                                             Name="dpStartTimeSelector"
                                             DisplayDate="{Binding DateTime.Today}"
+                                            Loaded="DpStartTimeSelector_Loaded"
                                             SelectedDate="{Binding DateTime.Today}"
                                             SelectedDateChanged="DpStartTimeSelector_SelectedDateChanged" />
                                         <StackPanel Orientation="Horizontal">
@@ -358,6 +359,7 @@
                                         <Label Content="End" />
                                         <DatePicker
                                             Name="dpEndTimeSelector"
+                                            Loaded="DpEndTimeSelector_Loaded"
                                             SelectedDate="{Binding EndTimeSelectorrGroup}"
                                             SelectedDateChanged="DpEndTimeSelector_SelectedDateChanged" />
                                         <StackPanel Orientation="Horizontal">

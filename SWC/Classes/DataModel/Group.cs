@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SWC.Classes.DataModel;
 using SWC.Classes.SearchModel;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace SWC
             Links = new ObservableCollection<Link>();
             Links.CollectionChanged += Links_CollectionChanged;
             Search = new Search();
+            DateTimeAutomation = new DateTimeAutomation();
             CreationDate = DateTime.Now;
         }
 
@@ -45,6 +47,7 @@ namespace SWC
         }
         public ObservableCollection<Link> Links { get; set; }
         public Search Search { get; set; }
+        public DateTimeAutomation DateTimeAutomation { get; set; }
         public DateTime CreationDate { get; set; }
 
         public int HighestAmountOfSelectorsOfALink { get; set; }

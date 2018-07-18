@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\DataModel\DateTimeAutomation.cs" />
     <Compile Include="Classes\DataModel\Result.cs" />
     <Compile Include="Classes\LinkS.cs" />
     <Compile Include="Classes\SearchModel\Search.cs" />
