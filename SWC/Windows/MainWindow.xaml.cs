@@ -803,5 +803,185 @@ namespace SWC
                 }
             }
         }
+
+        private void DpStartTimeGroup_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboStartHourGroup_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboStartHourGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboStartMinuteGroup_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboStartMinuteGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboStartSecondGroup_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboStartSecondGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void DpEndTimeGroup_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboEndHourGroup_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboEndHourGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboEndMinuteGroup_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboEndMinuteGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboEndSecondGroup_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboEndSecondGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void BtnStartInterval_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnStartInterval_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnStartIntervalCancel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnStartIntervalCancel_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DpStartTimeGroups_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboStartHourGroups_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboStartHourGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboStartMinuteGroups_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboStartMinuteGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboStartSecondGroups_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboStartSecondGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void DpEndTimeGroups_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboEndHourGroups_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboEndHourGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboEndMinuteGroups_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboEndMinuteGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CboEndSecondGroups_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CboEndSecondGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void BtnStartIntervalGroups_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnStartIntervalGroups_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnStartIntervalCancelGroups_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnStartIntervalCancelGroups_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

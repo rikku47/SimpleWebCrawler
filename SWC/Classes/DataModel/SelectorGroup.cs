@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading;
+using System.Windows;
 
 namespace SWC.Classes
 {
@@ -18,7 +20,7 @@ namespace SWC.Classes
         private KeyValuePair<int, string> _endTimeSelectorGroupHour;
         private KeyValuePair<int, string> _endTimeSelectorGroupMinute;
         private KeyValuePair<int, string> _endTimeSelectorGroupSecond;
-        private long _interval;
+        private int _interval;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -106,12 +108,12 @@ namespace SWC.Classes
             get => _endTimeSelectorGroupSecond;
             set => _endTimeSelectorGroupSecond = value;
         }
-        public long Interval
+        public int Interval
         {
             get => _interval;
             set
             {
-                if(value < 0)
+                if (value < 0)
                 {
                     value = 0;
                 }
@@ -130,30 +132,64 @@ namespace SWC.Classes
 
         public async System.Threading.Tasks.Task CrawlAsync()
         {
-            DateTime dtStart = StartTimeSelectorGroup;
-
-            DateTime dtTest = dtStart.AddHours(Convert.ToDouble(StartTimeSelectorGroupHour.Value));
-
             if (IsCrawl)
             {
-                if (true)
+                foreach (var selector in Selectors)
                 {
-                    foreach (var selector in Selectors)
+                    if (selector.IsCrawl & Lock == false)
                     {
-                        if (selector.IsCrawl & Lock == false)
-                        {
-                            var config = Configuration.Default.WithDefaultLoader();
+                        var config = Configuration.Default.WithDefaultLoader();
 
-                            Link.IDoucument = await BrowsingContext.New(config).OpenAsync(Link.Adress);
+                        Link.IDoucument = await BrowsingContext.New(config).OpenAsync(Link.Adress);
 
-                            Link.Encoding = Link.IDoucument.CharacterSet;
+                        Link.Encoding = Link.IDoucument.CharacterSet;
 
-                            Lock = true;
-                        }
-                        selector.Crawl();
+                        Lock = true;
                     }
+                    selector.Crawl();
+                }
 
-                    Lock = false;
+                Lock = false;
+            }
+        }
+
+        public void CrawlInterval(CancellationToken ct)
+        {
+            #region DateTimeStart
+            DateTime dtStart = StartTimeSelectorGroup;
+
+            TimeSpan tsStart = new TimeSpan(Convert.ToInt32(StartTimeSelectorGroupHour.Value), Convert.ToInt32(StartTimeSelectorGroupMinute.Value), Convert.ToInt32(StartTimeSelectorGroupSecond.Value));
+
+            DateTime finalDateStart = dtStart.Add(tsStart);
+            #endregion
+
+            #region DateTimeEnd
+            DateTime dtEnd = EndTimeSelectorGroup;
+
+            TimeSpan tsEnd = new TimeSpan(Convert.ToInt32(EndTimeSelectorGroupHour.Value), Convert.ToInt32(EndTimeSelectorGroupMinute.Value), Convert.ToInt32(EndTimeSelectorGroupSecond.Value));
+
+            DateTime finalDateEnd = dtEnd.Add(tsEnd);
+            #endregion
+
+            #region DateTimeInterval
+            DateTime dtStartInterval = StartTimeSelectorGroup;
+
+            TimeSpan tsStartInterval = new TimeSpan(Convert.ToInt32(StartTimeSelectorGroupHour.Value), Convert.ToInt32(StartTimeSelectorGroupMinute.Value), (Convert.ToInt32(StartTimeSelectorGroupSecond.Value) + Interval));
+
+            DateTime finalDateStartInterval = dtStart.Add(tsStart);
+            #endregion
+
+            while (DateTime.Now < finalDateEnd)
+            {
+                if (!ct.IsCancellationRequested)
+                {
+                    if (DateTime.Now >= finalDateStartInterval)
+                    {
+                        CrawlAsync();
+
+                        TimeSpan ts = new TimeSpan(0, 0, Interval);
+                        finalDateStartInterval = finalDateStartInterval.Add(ts);
+                    }
                 }
             }
         }

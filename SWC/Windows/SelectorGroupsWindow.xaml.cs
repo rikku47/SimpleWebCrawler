@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -29,6 +31,9 @@ namespace SWC
         string[] Selectors { get; set; }
         SelectorGroup SelectorGroup { get; set; }
         TextBox TextBox { get; set; }
+        CancellationTokenSource tc;
+        Button BtnStartInterval;
+        Button BtnEndInterval;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -357,9 +362,49 @@ namespace SWC
             ((ComboBox)sender).SelectedIndex = SelectorGroup.EndTimeSelectorGroupSecond.Key;
         }
 
-        private void dpStartTimeSelector_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void DpStartTimeSelector_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectorGroup.StartTimeSelectorGroup = (DateTime)((DatePicker)sender).SelectedDate;
+        }
+
+        private void DpEndTimeSelector_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectorGroup.EndTimeSelectorGroup = (DateTime)((DatePicker)sender).SelectedDate;
+        }
+
+        
+
+        private void BtnStartInterval_Click(object sender, RoutedEventArgs e)
+        {
+            BtnStartInterval.IsEnabled = false;
+            BtnEndInterval.IsEnabled = true;
+
+            tc = new CancellationTokenSource();
+            CancellationToken ct = tc.Token;
+
+            Task.Factory.StartNew(() =>
+            {
+                ct.ThrowIfCancellationRequested();
+                SelectorGroup.CrawlInterval(ct);
+            }, tc.Token);
+        }
+
+        private void BtnStartIntervalCancel_Click(object sender, RoutedEventArgs e)
+        {
+            tc.Cancel();
+
+            BtnStartInterval.IsEnabled = true;
+            BtnEndInterval.IsEnabled = false;
+        }
+
+        private void BtnStartInterval_Loaded(object sender, RoutedEventArgs e)
+        {
+            BtnStartInterval = (Button)sender;
+        }
+
+        private void BtnStartIntervalCancel_Loaded(object sender, RoutedEventArgs e)
+        {
+             BtnEndInterval = (Button)sender;
         }
     }
 }
