@@ -69,6 +69,7 @@ namespace SWC.Classes.DataModel
             EndDateHour = 0;
             EndDateMinute = 0;
             EndDateSecond = 0;
+            Interval = 0;
         }
 
         private void Changed(string propertyName)

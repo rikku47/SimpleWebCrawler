@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace SWC.Classes
@@ -73,7 +74,7 @@ namespace SWC.Classes
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public async System.Threading.Tasks.Task CrawlAsync()
+        public async Task CrawlAsync(CancellationToken ct)
         {
             if (IsCrawl)
             {
@@ -101,7 +102,7 @@ namespace SWC.Classes
             #region DateTimeStart
             DateTime dtStart = DateTimeAutomation.StartDate;
 
-            TimeSpan tsStart = new TimeSpan(DateTimeAutomation.StartDateHour, Convert.ToInt32(DateTimeAutomation.StartDateMinute.Value), Convert.ToInt32(DateTimeAutomation.StartDateSecond.Value));
+            TimeSpan tsStart = new TimeSpan(DateTimeAutomation.StartDateHour, DateTimeAutomation.StartDateMinute, DateTimeAutomation.StartDateSecond);
 
             DateTime finalDateStart = dtStart.Add(tsStart);
             #endregion
@@ -109,7 +110,7 @@ namespace SWC.Classes
             #region DateTimeEnd
             DateTime dtEnd = DateTimeAutomation.EndDate;
 
-            TimeSpan tsEnd = new TimeSpan(Convert.ToInt32(DateTimeAutomation.EndDateHour.Value), Convert.ToInt32(DateTimeAutomation.EndDateMinute.Value), Convert.ToInt32(DateTimeAutomation.EndDateSecond.Value));
+            TimeSpan tsEnd = new TimeSpan(DateTimeAutomation.EndDateHour, DateTimeAutomation.EndDateMinute, DateTimeAutomation.EndDateSecond);
 
             DateTime finalDateEnd = dtEnd.Add(tsEnd);
             #endregion
@@ -117,7 +118,7 @@ namespace SWC.Classes
             #region DateTimeInterval
             DateTime dtStartInterval = DateTimeAutomation.StartDate;
 
-            TimeSpan tsStartInterval = new TimeSpan(DateTimeAutomation.StartDateHour, Convert.ToInt32(DateTimeAutomation.StartDateMinute.Value), (Convert.ToInt32(DateTimeAutomation.StartDateSecond.Value) + DateTimeAutomation.Interval));
+            TimeSpan tsStartInterval = new TimeSpan(DateTimeAutomation.StartDateHour, DateTimeAutomation.StartDateMinute, DateTimeAutomation.StartDateSecond + DateTimeAutomation.Interval);
 
             DateTime finalDateStartInterval = dtStart.Add(tsStart);
             #endregion
@@ -128,7 +129,7 @@ namespace SWC.Classes
                 {
                     if (DateTime.Now >= finalDateStartInterval)
                     {
-                        CrawlAsync();
+                        CrawlAsync(ct);
 
                         TimeSpan ts = new TimeSpan(0, 0, DateTimeAutomation.Interval);
                         finalDateStartInterval = finalDateStartInterval.Add(ts);

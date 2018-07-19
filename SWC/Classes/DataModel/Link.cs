@@ -10,6 +10,7 @@ using SWC.Classes;
 using SWC.Classes.DataModel;
 using AngleSharp.Parser.Html;
 using System.Text;
+using System.Threading;
 
 namespace SWC
 {
@@ -181,13 +182,13 @@ namespace SWC
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void Crawl()
+        public void Crawl(CancellationToken ct)
         {
             if(IsCrawl)
             {
                 foreach (var selectorGroup in SelectorGroups)
                 {
-                    selectorGroup.CrawlAsync();
+                    selectorGroup.CrawlAsync(ct);
                 }
             }
         }

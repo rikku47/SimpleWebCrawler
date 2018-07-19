@@ -188,341 +188,24 @@
                                 <GroupBox Header="Autopilot">
                                     <StackPanel>
                                         <Label Content="Start" />
-                                        <DatePicker
-                                            Name="dpStartTimeSelector"
-                                            DisplayDate="{Binding DateTime.Today}"
-                                            Loaded="DpStartTimeSelector_Loaded"
-                                            SelectedDate="{Binding DateTime.Today}"
-                                            SelectedDateChanged="DpStartTimeSelector_SelectedDateChanged" />
+                                        <DatePicker Name="dpStartTimeSelector" SelectedDate="{Binding DateTime.Today}" />
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Stunde" />
-                                            <ComboBox
-                                                Name="cboStartHourSelectorGroup"
-                                                Loaded="CboStartHourSelectorGroup_Loaded"
-                                                SelectionChanged="CboStartHourSelectorGroup_SelectionChanged">
-                                                <ComboBoxItem Content="00" />
-                                                <ComboBoxItem Content="01" />
-                                                <ComboBoxItem Content="02" />
-                                                <ComboBoxItem Content="03" />
-                                                <ComboBoxItem Content="04" />
-                                                <ComboBoxItem Content="05" />
-                                                <ComboBoxItem Content="06" />
-                                                <ComboBoxItem Content="07" />
-                                                <ComboBoxItem Content="08" />
-                                                <ComboBoxItem Content="09" />
-                                                <ComboBoxItem Content="10" />
-                                                <ComboBoxItem Content="11" />
-                                                <ComboBoxItem Content="12" />
-                                                <ComboBoxItem Content="13" />
-                                                <ComboBoxItem Content="14" />
-                                                <ComboBoxItem Content="15" />
-                                                <ComboBoxItem Content="16" />
-                                                <ComboBoxItem Content="17" />
-                                                <ComboBoxItem Content="18" />
-                                                <ComboBoxItem Content="19" />
-                                                <ComboBoxItem Content="20" />
-                                                <ComboBoxItem Content="21" />
-                                                <ComboBoxItem Content="22" />
-                                                <ComboBoxItem Content="23" />
-                                            </ComboBox>
+                                            <ComboBox Name="cboStartHourSelectorGroup" />
                                             <Label Content="Minute" />
-                                            <ComboBox
-                                                Name="cboStartMinuteSelectorGroup"
-                                                Loaded="CboStartMinuteSelectorGroup_Loaded"
-                                                SelectionChanged="CboStartMinuteSelectorGroup_SelectionChanged">
-                                                <ComboBoxItem Content="00" />
-                                                <ComboBoxItem Content="01" />
-                                                <ComboBoxItem Content="02" />
-                                                <ComboBoxItem Content="03" />
-                                                <ComboBoxItem Content="04" />
-                                                <ComboBoxItem Content="05" />
-                                                <ComboBoxItem Content="06" />
-                                                <ComboBoxItem Content="07" />
-                                                <ComboBoxItem Content="08" />
-                                                <ComboBoxItem Content="09" />
-                                                <ComboBoxItem Content="10" />
-                                                <ComboBoxItem Content="11" />
-                                                <ComboBoxItem Content="12" />
-                                                <ComboBoxItem Content="13" />
-                                                <ComboBoxItem Content="14" />
-                                                <ComboBoxItem Content="15" />
-                                                <ComboBoxItem Content="16" />
-                                                <ComboBoxItem Content="17" />
-                                                <ComboBoxItem Content="18" />
-                                                <ComboBoxItem Content="19" />
-                                                <ComboBoxItem Content="20" />
-                                                <ComboBoxItem Content="21" />
-                                                <ComboBoxItem Content="22" />
-                                                <ComboBoxItem Content="23" />
-                                                <ComboBoxItem Content="24" />
-                                                <ComboBoxItem Content="25" />
-                                                <ComboBoxItem Content="26" />
-                                                <ComboBoxItem Content="27" />
-                                                <ComboBoxItem Content="28" />
-                                                <ComboBoxItem Content="29" />
-                                                <ComboBoxItem Content="30" />
-                                                <ComboBoxItem Content="31" />
-                                                <ComboBoxItem Content="32" />
-                                                <ComboBoxItem Content="33" />
-                                                <ComboBoxItem Content="34" />
-                                                <ComboBoxItem Content="35" />
-                                                <ComboBoxItem Content="36" />
-                                                <ComboBoxItem Content="37" />
-                                                <ComboBoxItem Content="38" />
-                                                <ComboBoxItem Content="39" />
-                                                <ComboBoxItem Content="40" />
-                                                <ComboBoxItem Content="41" />
-                                                <ComboBoxItem Content="42" />
-                                                <ComboBoxItem Content="43" />
-                                                <ComboBoxItem Content="44" />
-                                                <ComboBoxItem Content="45" />
-                                                <ComboBoxItem Content="46" />
-                                                <ComboBoxItem Content="47" />
-                                                <ComboBoxItem Content="48" />
-                                                <ComboBoxItem Content="49" />
-                                                <ComboBoxItem Content="50" />
-                                                <ComboBoxItem Content="51" />
-                                                <ComboBoxItem Content="52" />
-                                                <ComboBoxItem Content="53" />
-                                                <ComboBoxItem Content="54" />
-                                                <ComboBoxItem Content="55" />
-                                                <ComboBoxItem Content="56" />
-                                                <ComboBoxItem Content="57" />
-                                                <ComboBoxItem Content="59" />
-                                            </ComboBox>
+                                            <ComboBox Name="cboStartMinuteSelectorGroup" />
                                             <Label Content="Sekunde" />
-                                            <ComboBox
-                                                Name="cboStartSecondSelectorGroup"
-                                                Loaded="CboStartSecondSelectorGroup_Loaded"
-                                                SelectionChanged="CboStartSecondSelectorGroup_SelectionChanged">
-                                                <ComboBoxItem Content="00" />
-                                                <ComboBoxItem Content="01" />
-                                                <ComboBoxItem Content="02" />
-                                                <ComboBoxItem Content="03" />
-                                                <ComboBoxItem Content="04" />
-                                                <ComboBoxItem Content="05" />
-                                                <ComboBoxItem Content="06" />
-                                                <ComboBoxItem Content="07" />
-                                                <ComboBoxItem Content="08" />
-                                                <ComboBoxItem Content="09" />
-                                                <ComboBoxItem Content="10" />
-                                                <ComboBoxItem Content="11" />
-                                                <ComboBoxItem Content="12" />
-                                                <ComboBoxItem Content="13" />
-                                                <ComboBoxItem Content="14" />
-                                                <ComboBoxItem Content="15" />
-                                                <ComboBoxItem Content="16" />
-                                                <ComboBoxItem Content="17" />
-                                                <ComboBoxItem Content="18" />
-                                                <ComboBoxItem Content="19" />
-                                                <ComboBoxItem Content="20" />
-                                                <ComboBoxItem Content="21" />
-                                                <ComboBoxItem Content="22" />
-                                                <ComboBoxItem Content="23" />
-                                                <ComboBoxItem Content="24" />
-                                                <ComboBoxItem Content="25" />
-                                                <ComboBoxItem Content="26" />
-                                                <ComboBoxItem Content="27" />
-                                                <ComboBoxItem Content="28" />
-                                                <ComboBoxItem Content="29" />
-                                                <ComboBoxItem Content="30" />
-                                                <ComboBoxItem Content="31" />
-                                                <ComboBoxItem Content="32" />
-                                                <ComboBoxItem Content="33" />
-                                                <ComboBoxItem Content="34" />
-                                                <ComboBoxItem Content="35" />
-                                                <ComboBoxItem Content="36" />
-                                                <ComboBoxItem Content="37" />
-                                                <ComboBoxItem Content="38" />
-                                                <ComboBoxItem Content="39" />
-                                                <ComboBoxItem Content="40" />
-                                                <ComboBoxItem Content="41" />
-                                                <ComboBoxItem Content="42" />
-                                                <ComboBoxItem Content="43" />
-                                                <ComboBoxItem Content="44" />
-                                                <ComboBoxItem Content="45" />
-                                                <ComboBoxItem Content="46" />
-                                                <ComboBoxItem Content="47" />
-                                                <ComboBoxItem Content="48" />
-                                                <ComboBoxItem Content="49" />
-                                                <ComboBoxItem Content="50" />
-                                                <ComboBoxItem Content="51" />
-                                                <ComboBoxItem Content="52" />
-                                                <ComboBoxItem Content="53" />
-                                                <ComboBoxItem Content="54" />
-                                                <ComboBoxItem Content="55" />
-                                                <ComboBoxItem Content="56" />
-                                                <ComboBoxItem Content="57" />
-                                                <ComboBoxItem Content="59" />
-                                            </ComboBox>
+                                            <ComboBox Name="cboStartSecondSelectorGroup" />
                                         </StackPanel>
                                         <Label Content="End" />
-                                        <DatePicker
-                                            Name="dpEndTimeSelector"
-                                            Loaded="DpEndTimeSelector_Loaded"
-                                            SelectedDate="{Binding EndTimeSelectorrGroup}"
-                                            SelectedDateChanged="DpEndTimeSelector_SelectedDateChanged" />
+                                        <DatePicker Name="dpEndTimeSelector" SelectedDate="{Binding EndTimeSelectorrGroup}" />
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Stunde" />
-                                            <ComboBox
-                                                Name="cboEndHourSelectorGroup"
-                                                Loaded="CboEndHourSelectorGroup_Loaded"
-                                                SelectionChanged="CboEndHourSelectorGroup_SelectionChanged">
-                                                <ComboBoxItem Content="00" />
-                                                <ComboBoxItem Content="01" />
-                                                <ComboBoxItem Content="02" />
-                                                <ComboBoxItem Content="03" />
-                                                <ComboBoxItem Content="04" />
-                                                <ComboBoxItem Content="05" />
-                                                <ComboBoxItem Content="06" />
-                                                <ComboBoxItem Content="07" />
-                                                <ComboBoxItem Content="08" />
-                                                <ComboBoxItem Content="09" />
-                                                <ComboBoxItem Content="10" />
-                                                <ComboBoxItem Content="11" />
-                                                <ComboBoxItem Content="12" />
-                                                <ComboBoxItem Content="13" />
-                                                <ComboBoxItem Content="14" />
-                                                <ComboBoxItem Content="15" />
-                                                <ComboBoxItem Content="16" />
-                                                <ComboBoxItem Content="17" />
-                                                <ComboBoxItem Content="18" />
-                                                <ComboBoxItem Content="19" />
-                                                <ComboBoxItem Content="20" />
-                                                <ComboBoxItem Content="21" />
-                                                <ComboBoxItem Content="22" />
-                                                <ComboBoxItem Content="23" />
-                                            </ComboBox>
+                                            <ComboBox Name="cboEndHourSelectorGroup" />
                                             <Label Content="Minute" />
-                                            <ComboBox
-                                                Name="cboEndMinuteSelectorGroup"
-                                                Loaded="CboEndMinuteSelectorGroup_Loaded"
-                                                SelectionChanged="CboEndMinuteSelectorGroup_SelectionChanged">
-                                                <ComboBoxItem Content="00" />
-                                                <ComboBoxItem Content="01" />
-                                                <ComboBoxItem Content="02" />
-                                                <ComboBoxItem Content="03" />
-                                                <ComboBoxItem Content="04" />
-                                                <ComboBoxItem Content="05" />
-                                                <ComboBoxItem Content="06" />
-                                                <ComboBoxItem Content="07" />
-                                                <ComboBoxItem Content="08" />
-                                                <ComboBoxItem Content="09" />
-                                                <ComboBoxItem Content="10" />
-                                                <ComboBoxItem Content="11" />
-                                                <ComboBoxItem Content="12" />
-                                                <ComboBoxItem Content="13" />
-                                                <ComboBoxItem Content="14" />
-                                                <ComboBoxItem Content="15" />
-                                                <ComboBoxItem Content="16" />
-                                                <ComboBoxItem Content="17" />
-                                                <ComboBoxItem Content="18" />
-                                                <ComboBoxItem Content="19" />
-                                                <ComboBoxItem Content="20" />
-                                                <ComboBoxItem Content="21" />
-                                                <ComboBoxItem Content="22" />
-                                                <ComboBoxItem Content="23" />
-                                                <ComboBoxItem Content="24" />
-                                                <ComboBoxItem Content="25" />
-                                                <ComboBoxItem Content="26" />
-                                                <ComboBoxItem Content="27" />
-                                                <ComboBoxItem Content="28" />
-                                                <ComboBoxItem Content="29" />
-                                                <ComboBoxItem Content="30" />
-                                                <ComboBoxItem Content="31" />
-                                                <ComboBoxItem Content="32" />
-                                                <ComboBoxItem Content="33" />
-                                                <ComboBoxItem Content="34" />
-                                                <ComboBoxItem Content="35" />
-                                                <ComboBoxItem Content="36" />
-                                                <ComboBoxItem Content="37" />
-                                                <ComboBoxItem Content="38" />
-                                                <ComboBoxItem Content="39" />
-                                                <ComboBoxItem Content="40" />
-                                                <ComboBoxItem Content="41" />
-                                                <ComboBoxItem Content="42" />
-                                                <ComboBoxItem Content="43" />
-                                                <ComboBoxItem Content="44" />
-                                                <ComboBoxItem Content="45" />
-                                                <ComboBoxItem Content="46" />
-                                                <ComboBoxItem Content="47" />
-                                                <ComboBoxItem Content="48" />
-                                                <ComboBoxItem Content="49" />
-                                                <ComboBoxItem Content="50" />
-                                                <ComboBoxItem Content="51" />
-                                                <ComboBoxItem Content="52" />
-                                                <ComboBoxItem Content="53" />
-                                                <ComboBoxItem Content="54" />
-                                                <ComboBoxItem Content="55" />
-                                                <ComboBoxItem Content="56" />
-                                                <ComboBoxItem Content="57" />
-                                                <ComboBoxItem Content="59" />
-                                            </ComboBox>
+                                            <ComboBox Name="cboEndMinuteSelectorGroup" />
                                             <Label Content="Sekunde" />
-                                            <ComboBox
-                                                Name="cboEndSecondSelectorGroup"
-                                                Loaded="CboEndSecondSelectorGroup_Loaded"
-                                                SelectionChanged="CboEndSecondSelectorGroup_SelectionChanged">
-                                                <ComboBoxItem Content="00" />
-                                                <ComboBoxItem Content="01" />
-                                                <ComboBoxItem Content="02" />
-                                                <ComboBoxItem Content="03" />
-                                                <ComboBoxItem Content="04" />
-                                                <ComboBoxItem Content="05" />
-                                                <ComboBoxItem Content="06" />
-                                                <ComboBoxItem Content="07" />
-                                                <ComboBoxItem Content="08" />
-                                                <ComboBoxItem Content="09" />
-                                                <ComboBoxItem Content="10" />
-                                                <ComboBoxItem Content="11" />
-                                                <ComboBoxItem Content="12" />
-                                                <ComboBoxItem Content="13" />
-                                                <ComboBoxItem Content="14" />
-                                                <ComboBoxItem Content="15" />
-                                                <ComboBoxItem Content="16" />
-                                                <ComboBoxItem Content="17" />
-                                                <ComboBoxItem Content="18" />
-                                                <ComboBoxItem Content="19" />
-                                                <ComboBoxItem Content="20" />
-                                                <ComboBoxItem Content="21" />
-                                                <ComboBoxItem Content="22" />
-                                                <ComboBoxItem Content="23" />
-                                                <ComboBoxItem Content="24" />
-                                                <ComboBoxItem Content="25" />
-                                                <ComboBoxItem Content="26" />
-                                                <ComboBoxItem Content="27" />
-                                                <ComboBoxItem Content="28" />
-                                                <ComboBoxItem Content="29" />
-                                                <ComboBoxItem Content="30" />
-                                                <ComboBoxItem Content="31" />
-                                                <ComboBoxItem Content="32" />
-                                                <ComboBoxItem Content="33" />
-                                                <ComboBoxItem Content="34" />
-                                                <ComboBoxItem Content="35" />
-                                                <ComboBoxItem Content="36" />
-                                                <ComboBoxItem Content="37" />
-                                                <ComboBoxItem Content="38" />
-                                                <ComboBoxItem Content="39" />
-                                                <ComboBoxItem Content="40" />
-                                                <ComboBoxItem Content="41" />
-                                                <ComboBoxItem Content="42" />
-                                                <ComboBoxItem Content="43" />
-                                                <ComboBoxItem Content="44" />
-                                                <ComboBoxItem Content="45" />
-                                                <ComboBoxItem Content="46" />
-                                                <ComboBoxItem Content="47" />
-                                                <ComboBoxItem Content="48" />
-                                                <ComboBoxItem Content="49" />
-                                                <ComboBoxItem Content="50" />
-                                                <ComboBoxItem Content="51" />
-                                                <ComboBoxItem Content="52" />
-                                                <ComboBoxItem Content="53" />
-                                                <ComboBoxItem Content="54" />
-                                                <ComboBoxItem Content="55" />
-                                                <ComboBoxItem Content="56" />
-                                                <ComboBoxItem Content="57" />
-                                                <ComboBoxItem Content="59" />
-                                            </ComboBox>
+                                            <ComboBox Name="cboEndSecondSelectorGroup" />
                                         </StackPanel>
                                         <Label Content="Interval" />
                                         <TextBox Text="{Binding Interval}" />
@@ -602,32 +285,7 @@
                                                     <TextBox Name="txtScriptFile" Text="{Binding ScriptFile}" />
                                                     <Label Content="Start" />
                                                     <DatePicker Name="dpStartTimeSelector" SelectedDate="{Binding StartTimeSelector}" />
-                                                    <ComboBox>
-                                                        <ComboBoxItem Content="00" />
-                                                        <ComboBoxItem Content="01" />
-                                                        <ComboBoxItem Content="02" />
-                                                        <ComboBoxItem Content="03" />
-                                                        <ComboBoxItem Content="04" />
-                                                        <ComboBoxItem Content="05" />
-                                                        <ComboBoxItem Content="06" />
-                                                        <ComboBoxItem Content="07" />
-                                                        <ComboBoxItem Content="08" />
-                                                        <ComboBoxItem Content="09" />
-                                                        <ComboBoxItem Content="10" />
-                                                        <ComboBoxItem Content="11" />
-                                                        <ComboBoxItem Content="12" />
-                                                        <ComboBoxItem Content="13" />
-                                                        <ComboBoxItem Content="14" />
-                                                        <ComboBoxItem Content="15" />
-                                                        <ComboBoxItem Content="16" />
-                                                        <ComboBoxItem Content="17" />
-                                                        <ComboBoxItem Content="18" />
-                                                        <ComboBoxItem Content="19" />
-                                                        <ComboBoxItem Content="20" />
-                                                        <ComboBoxItem Content="21" />
-                                                        <ComboBoxItem Content="22" />
-                                                        <ComboBoxItem Content="23" />
-                                                    </ComboBox>
+                                                    <ComboBox />
                                                     <Label Content="End" />
                                                     <DatePicker Name="dpEndTimeSelector" SelectedDate="{Binding EndTimeSelector}" />
                                                     <Label Content="Interval" />
@@ -644,7 +302,7 @@
                                                 SelectionMode="Extended">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
-                                                        <ContentPresenter Content="{Binding CreationDateOnly}" />
+                                                        <ContentPresenter Content="{Binding CreationDateOnly}" ContentStringFormat="dd.MM.yyyy hh:mm:ss" />
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
                                             </ListBox>
@@ -658,7 +316,7 @@
                                             ItemsSource="{Binding ElementName=libDates, Path=SelectedItems}">
                                             <TabControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <ContentPresenter Content="{Binding CreationDate}" />
+                                                    <ContentPresenter Content="{Binding CreationDate}" ContentStringFormat="dd.MM.yyyy hh:mm:ss" />
                                                 </DataTemplate>
                                             </TabControl.ItemTemplate>
                                             <TabControl.ContentTemplate>
@@ -675,7 +333,7 @@
                                                                 SelectionMode="Extended">
                                                                 <ListBox.ItemTemplate>
                                                                     <DataTemplate>
-                                                                        <ContentPresenter Content="{Binding CreationDate}" />
+                                                                        <ContentPresenter Content="{Binding CreationDate}" ContentStringFormat="dd.MM.yyyy hh:mm:ss" />
                                                                     </DataTemplate>
                                                                 </ListBox.ItemTemplate>
                                                             </ListBox>
@@ -686,7 +344,7 @@
                                                             ItemsSource="{Binding ElementName=libResults, Path=SelectedItems}">
                                                             <TabControl.ItemTemplate>
                                                                 <DataTemplate>
-                                                                    <ContentPresenter Content="{Binding CreationDate}" />
+                                                                    <ContentPresenter Content="{Binding CreationDate}" ContentStringFormat="dd.MM.yyyy hh:mm:ss" />
                                                                 </DataTemplate>
                                                             </TabControl.ItemTemplate>
                                                             <TabControl.ContentTemplate>
@@ -700,7 +358,7 @@
                                                                             <ListBox Name="libFootPrints" ItemsSource="{Binding FootPrintsAResult}">
                                                                                 <ListBox.ItemTemplate>
                                                                                     <DataTemplate>
-                                                                                        <ContentPresenter Content="{Binding CreationDate}" />
+                                                                                        <ContentPresenter Content="{Binding CreationDate}" ContentStringFormat="dd.MM.yyyy hh:mm:ss" />
                                                                                     </DataTemplate>
                                                                                 </ListBox.ItemTemplate>
                                                                             </ListBox>

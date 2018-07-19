@@ -302,81 +302,7 @@ namespace SWC
             }
         }
 
-        private void CboStartHourSelectorGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //SelectorGroup.DateTimeAutomation.StartDateHour = new KeyValuePair<int, string>(((ComboBox)sender).SelectedIndex, (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content);
-        }
-
-        private void CboStartHourSelectorGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-            //((ComboBox)sender).SelectedIndex = SelectorGroup.DateTimeAutomation.StartDateHour.Key;
-        }
-
-        private void CboStartMinuteSelectorGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectorGroup.DateTimeAutomation.StartDateMinute = new KeyValuePair<int, string>(((ComboBox)sender).SelectedIndex, (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content);
-        }
-
-        private void CboStartMinuteSelectorGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((ComboBox)sender).SelectedIndex = SelectorGroup.DateTimeAutomation.StartDateMinute.Key;
-        }
-
-        private void CboStartSecondSelectorGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectorGroup.DateTimeAutomation.StartDateSecond = new KeyValuePair<int, string>(((ComboBox)sender).SelectedIndex, (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content);
-        }
-
-        private void CboStartSecondSelectorGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((ComboBox)sender).SelectedIndex = SelectorGroup.DateTimeAutomation.StartDateSecond.Key;
-        }
-
-        private void CboEndHourSelectorGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectorGroup.DateTimeAutomation.EndDateHour = new KeyValuePair<int, string>(((ComboBox)sender).SelectedIndex, (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content);
-        }
-
-        private void CboEndHourSelectorGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((ComboBox)sender).SelectedIndex = SelectorGroup.DateTimeAutomation.EndDateHour.Key;
-        }
-
-        private void CboEndMinuteSelectorGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectorGroup.DateTimeAutomation.EndDateMinute = new KeyValuePair<int, string>(((ComboBox)sender).SelectedIndex, (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content);
-        }
-
-        private void CboEndMinuteSelectorGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((ComboBox)sender).SelectedIndex = SelectorGroup.DateTimeAutomation.EndDateMinute.Key;
-        }
-
-        private void CboEndSecondSelectorGroup_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectorGroup.DateTimeAutomation.EndDateSecond = new KeyValuePair<int, string>(((ComboBox)sender).SelectedIndex, (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content);
-        }
-
-        private void CboEndSecondSelectorGroup_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((ComboBox)sender).SelectedIndex = SelectorGroup.DateTimeAutomation.EndDateSecond.Key;
-        }
-
-        private void DpStartTimeSelector_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if(((DatePicker)sender).SelectedDate != null)
-            {
-                SelectorGroup.DateTimeAutomation.StartDate = (DateTime)((DatePicker)sender).SelectedDate;
-            }
-        }
-
-        private void DpEndTimeSelector_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if(((DatePicker)sender).SelectedDate != null)
-            {
-                SelectorGroup.DateTimeAutomation.EndDate = (DateTime)((DatePicker)sender).SelectedDate;
-            }
-        }
+       
 
         private void BtnStartInterval_Click(object sender, RoutedEventArgs e)
         {
@@ -411,30 +337,5 @@ namespace SWC
              BtnEndInterval = (Button)sender;
         }
 
-        private void DpStartTimeSelector_Loaded(object sender, RoutedEventArgs e)
-        {
-            if(SelectorGroup.DateTimeAutomation.StartDate > DateTime.Today)
-            {
-                ((DatePicker)sender).SelectedDate = SelectorGroup.DateTimeAutomation.StartDate;
-            }
-            else
-            {
-                ((DatePicker)sender).SelectedDate = DateTime.Today;
-                SelectorGroup.DateTimeAutomation.StartDate = DateTime.Today;
-            }
-        }
-
-        private void DpEndTimeSelector_Loaded(object sender, RoutedEventArgs e)
-        {
-            if(SelectorGroup.DateTimeAutomation.EndDate > DateTime.Today)
-            {
-                ((DatePicker)sender).SelectedDate = SelectorGroup.DateTimeAutomation.EndDate;
-            }
-            else
-            {
-                ((DatePicker)sender).SelectedDate = DateTime.Today;
-                SelectorGroup.DateTimeAutomation.EndDate = DateTime.Today;
-            }
-        }
     }
 }

@@ -14,7 +14,15 @@
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
-    <Window.Resources />
+    <Window.Resources>
+        <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellFound">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEncodingFound}" Value="True">
+                    <Setter Property="Background" Value="#C6EFCE" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -65,14 +73,14 @@
                                                 x:Name="txtSearchLink"
                                                 Background="Azure"
                                                 KeyUp="TxtSearchLink_KeyUp"
-                                                Text="{Binding LinksSearch}" />
+                                                Text="{Binding LinksSearch, UpdateSourceTrigger=PropertyChanged}" />
                                             <Label Name="lblSearchEncodings" Content="Encoding(s)" />
                                             <TextBox
                                                 x:Name="txtSearchEncoding"
                                                 Margin="0,5,0,0"
                                                 Background="Azure"
                                                 KeyUp="TxtSearchEncoding_KeyUp"
-                                                Text="{Binding EncodingsSearch}" />
+                                                Text="{Binding EncodingsSearch, UpdateSourceTrigger=PropertyChanged}" />
                                             <Label Name="lblSearchRangeSelectors" Content="Selektoren" />
                                             <CustomControls:RangeSlider
                                                 Margin="0,5,0,0"
@@ -161,8 +169,7 @@
                     <TabControl
                         x:Name="tcGroups"
                         Grid.Row="1"
-                        KeyUp="TcGroups_KeyUp"
-                        >
+                        KeyUp="TcGroups_KeyUp">
                         <TabControl.ItemTemplate>
                             <DataTemplate>
                                 <ContentPresenter Content="{Binding Name}" />
@@ -192,7 +199,7 @@
                                                         <TextBox
                                                             x:Name="txtGroupname"
                                                             Background="Azure"
-                                                            Text="{Binding Name}" />
+                                                            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
                                                     </StackPanel>
                                                 </GroupBox>
                                                 <Expander Header="{x:Static properties:Resources.MWTCOSearch}">
@@ -203,14 +210,14 @@
                                                                 x:Name="txtSearchLink"
                                                                 Background="Azure"
                                                                 KeyUp="TxtSearchLink_KeyUp"
-                                                                Text="{Binding Search.LinksSearch}" />
+                                                                Text="{Binding Search.LinksSearch, UpdateSourceTrigger=PropertyChanged}" />
                                                             <Label Name="lblSearchEncodings" Content="Encoding(s)" />
                                                             <TextBox
                                                                 x:Name="txtSearchEncoding"
                                                                 Margin="0,5,0,0"
                                                                 Background="Azure"
                                                                 KeyUp="TxtSearchEncoding_KeyUp"
-                                                                Text="{Binding Search.EncodingsSearch}" />
+                                                                Text="{Binding Search.EncodingsSearch, UpdateSourceTrigger=PropertyChanged}" />
                                                             <Label Name="lblSearchRangeSelectors" Content="Selektoren" />
                                                             <CustomControls:RangeSlider
                                                                 Margin="0,5,0,0"
@@ -242,32 +249,45 @@
                                                                     Initialized="CboHours_Initialized"
                                                                     SelectedItem="{Binding DateTimeAutomation.StartDateHour}" />
                                                                 <Label Content="Minute" />
-                                                                <ComboBox Name="cboStartMinuteGroup" Initialized="cboMinutesOrSeconds_Initialized" />
+                                                                <ComboBox
+                                                                    Name="cboStartMinuteGroup"
+                                                                    Initialized="CboMinutesOrSeconds_Initialized"
+                                                                    SelectedItem="{Binding DateTimeAutomation.StartDateMinute}" />
                                                                 <Label Content="Sekunde" />
-                                                                <ComboBox Name="cboStartSecondGroup" Initialized="cboMinutesOrSeconds_Initialized" />
+                                                                <ComboBox
+                                                                    Name="cboStartSecondGroup"
+                                                                    Initialized="CboMinutesOrSeconds_Initialized"
+                                                                    SelectedItem="{Binding DateTimeAutomation.StartDateSecond}" />
                                                             </StackPanel>
                                                             <Label Content="End" />
                                                             <DatePicker Name="dpEndTimeGroup" SelectedDate="{Binding DateTimeAutomation.EndDate}" />
                                                             <StackPanel Orientation="Horizontal">
                                                                 <Label Content="Stunde" />
-                                                                <ComboBox Name="cboEndHourGroup" Initialized="CboHours_Initialized" />
+                                                                <ComboBox
+                                                                    Name="cboEndHourGroup"
+                                                                    Initialized="CboHours_Initialized"
+                                                                    SelectedItem="{Binding DateTimeAutomation.EndDateHour}" />
                                                                 <Label Content="Minute" />
-                                                                <ComboBox Name="cboEndMinuteGroup" Initialized="cboMinutesOrSeconds_Initialized" />
+                                                                <ComboBox
+                                                                    Name="cboEndMinuteGroup"
+                                                                    Initialized="CboMinutesOrSeconds_Initialized"
+                                                                    SelectedItem="{Binding DateTimeAutomation.EndDateMinute}" />
                                                                 <Label Content="Sekunde" />
-                                                                <ComboBox Name="cboEndSecondGroup" Initialized="cboMinutesOrSeconds_Initialized" />
+                                                                <ComboBox
+                                                                    Name="cboEndSecondGroup"
+                                                                    Initialized="CboMinutesOrSeconds_Initialized"
+                                                                    SelectedItem="{Binding DateTimeAutomation.EndDateSecond}" />
                                                                 <Label Content="Interval" />
-                                                                <TextBox Text="{Binding Interval}" />
+                                                                <TextBox Text="{Binding DateTimeAutomation.Interval, UpdateSourceTrigger=PropertyChanged}" />
                                                                 <Button
-                                                                    Name="btnStartInterval"
-                                                                    Click="BtnStartInterval_Click"
-                                                                    Content="CrawlInterval"
-                                                                    Loaded="BtnStartInterval_Loaded" />
+                                                                    Name="btnStartIntervalGroup"
+                                                                    Click="BtnStartIntervalGroup_Click"
+                                                                    Content="CrawlInterval" />
                                                                 <Button
-                                                                    Name="btnStartIntervalCancel"
-                                                                    Click="BtnStartIntervalCancel_Click"
-                                                                    Content="CrawlIntervalStop"
-                                                                    IsEnabled="False"
-                                                                    Loaded="BtnStartIntervalCancel_Loaded" />
+                                                                    Name="btnCancelIntervalGroup"
+                                                                    Click="BtnCancelIntervalGroup_Click"
+                                                                    Content="CrawlIntervalStop" 
+                                                                    IsEnabled="False"/>
                                                             </StackPanel>
                                                         </StackPanel>
                                                     </GroupBox>
@@ -300,7 +320,7 @@
                                                 <DataGridTemplateColumn.CellStyle>
                                                     <Style TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsAdressFound, NotifyOnSourceUpdated=True}" Value="True">
+                                                            <DataTrigger Binding="{Binding IsAdressFound}" Value="True">
                                                                 <Setter Property="Background" Value="#C6EFCE" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -314,9 +334,9 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                                 <DataGridTemplateColumn.CellStyle>
-                                                    <Style TargetType="{x:Type DataGridCell}">
+                                                    <Style TargetType="{x:Type DataGridCell}" x:Name="DataGridCellFound">
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsEncodingFound, NotifyOnSourceUpdated=True}" Value="True">
+                                                            <DataTrigger Binding="{Binding IsEncodingFound}" Value="True">
                                                                 <Setter Property="Background" Value="#C6EFCE" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -414,7 +434,7 @@
                                             <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGDateHeader}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ContentPresenter Content="{Binding CreationDate}" />
+                                                        <ContentPresenter Content="{Binding CreationDate}" ContentStringFormat="dd.MM.yyyy hh:mm:ss"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                                 <DataGridTemplateColumn.CellStyle>
@@ -515,11 +535,20 @@
                 </GroupBox>
             </StackPanel>
             <Button
-                x:Name="btnCrawl"
+                Name="btnCrawl"
                 Margin="10"
                 Padding="10"
                 Click="BtnCrawl_Click"
+                Loaded="BtnCrawl_Loaded"
                 Content="{x:Static properties:Resources.MWBTNCrawl}" />
+            <Button
+                x:Name="btnCrawlCancel"
+                Margin="10"
+                Padding="10"
+                Click="BtnCrawlCancel_Click"
+                Loaded="BtnCrawlCancel_Loaded"
+                Content="Abbruch"
+                IsEnabled="False" />
             <ProgressBar
                 x:Name="pgbTotal"
                 Height="40"

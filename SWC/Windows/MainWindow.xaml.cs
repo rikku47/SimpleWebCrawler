@@ -11,6 +11,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using SWC.Classes.SearchModel;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SWC
 {
@@ -28,19 +30,45 @@ namespace SWC
         public ObservableCollection<string> CustomSelectors { get; set; }
         Search GlobalSearch { get; set; }
 
+        Button ButtonCrawl { get; set; }
+        Button ButtonCrawlCancel { get; set; }
+
+        CancellationTokenSource tc;
+        
         private void BtnCrawl_Click(object sender, RoutedEventArgs e)
         {
+            ButtonCrawl.IsEnabled = false;
+            ButtonCrawlCancel.IsEnabled = true;
+
+            tc = new CancellationTokenSource();
+
+            CancellationToken ct = tc.Token;
+
             foreach (var group in Groups)
             {
-                group.Crawl();
-
-                //foreach (var link in group.Links)
-                //{
-                //    CalculateTotalSelectorsOfALink(link);
-
-                //    link.CrawlSelectors();
-                //}
+                group.Crawl(ct);
             }
+
+            ButtonCrawl.IsEnabled = true;
+            ButtonCrawlCancel.IsEnabled = false;
+        }
+
+        private void BtnCrawl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ButtonCrawl = (Button)sender;
+        }
+
+        private void BtnCrawlCancel_Click(object sender, RoutedEventArgs e)
+        {
+            tc.Cancel();
+
+            ButtonCrawl.IsEnabled = true;
+            ButtonCrawlCancel.IsEnabled = false;
+        }
+
+        private void BtnCrawlCancel_Loaded(object sender, RoutedEventArgs e)
+        {
+            ButtonCrawlCancel = (Button)sender;
         }
 
         private void ReportProgress(ProgressCrawl progress)
@@ -568,7 +596,7 @@ namespace SWC
             DigIntoLinks(_links, level, _links, new HashSet<string>());
         }
 
-        private static async System.Threading.Tasks.Task DigIntoLinks(List<Classes.LinkS> links, int level, List<Classes.LinkS> linksTest, HashSet<string> linksWithoutHir = null)
+        private static async Task DigIntoLinks(List<Classes.LinkS> links, int level, List<Classes.LinkS> linksTest, HashSet<string> linksWithoutHir = null)
         {
             int count = 0;
 
@@ -804,35 +832,12 @@ namespace SWC
             }
         }
 
-        #region DateTimeGroup
-        private void BtnStartInterval_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnStartInterval_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnStartIntervalCancel_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtnStartIntervalCancel_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-        #endregion
-
-
         private void CboHours_Initialized(object sender, EventArgs e)
         {
             ((ComboBox)sender).ItemsSource = CreateListWithHoursOfADay();
         }
 
-        private void cboMinutesOrSeconds_Initialized(object sender, EventArgs e)
+        private void CboMinutesOrSeconds_Initialized(object sender, EventArgs e)
         {
             ((ComboBox)sender).ItemsSource = CreateListWithMinutesOrSecondsOfAnHourOrMinute();
         }
@@ -841,7 +846,7 @@ namespace SWC
         {
             List<int> hours = new List<int>();
 
-            for (int i = 0; i < 23; i++)
+            for (int i = 0; i <= 23; i++)
             {
                 hours.Add(i);
             }
@@ -851,17 +856,36 @@ namespace SWC
 
         private static List<int> CreateListWithMinutesOrSecondsOfAnHourOrMinute()
         {
-            List<int> hours = new List<int>();
+            List<int> minutesOrSeconds = new List<int>();
 
-            for (int i = 0; i < 59; i++)
+            for (int i = 0; i <= 59; i++)
             {
-                hours.Add(i);
+                minutesOrSeconds.Add(i);
             }
 
-            return hours;
+            return minutesOrSeconds;
         }
 
-        
-       
+        private void BtnStartIntervalGroup_Click(object sender, RoutedEventArgs e)
+        {
+            Group group = (Group)((Button)sender).DataContext;
+
+            group.Automation = true;
+
+            CancellationTokenSource tc = new CancellationTokenSource();
+            CancellationToken ct = tc.Token;
+
+            Task.Factory.StartNew(() =>
+            {
+                ct.ThrowIfCancellationRequested();
+                group.CrawlInterval(ct);
+            }, tc.Token);
+        }
+
+        private void BtnCancelIntervalGroup_Click(object sender, RoutedEventArgs e)
+        {
+                //((Button)sender).IsEnabled = false;
+            
+        }
     }
 }
