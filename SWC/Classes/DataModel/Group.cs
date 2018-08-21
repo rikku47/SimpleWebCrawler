@@ -21,21 +21,10 @@ namespace SWC
             Name = name;
             IsCrawl = true;
             Links = new ObservableCollection<Link>();
-            Links.CollectionChanged += Links_CollectionChanged;
             Search = new Search();
             Automation = true;
             DateTimeAutomation = new DateTimeAutomation();
             CreationDate = DateTime.Now;
-        }
-
-        private void Links_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            foreach (var link in (ObservableCollection<Link>)sender)
-            {
-                link.Group = this;
-            }
-            
-               SetHighestAmountOfSelectorsOfALink();
         }
 
         public string Name
@@ -52,24 +41,12 @@ namespace SWC
         public bool Automation { get; set; }
         public DateTimeAutomation DateTimeAutomation { get; set; }
         public DateTime CreationDate { get; set; }
-
         public int HighestAmountOfSelectorsOfALink { get; set; }
         public bool IsCrawl { get => _isCrawl; set => _isCrawl = value; }
 
         private void Changed(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void SetHighestAmountOfSelectorsOfALink()
-        {
-            foreach (var link in Links)
-            {
-                if(link.TotalSelectors > HighestAmountOfSelectorsOfALink)
-                {
-                    HighestAmountOfSelectorsOfALink = link.TotalSelectors;
-                }
-            }
         }
 
         public override bool Equals(object obj)

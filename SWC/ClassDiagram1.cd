@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SWC.Classes.SelectorGroup" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QIAQACQAAAAAACAgBAEAAAQEoAAAEAACAQAEQAAQACA=</HashCode>
+      <FileName>Classes\DataModel\SelectorGroup.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SWC.Classes.Selector" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQMACCKAAAEAAAAABICABQAAoAAAEKECAAAERBAAgiA=</HashCode>
+      <FileName>Classes\DataModel\Selector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SWC.Classes.FootPrintOfAResult" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAIA=</HashCode>
+      <FileName>Classes\DataModel\FootPrintOfAResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SWC.Classes.DateEntry" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Classes\DataModel\DateEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SWC.Classes.DataModel.Result" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAAAAAAgAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\DataModel\Result.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SWC.Classes.DataModel.DateTimeAutomation" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAIAAQIAIABIAAAAAggBIAEAAAAQAAAEAAAAA=</HashCode>
+      <FileName>Classes\DataModel\DateTimeAutomation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SWC.Link" BaseTypeListCollapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAGAAAAlACQAARgABCQAAoAgCQAAGKEAFIAAAAKI=</HashCode>
+      <FileName>Classes\DataModel\Link.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SWC.Group" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAMCQAAAEAEAAglAAAAQQAgAAAAIAACAAAAAAoAAA=</HashCode>
+      <FileName>Classes\DataModel\Group.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Links" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="System.Collections.ObjectModel.ObservableCollection&lt;T&gt;" Collapsed="true">
+    <Position X="6.25" Y="3" Width="4" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SWC.Classes.DataModel.TestItems">
+    <Position X="6.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEBAAAAABAAEoAAAgABAwAAAAJAEAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\DataModel\TestItems.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SWC.Classes.DataModel.TestItem" Collapsed="true">
+    <Position X="8.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\DataModel\TestItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

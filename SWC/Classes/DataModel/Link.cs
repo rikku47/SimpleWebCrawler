@@ -1,15 +1,9 @@
-﻿using AngleSharp;
-using AngleSharp.Dom;
+﻿using AngleSharp.Dom;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using SWC.Classes;
-using SWC.Classes.DataModel;
-using AngleSharp.Parser.Html;
-using System.Text;
 using System.Threading;
 
 namespace SWC
@@ -25,6 +19,7 @@ namespace SWC
         private bool _isTotalSelectorsFound;
         private bool _isCreationDateFound;
         private bool _isFilterOut;
+        private string _adress;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -63,7 +58,15 @@ namespace SWC
             }
         }
 
-        public string Adress { get; set; }
+        public string Adress
+        {
+            get => _adress;
+            set
+            {
+                _adress = value;
+                Changed(nameof(Adress));
+            }
+        }
 
         [JsonIgnore]
         public IDocument IDoucument
@@ -184,7 +187,7 @@ namespace SWC
 
         public void Crawl(CancellationToken ct)
         {
-            if(IsCrawl)
+            if (IsCrawl)
             {
                 foreach (var selectorGroup in SelectorGroups)
                 {

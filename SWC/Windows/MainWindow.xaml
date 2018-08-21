@@ -15,7 +15,7 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
-        <Style TargetType="{x:Type DataGridCell}" x:Key="DataGridCellFound">
+        <Style x:Key="DataGridCellFound" TargetType="{x:Type DataGridCell}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsEncodingFound}" Value="True">
                     <Setter Property="Background" Value="#C6EFCE" />
@@ -26,7 +26,7 @@
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="1*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Menu>
@@ -50,7 +50,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
                     <StackPanel>
                         <GroupBox Header="{x:Static properties:Resources.MWTCOGroupNames}">
@@ -179,8 +179,9 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="75*" />
+                                        <RowDefinition Height="25*" />
                                     </Grid.RowDefinitions>
                                     <StackPanel>
                                         <GroupBox Header="{x:Static properties:Resources.MWTCOLinks}">
@@ -237,12 +238,11 @@
                                                         </StackPanel>
                                                     </GroupBox>
                                                 </Expander>
-                                                <Expander Header="Autopilot">
-                                                    <GroupBox Header="Autopilot">
-                                                        <StackPanel>
-                                                            <Label Content="Start" />
-                                                            <DatePicker Name="dpStartTimeGroup" SelectedDate="{Binding DateTimeAutomation.StartDate}" />
+                                                <GroupBox Header="Autopilot">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <GroupBox Header="Start">
                                                             <StackPanel Orientation="Horizontal">
+                                                                <DatePicker Name="dpStartTimeGroup" SelectedDate="{Binding DateTimeAutomation.StartDate}" />
                                                                 <Label Content="Stunde" />
                                                                 <ComboBox
                                                                     Name="cboStartHourGroup"
@@ -259,9 +259,10 @@
                                                                     Initialized="CboMinutesOrSeconds_Initialized"
                                                                     SelectedItem="{Binding DateTimeAutomation.StartDateSecond}" />
                                                             </StackPanel>
-                                                            <Label Content="End" />
-                                                            <DatePicker Name="dpEndTimeGroup" SelectedDate="{Binding DateTimeAutomation.EndDate}" />
+                                                        </GroupBox>
+                                                        <GroupBox Header="End">
                                                             <StackPanel Orientation="Horizontal">
+                                                                <DatePicker Name="dpEndTimeGroup" SelectedDate="{Binding DateTimeAutomation.EndDate}" />
                                                                 <Label Content="Stunde" />
                                                                 <ComboBox
                                                                     Name="cboEndHourGroup"
@@ -277,8 +278,13 @@
                                                                     Name="cboEndSecondGroup"
                                                                     Initialized="CboMinutesOrSeconds_Initialized"
                                                                     SelectedItem="{Binding DateTimeAutomation.EndDateSecond}" />
-                                                                <Label Content="Interval" />
-                                                                <TextBox Text="{Binding DateTimeAutomation.Interval, UpdateSourceTrigger=PropertyChanged}" />
+                                                            </StackPanel>
+                                                        </GroupBox>
+                                                        <GroupBox Header="Interval">
+                                                            <TextBox Text="{Binding DateTimeAutomation.Interval, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </GroupBox>
+                                                        <GroupBox Header="Execute / Stop">
+                                                            <StackPanel Orientation="Horizontal">
                                                                 <Button
                                                                     Name="btnStartIntervalGroup"
                                                                     Click="BtnStartIntervalGroup_Click"
@@ -286,12 +292,12 @@
                                                                 <Button
                                                                     Name="btnCancelIntervalGroup"
                                                                     Click="BtnCancelIntervalGroup_Click"
-                                                                    Content="CrawlIntervalStop" 
-                                                                    IsEnabled="False"/>
+                                                                    Content="CrawlIntervalStop"
+                                                                    IsEnabled="False" />
                                                             </StackPanel>
-                                                        </StackPanel>
-                                                    </GroupBox>
-                                                </Expander>
+                                                        </GroupBox>
+                                                    </StackPanel>
+                                                </GroupBox>
                                             </StackPanel>
                                         </Expander>
                                     </StackPanel>
@@ -299,7 +305,9 @@
                                         Grid.Row="1"
                                         AutoGenerateColumns="False"
                                         ItemsSource="{Binding Links}"
-                                        PreviewKeyDown="DataGrid_PreviewKeyDown">
+                                        PreviewKeyDown="DataGrid_PreviewKeyDown"
+                                        RowDetailsVisibilityMode="VisibleWhenSelected"
+                                        VerticalScrollBarVisibility="Visible">
                                         <DataGrid.RowStyle>
                                             <Style TargetType="{x:Type DataGridRow}">
                                                 <Setter Property="Visibility" Value="Visible" />
@@ -334,7 +342,7 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                                 <DataGridTemplateColumn.CellStyle>
-                                                    <Style TargetType="{x:Type DataGridCell}" x:Name="DataGridCellFound">
+                                                    <Style x:Name="DataGridCellFound" TargetType="{x:Type DataGridCell}">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsEncodingFound}" Value="True">
                                                                 <Setter Property="Background" Value="#C6EFCE" />
@@ -434,7 +442,7 @@
                                             <DataGridTemplateColumn Header="{x:Static properties:Resources.MWTCDGDateHeader}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <ContentPresenter Content="{Binding CreationDate}" ContentStringFormat="dd.MM.yyyy hh:mm:ss"/>
+                                                        <ContentPresenter Content="{Binding CreationDate}" ContentStringFormat="dd.MM.yyyy hh:mm:ss" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                                 <DataGridTemplateColumn.CellStyle>
@@ -448,7 +456,165 @@
                                                 </DataGridTemplateColumn.CellStyle>
                                             </DataGridTemplateColumn>
                                         </DataGrid.Columns>
+                                        <DataGrid.RowDetailsTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <!--<ColumnDefinition />-->
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <GroupBox Header="Autopilot">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <GroupBox Header="Start">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <DatePicker Name="dpStartTimeSelector" SelectedDate="{Binding DateTime.Today}" />
+                                                                    <Label Content="Stunde" />
+                                                                    <ComboBox Name="cboStartHourSelectorGroup" />
+                                                                    <Label Content="Minute" />
+                                                                    <ComboBox Name="cboStartMinuteSelectorGroup" />
+                                                                    <Label Content="Sekunde" />
+                                                                    <ComboBox Name="cboStartSecondSelectorGroup" />
+                                                                </StackPanel>
+                                                            </GroupBox>
+                                                            <GroupBox Header="End">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <DatePicker Name="dpEndTimeSelector" SelectedDate="{Binding EndTimeSelectorrGroup}" />
+                                                                    <Label Content="Stunde" />
+                                                                    <ComboBox Name="cboEndHourSelectorGroup" />
+                                                                    <Label Content="Minute" />
+                                                                    <ComboBox Name="cboEndMinuteSelectorGroup" />
+                                                                    <Label Content="Sekunde" />
+                                                                    <ComboBox Name="cboEndSecondSelectorGroup" />
+                                                                </StackPanel>
+                                                            </GroupBox>
+                                                            <GroupBox Header="Interval">
+                                                                <TextBox Text="{Binding Interval}" />
+                                                            </GroupBox>
+                                                            <GroupBox Header="Execute / Stop">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Button Name="btnStartInterval" Content="CrawlInterval" />
+                                                                    <Button
+                                                                        Name="btnStartIntervalCancel"
+                                                                        Content="CrawlIntervalStop"
+                                                                        IsEnabled="False" />
+                                                                </StackPanel>
+                                                            </GroupBox>
+                                                        </StackPanel>
+                                                    </GroupBox>
+                                                    <GroupBox Grid.Row="1"  Header="Upload">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Label Content="Host"/>
+                                                            <TextBox Width="100"/>
+                                                            <Label Content="Benutzername"/>
+                                                            <TextBox Width="100"/>
+                                                            <Label Content="Passwort"/>
+                                                            <TextBox Width="100"/>
+                                                            <Label Content="Port"/>
+                                                            <TextBox Width="100"/>
+                                                            <Button Content="Verbinden"/>
+                                                            <Label Content="Verzeichnis"/>
+                                                            <TextBox Width="100"/>
+                                                        </StackPanel>
+                                                    </GroupBox>
+                                                    <GroupBox Grid.Row="2" Header="Selectorgruppe(n)">
+                                                        <StackPanel>
+                                                            <GroupBox Header="Selektorgruppe(n) hinzufügen">
+                                                                <TextBox
+                                                                    Name="txtSelectorGroups"
+                                                                    Background="Azure"
+                                                                    KeyUp="TxtSelectorGroups_KeyUp" />
+                                                            </GroupBox>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="25*" />
+                                                                    <ColumnDefinition Width="75*" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <GroupBox Header="Selectorgruppen">
+                                                                    <ListBox
+                                                                        Name="libSelectorgroups"
+                                                                        MaxHeight="200"
+                                                                        ItemsSource="{Binding SelectorGroups}"
+                                                                        SelectionMode="Extended"
+                                                                        SizeChanged="libSelectorgroups_SizeChanged">
+                                                                        <ListBox.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <Grid>
+                                                                                    <Grid.ColumnDefinitions>
+                                                                                        <ColumnDefinition Width="50*"/>
+                                                                                        <ColumnDefinition Width="50*"/>
+                                                                                    </Grid.ColumnDefinitions>
+                                                                                    
+                                                                                    <TextBlock Text="{Binding Name}" Background="Azure"/>
+                                                                                    <CheckBox IsChecked="{Binding IsCrawl}" Background="Brown" Grid.Column="1"/>
+                                                                                </Grid>
+                                                                                <!--<StackPanel CanVerticallyScroll="True" Orientation="Horizontal">
+                                                                                    <ContentPresenter Content="{Binding Name}" />
+                                                                                    <CheckBox IsChecked="{Binding IsCrawl}" />
+                                                                                </StackPanel>-->
+                                                                            </DataTemplate>
+                                                                        </ListBox.ItemTemplate>
+                                                                    </ListBox>
+                                                                </GroupBox>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                    </GroupBox>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </DataGrid.RowDetailsTemplate>
                                     </DataGrid>
+                                    <StackPanel Grid.Row="2">
+                                        <StackPanel
+                                            Margin="10"
+                                            HorizontalAlignment="Center"
+                                            Orientation="Horizontal">
+                                            <GroupBox
+                                                Header="Crawl-Optionen"
+                                                IsEnabled="False"
+                                                Visibility="Collapsed">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="Text" />
+                                                    <CheckBox
+                                                        x:Name="chkText"
+                                                        VerticalAlignment="Center"
+                                                        IsChecked="True" />
+                                                    <Label Content="innerHTML" />
+                                                    <CheckBox
+                                                        x:Name="chkInnerHTML"
+                                                        VerticalAlignment="Center"
+                                                        IsChecked="True" />
+                                                    <Label Content="outerHTML" />
+                                                    <CheckBox
+                                                        x:Name="chkOuterHTML"
+                                                        VerticalAlignment="Center"
+                                                        IsChecked="True" />
+                                                </StackPanel>
+                                            </GroupBox>
+                                        </StackPanel>
+                                        <Button
+                                            Name="btnCrawl"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="BtnCrawl_Click"
+                                            Content="{x:Static properties:Resources.MWBTNCrawl}"
+                                            Loaded="BtnCrawl_Loaded" />
+                                        <Button
+                                            x:Name="btnCrawlCancel"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="BtnCrawlCancel_Click"
+                                            Content="Abbruch"
+                                            IsEnabled="False"
+                                            Loaded="BtnCrawlCancel_Loaded" />
+                                        <ProgressBar
+                                            x:Name="pgbTotal"
+                                            Height="40"
+                                            Margin="10" />
+                                    </StackPanel>
                                 </Grid>
                             </DataTemplate>
                         </TabControl.ContentTemplate>
@@ -506,53 +672,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <StackPanel Grid.Row="2">
-            <StackPanel
-                Margin="10"
-                HorizontalAlignment="Center"
-                Orientation="Horizontal">
-                <GroupBox
-                    Header="Crawl-Optionen"
-                    IsEnabled="False"
-                    Visibility="Collapsed">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Text" />
-                        <CheckBox
-                            x:Name="chkText"
-                            VerticalAlignment="Center"
-                            IsChecked="True" />
-                        <Label Content="innerHTML" />
-                        <CheckBox
-                            x:Name="chkInnerHTML"
-                            VerticalAlignment="Center"
-                            IsChecked="True" />
-                        <Label Content="outerHTML" />
-                        <CheckBox
-                            x:Name="chkOuterHTML"
-                            VerticalAlignment="Center"
-                            IsChecked="True" />
-                    </StackPanel>
-                </GroupBox>
-            </StackPanel>
-            <Button
-                Name="btnCrawl"
-                Margin="10"
-                Padding="10"
-                Click="BtnCrawl_Click"
-                Loaded="BtnCrawl_Loaded"
-                Content="{x:Static properties:Resources.MWBTNCrawl}" />
-            <Button
-                x:Name="btnCrawlCancel"
-                Margin="10"
-                Padding="10"
-                Click="BtnCrawlCancel_Click"
-                Loaded="BtnCrawlCancel_Loaded"
-                Content="Abbruch"
-                IsEnabled="False" />
-            <ProgressBar
-                x:Name="pgbTotal"
-                Height="40"
-                Margin="10" />
-        </StackPanel>
+        <StatusBar Grid.Row="2">
+            <Label Content="Statusbar" />
+        </StatusBar>
     </Grid>
 </Window>

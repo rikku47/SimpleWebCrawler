@@ -13,6 +13,7 @@ using System.Windows.Data;
 using SWC.Classes.SearchModel;
 using System.Threading;
 using System.Threading.Tasks;
+using SWC.Classes;
 
 namespace SWC
 {
@@ -73,7 +74,7 @@ namespace SWC
 
         private void ReportProgress(ProgressCrawl progress)
         {
-            btnCrawl.IsEnabled = true;
+            //btnCrawl.IsEnabled = true;
         }
 
         private void ReadCustomSelectors(string path)
@@ -733,6 +734,14 @@ namespace SWC
 
         private void DataGrid_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            if(e.OriginalSource is TextBox txtBox)
+            {
+                if (txtBox.Name.Equals("txtSelectorGroups"))
+                {
+                    TxtSelectorGroups_KeyUp(sender, e);
+                }
+            }
+
             if (sender is DataGrid dg)
             {
                 DataGridRow dgr = (DataGridRow)(dg.ItemContainerGenerator.ContainerFromIndex(dg.SelectedIndex));
@@ -886,6 +895,41 @@ namespace SWC
         {
                 //((Button)sender).IsEnabled = false;
             
+        }
+
+        private void TxtSelectorGroups_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            ObservableCollection<string> tempSelectorGroups = new ObservableCollection<string>();
+
+            string[] lselectorGroups = ((TextBox)e.OriginalSource).Text.Split(';');
+
+            foreach (var selectorGroup in lselectorGroups)
+            {
+                tempSelectorGroups.Add(selectorGroup);
+            }
+
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                ((TextBox)e.OriginalSource).Text = "";
+
+                foreach (var selectorGroup in tempSelectorGroups)
+                {
+                    if (!selectorGroup.Equals(""))
+                    {
+                        ((Link)((TextBox)e.OriginalSource).DataContext).SelectorGroups.Add(new SelectorGroup(selectorGroup));
+                    }
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private void libSelectorgroups_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            double height = SystemParameters.VirtualScreenHeight;
+            double width = SystemParameters.VirtualScreenWidth;
+
+            var screens = System.Windows.Forms.Screen.AllScreens;
         }
     }
 }
